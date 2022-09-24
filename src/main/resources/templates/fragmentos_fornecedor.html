@@ -1,0 +1,89 @@
+<div class="container" th:fragment="formFor(fornecedorDto,contatoDto,enderecoDto, action)">
+		<div class="row">
+			<form th:action="${action}" method="POST">
+				<div class="mb-3">
+					<label for="nome" class="form-label">Nome do Fornecedor</label> 
+					<input class="form-control" type="text" th:errorclass="is-invalid"
+					       th:field="*{fornecedorDto.nome}"
+						   placeholder="Nome digite o nome do fornecedor" />
+					<div class="invalid-feedback" th:errors="*{fornecedorDto.nome}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="nome" class="form-label">Nome da Empresa</label> 
+					<input class="form-control" type="text" th:errorclass="is-invalid"
+					       th:field="*{fornecedorDto.nomeEmpresa}"
+						   placeholder="Nome digite o nome da Empresa" />
+					<div class="invalid-feedback" th:errors="*{fornecedorDto.nomeEmpresa}"></div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Escolha o Tipo de Contato</label>
+					 <select class="form-select" th:field="*{fornecedorDto.contatoEnum}">
+						<option th:each="contato : ${listaContato}" 
+					            th:value="${contato}" th:text="${contato}">
+						</option>
+					</select>
+				</div>
+				<div class="mb-3">
+					<label for="telefone" class="form-label">Telefone de Contato</label> 
+					<input class="form-control" th:errorclass="is-invalid"  th:field="*{contatoDto.telefone}"  
+					       type="text" placeholder="Digite seu Telefone" />
+					<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="email"class="form-label">E-mail</label> 
+					<input class="form-control" th:errorclass="is-invalid" type="text" 
+					       th:field="*{contatoDto.email}" placeholder="Digite seu e-mail" />
+					 <div class="invalid-feedback" th:errors="*{contatoDto.email}"></div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Escolha o tipo de Endereço</label> 
+					<select class="form-select" th:field="*{fornecedorDto.enderecoEnum}">
+						<option th:each="endereco : ${listaEndereco}" 
+						        th:value="${endereco}" th:text="${endereco}">
+						</option>
+					</select>
+				<div class="mb-3">
+					<label for="uf" class="form-label">UF</label>
+					<input class="form-control" type="text" placeholder="Digite seu UF" 
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.uf}" />
+					<div class="invalid-feedback" th:errors="*{enderecoDto.uf}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="cidade" class="form-label">Cidade</label> 
+					<input class="form-control" type="text" placeholder="Digite sua Cidade" 
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.cidade}"/>     
+				     <div class="invalid-feedback" th:errors="*{enderecoDto.cidade}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="bairro" class="form-label">Bairro</label>
+					<input class="form-control" type="text" placeholder="Digite seu Bairro" 
+					       th:errorclass="is-invalid"  th:field="*{enderecoDto.bairro}"/>
+				    <div class="invalid-feedback" th:errors="*{enderecoDto.bairro}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="cep"class="form-label">CEP</label>
+					<input class="form-control" type="text" placeholder="Digite seu CEP" 
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.cep}"/>
+				     <div class="invalid-feedback" th:errors="*{enderecoDto.cep}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="logradouro" class="form-label">Logradouro</label>
+					<input class="form-control" type="text" placeholder="Digite rua, av..."
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.logradouro}"/>
+				    <div class="invalid-feedback" th:errors="*{enderecoDto.logradouro}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="complemento" class="form-label">Complemento</label> 
+					<input class="form-control" type="text" th:field="*{enderecoDto.complemento}"/>
+				</div>
+				<div class="mb-3">
+					<label fro="numero" class="form-label">Número</label> 
+					<input class="form-control" type="text" placeholder="Informe número da residencia"
+						   th:field="*{enderecoDto.numero}"/>
+				</div>
+				</div>
+				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+				<a href="javascript:history.back()" class="btn btn-outline-warning btn-sm" >Voltar</a>
+			</form>
+		</div>
+	</div>

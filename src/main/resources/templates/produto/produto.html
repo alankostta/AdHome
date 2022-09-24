@@ -1,0 +1,15 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<link href="../../static/css/style.css"/>
+<head th:replace="~{fragmentos :: head('Cadastrar Produto')}">
+</head>
+  <body>
+  	<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  	<script type="text/javascript" src="/js/scripts.js" defer></script>
+  	<header th:replace="~{fragmentos :: header('Cadastrar Produto')}"></header>
+  	<div th:include="~{fragmentos_produto :: formPro(produtoDto,fornecedorDto,pedidoDto,'../produto')}">Cadastrar Fornecedor</div>
+  </body>
+</html>

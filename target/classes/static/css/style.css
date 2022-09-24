@@ -1,0 +1,14 @@
+@charset "UTF-8";
+.error-message{
+	color: #dc3545;
+}
+.success-message{
+	color: #198754;
+}
+.modal-header{
+	background: #F7941E;
+	color: #fff;
+}
+.thead{
+	color:#000;
+}
