@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -55,13 +56,11 @@ public class ProdutoController {
 		this.fornecedorService = fornecedorService;
 		this.pedidoService = pedidoService;
 	}
-
 	@GetMapping("")
 	public ModelAndView exibiProdutos(ProdutoDto produtoDto, PedidoDto pedidoDto, FornecedorDto fornecedorDto) {
 		var mv = new ModelAndView("produto/produto");
 		return mv;
 	}
-
 	@PostMapping("")
 	public ModelAndView saveProdutos(@Valid ProdutoDto produtoDto, BindingResult resultProduto,
 			@Valid PedidoDto pedidoDto, BindingResult resultPedido, @Valid FornecedorDto fornecedorDto,
@@ -90,13 +89,11 @@ public class ProdutoController {
 				produtoService.salvarProduto(produto);
 				
 			}
-			
 			return new ModelAndView("redirect:/produto");
 		}
 		// método BeanUtils está sendo usado para realizar um cast de clienteDto para
 		// cliente
 	}
-
 	@GetMapping("produto/listar")
 	public ModelAndView listarProdutos() {
 
@@ -106,7 +103,6 @@ public class ProdutoController {
 		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
 		return mv;
 	}
-
 	@GetMapping("produto/{produtoId}")
 	public ModelAndView getOneProduto(@PathVariable(value = "produtoId") Long id) {
 
@@ -124,7 +120,6 @@ public class ProdutoController {
 			return mv;
 		}
 	}
-
 	// para testar no postman precisa usar o Id
 	@GetMapping("produto/{produtoId}/editar")
 	public ModelAndView upProduto(@PathVariable(value = "produtoId") Long id, ProdutoDto produtoDto,
@@ -216,21 +211,12 @@ public class ProdutoController {
 	}
 	@GetMapping(value="buscarPorNome")
 	@ResponseBody 
-	public ResponseEntity<List<FornecedorDto>> buscarPorNome(@RequestParam(name="name") String name) {
+	public ResponseEntity<List<Fornecedor>> buscarPorNome(@RequestParam(name="name") String name) {
 		//List<Fornecedor> fornecedor = fornecedorService.findByName(name.trim().toLowerCase());
-		List<FornecedorDto> fornecedorDto = fornecedorService.findByName(name);
-		//List<FornecedorDto> fornecedorDto = new ArrayList<>();
-		//fornecedorDto.stream().map(fornecedor);
-		//return fornecedorService.findByName(name).stream().map(fornecedorDto::toFornecedorDto(fornecedor)).collect(Collectors.toList());
-		//= fornecedor.stream().map(obj -> new FornecedorDto(obj)).collect(Collectors.toList());
-		
-		//return ResponseEntity.ok().body(fornecedorDto);
-		return ResponseEntity.ok().body(fornecedorDto);
-		
+		List<Fornecedor> fornecedor = fornecedorService.findByName(name);
+	
+		return new ResponseEntity<List<Fornecedor>>(fornecedor,HttpStatus.OK);
 	}
-	//public FornecedorDto toFornecedorDto(Fornecedor fornecedor) {
-		//return modelMapper.map(fornecedor, FornecedorDto.class);
-	//}
 	private ModelAndView retornaErroProduto(String msg) {
 		ModelAndView mv = new ModelAndView("redirect:/fornecedor/fornecedor");
 		mv.addObject("mensagem", msg);

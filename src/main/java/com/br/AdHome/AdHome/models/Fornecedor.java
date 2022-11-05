@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_fornecedor")
 public class Fornecedor implements Serializable{
@@ -57,7 +59,7 @@ public class Fornecedor implements Serializable{
 	@OneToMany(mappedBy="fornecedor", cascade = {
 			CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
 	private Set<Contato> contatos = new HashSet<>();
-	
+	@JsonIgnore
 	@OneToMany(mappedBy="fornecedor", cascade = {
 			CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
 	private Set<Produto> produtos = new HashSet<>();

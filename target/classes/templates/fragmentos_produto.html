@@ -1,6 +1,5 @@
 
 <div class="conteiner" th:fragment="formPro(produtoDto,fornecedorDto,pedidoDto, action)">
-	<h2>Teste</h2>
 	<div class="row">
 		<div>
 			<form th:action="${action}" method="POST">
@@ -73,7 +72,7 @@
 			<button type="button" class="btn btn-outline-success btn-sm" onclick="pesquisarUser()">Buscar</button>
 		</form>
 		<table class="table" id="tabelaresultados">
-			<thead class="thead-dark">
+			<thead>
 				<tr>
 					<th scope="col">Id:</th>
 					<th scope="col">Nome</th>
@@ -89,8 +88,8 @@
 			</div>
 		</div>
 	</div>
-	</div>
-	</div>
+</div>
+</div>
 	
 
 

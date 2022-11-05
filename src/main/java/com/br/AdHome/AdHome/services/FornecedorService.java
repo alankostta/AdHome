@@ -2,13 +2,9 @@ package com.br.AdHome.AdHome.services;
 
 import java.util.List;
 import java.util.Optional;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.br.AdHome.AdHome.dto.FornecedorDto;
 import com.br.AdHome.AdHome.models.Fornecedor;
 import com.br.AdHome.AdHome.repositories.FornecedorRepository;
 
@@ -38,8 +34,8 @@ public class FornecedorService {
 	public Optional<Fornecedor> findById(Long id){
 		return fornecedorRepository.findById(id);
 	}
-	public List<FornecedorDto> findByName(String name){
-		return fornecedorRepository.findByName(name);
+	public List<Fornecedor> findByName(String name){
+		return fornecedorRepository.findBynomeEmpresaContaining(name);
 	}
 	public void deleteFornecedor(Fornecedor fornecedor) {
 		fornecedorRepository.delete(fornecedor);

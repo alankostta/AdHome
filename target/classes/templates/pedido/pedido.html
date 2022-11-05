@@ -20,17 +20,23 @@
 	<div class="container">
 		<div class="row mt-3">
 			<div class="col">
-				<form id="#" action="#" method="POST">
-					<div class="form-group row">
+				<form  class="formulario" id="#" action="#" method="POST">
+					<div class="form-group row mb-3">
 						<label for="cliente" class="col-12 col-md-2 col-form-label h2">Cliente:</label>
 						<div class="col-12 col-md-10">
-							<input type="text" class="form-control" id="#" placeholder="Pesquisar o cliente">
+							<input type="text" class="form-control" id="#" placeholder="Pesquisar o cliente" >
+							<br>
+							<button class="btn btn-outline-primary" 
+									data-bs-toggle="modal" data-bs-target="#pesquisarClienteModal">Pesquisar</button>
 						</div>
 					</div>
-					<div class="form-group row">
+					<div class="form-group row mb-3">
 					<label for="email" class="col-12 col-md-2 col-form-label h2">Produto:</label>
 						<div class="col-12 col-md-10">
 							<input type="text" class="form-control" id="#" placeholder="Pesquisar o Produto">
+							<br>
+							<button class="btn btn-outline-primary" 
+									data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar produto</button>
 						</div>
 					</div>
 					<div id="carrinho" class="form-group table-responsive">
@@ -81,5 +87,71 @@
 		</div>
 	</div>
 </main>
+<div class="modal fade" id="pesquisarClienteModal" tabindex="-1" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Pesquisar Cliente</h5>
+				<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+			</div>
+		<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<label for="nameBuscarCliente" class="col-form-label">Informe o nome do cliente:</label>
+				<input type="text" class="form-control" id="nameBuscarCliente">
+			</div>
+			<button type="button" class="btn btn-outline-success btn-sm" onclick="pesquisarUser()">Buscar</button>
+		</form>
+		<table class="table" id="tabelaresultados">
+			<thead>
+				<tr>
+					<th scope="col">Id:</th>
+					<th scope="col">Nome</th>
+					<th scope="col">Selecionar</th>
+				</tr>
+			</thead>
+		<tbody>
+		</tbody>
+		</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="modal fade" id="pesquisarProdutoModal" tabindex="-1" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Pesquisar Produto</h5>
+				<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+			</div>
+		<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<label for="nameBuscarCliente" class="col-form-label">Informe o produto:</label>
+				<input type="text" class="form-control" id="nameBuscarCliente">
+			</div>
+			<button type="button" class="btn btn-outline-success btn-sm" onclick="pesquisarUser()">Buscar</button>
+		</form>
+		<table class="table" id="tabelaresultados">
+			<thead>
+				<tr>
+					<th scope="col">Id:</th>
+					<th scope="col">Nome</th>
+					<th scope="col">Selecionar</th>
+				</tr>
+			</thead>
+		<tbody>
+		</tbody>
+		</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+	</div>
 </body>
 </html>

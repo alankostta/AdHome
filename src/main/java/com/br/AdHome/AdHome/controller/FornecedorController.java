@@ -6,13 +6,17 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.br.AdHome.AdHome.dto.ContatoDto;
 import com.br.AdHome.AdHome.dto.EnderecoDto;
 import com.br.AdHome.AdHome.dto.FornecedorDto;
@@ -35,6 +39,7 @@ import com.br.AdHome.AdHome.services.FornecedorService;
  */
 
 @Controller
+@RestController("/fornecedor")
 public class FornecedorController{
 
 	final FornecedorService fornecedorService;

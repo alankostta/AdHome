@@ -3,7 +3,9 @@ package com.br.AdHome.AdHome.controller;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,14 +13,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.br.AdHome.AdHome.dto.PagamentoDto;
@@ -33,9 +34,8 @@ import com.br.AdHome.AdHome.services.PagamentoService;
  * 2º service envia a solicitação para o repository
  * 3º repository envia para o banco
  */
-@RestController
-@CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/adhome/pagamento")
+@Controller
+@RestController("/pagamento")
 public class PagamentoController {
 	final PagamentoService pagamentoService;
 	public PagamentoController(PagamentoService pagamentoService) {

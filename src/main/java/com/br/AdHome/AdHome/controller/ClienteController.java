@@ -9,11 +9,13 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.br.AdHome.AdHome.dto.ClienteDto;
@@ -36,6 +38,7 @@ import com.br.AdHome.AdHome.services.EnderecoService;
  * 3º repository envia para o banco
  */
 @Controller
+@RestController("/cliente")
 public class ClienteController {
 	// insere a classe e ápos isso cria o metodo construtor
 	final ClienteService clienteService;
@@ -50,6 +53,7 @@ public class ClienteController {
 		this.contatoService = contatoService;
 	}
 	@GetMapping("/cliente")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView exibirCliente(ClienteDto clienDto, ContatoDto contatoDto, EnderecoDto enderecoDto) {
 		
 		var mv = new ModelAndView("cliente/cliente");
@@ -60,6 +64,7 @@ public class ClienteController {
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
 	@PostMapping("/cliente")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView saveCliente(@Valid ClienteDto clienDto, BindingResult resultCliente,
 			@Valid ContatoDto contatoDto, BindingResult resultContato,
 			@Valid EnderecoDto enderecoDto, BindingResult resultEndereco ) {
@@ -102,6 +107,7 @@ public class ClienteController {
 		// cliente
 	}
 	@GetMapping("cliente/listar")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView listarClientes() {
 		
 		var mv = new ModelAndView("cliente/listar");
@@ -113,6 +119,7 @@ public class ClienteController {
 		return mv;
 	}
 	@GetMapping("cliente/{clienteId}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView getOneCliente(@PathVariable(value = "clienteId") Long id) {
 		
 		Optional<Cliente> clienteOptional = clienteService.findById(id);
@@ -132,6 +139,7 @@ public class ClienteController {
 		}
 	}
 	@GetMapping("cliente/{clienteId}/excluir")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView deleteCliente(@PathVariable(value = "clienteId") Long id) {
 		
 		Optional<Cliente> clienteOptional = clienteService.findById(id);
@@ -149,6 +157,7 @@ public class ClienteController {
 	}
 	// para testar no postman precisa usar o Id
 	@GetMapping("cliente/{clienteId}/editar")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView upClinte(@PathVariable(value = "clienteId") Long id, 
 			ClienteDto clienteDto, ContatoDto contatoDto, EnderecoDto enderecoDto) {
 		
@@ -179,6 +188,7 @@ public class ClienteController {
 		}
 	}
 	@PostMapping("cliente/{clienteId}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView updateCliente(@PathVariable(value = "clienteId") Long id, @Valid ClienteDto clienteDto,
 			BindingResult resultCliente, @Valid ContatoDto contatoDto, BindingResult resultContato, 
 			@Valid EnderecoDto enderecoDto, BindingResult resultEndereco) {

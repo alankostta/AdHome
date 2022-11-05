@@ -39,7 +39,6 @@ public class FornecedorDto implements Serializable{
 	
 	public FornecedorDto() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public FornecedorDto(BigInteger fornecedorId, String nome) {
 		super();
@@ -120,5 +119,4 @@ public Fornecedor toFornecedor() {
 		this.contatoEnum = fornecedor.getContatoEnum();
 		this.enderecoEnum = fornecedor.getEnderecoEnum();
 	}
-	
 }
