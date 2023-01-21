@@ -8,6 +8,6 @@ class AdHomeApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
-
 }
