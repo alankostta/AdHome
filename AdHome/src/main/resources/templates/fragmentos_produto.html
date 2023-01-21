@@ -1,0 +1,111 @@
+
+<div class="container mb-3" th:fragment="formPro(produtoDto,fornecedorDto,pedidoDto, action)">
+<div>
+	<div class="row">
+			<form th:action="${action}" method="POST">
+				<div class="mb-3">
+					<label class="form-label" >Código do Fornecedor</label>
+					<input class="form-control" type="text" id="idFor" style="background-color:#DCDCDC;"
+						   th:field="*{fornecedorDto.fornecedorId}" readonly="readonly"/>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Fornecedor do produto</label>
+					<input class="form-control" type="text" id="nomeFor" readonly="readonly" style="background-color:#DCDCDC;"
+						   th:field="*{fornecedorDto.nome}" placeholder="Pesquise a empresa para encontrar o fornecedor" />
+				</div>
+				<div class="mb-3">
+					<button type="button" class="btn btn-outline-primary btn-sm"
+		                    data-bs-toggle="modal" data-bs-target="#pesquisarModal">Pesquisar</button>
+		        </div>
+				<div class="mb-3">
+					<label class="form-label">Descrição do produto</label> <input
+						class="form-control" type="text"
+						th:field="*{produtoDto.descricao}" th:errorclass="is-invalid"
+						placeholder="Informe a descrição do produto">
+				</div>
+				<div class="invalid-feedback" th:errors="*{produtoDto.descricao}">
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Marca do produto</label> <input
+						class="form-control" type="text" th:field="*{produtoDto.marca}"
+						th:errorclass="is-invalid" placeholder="Informe a marca">
+				</div>
+				<div class="invalid-feedback" th:errors="*{produtoDto.marca}">
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Valor de Entrada</label> <input
+						class="form-control" type="text"
+						th:field="*{produtoDto.valorEntrada}" th:errorclass="is-invalid"
+						placeholder="Digite o valor de entrada">
+				</div>
+				<div class="invalid-feedback" th:errors="*{produtoDto.valorEntrada}">
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Preço do Produto</label> 
+					<input class="form-control" type="text" th:field="*{produtoDto.preco}"
+						   th:errorclass="is-invalid" placeholder="Digite o preco de venda">
+				</div>
+				<div class="invalid-feedback" th:errors="*{produtoDto.preco}">
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Quantidade do produto</label> 
+					<input class="form-control" type="number" th:field="*{produtoDto.estoqueQtd}" 
+					       th:errorclass="is-invalid" placeholder="Informe a quantidade em estoque">
+				</div>
+				<div class="invalid-feedback" th:errors="*{produtoDto.estoqueQtd}">
+				</div>
+				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+				<a href="javascript:history.back()" class="btn btn-outline-warning btn-sm">Voltar</a>
+			</form>
+		</div>
+	</div>
+	<div class="modal fade" id="pesquisarModal" tabindex="-1" aria-labelledby="modalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalLongTitle">Pesquisar Fornecedor</h5>
+				<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+			</div>
+		<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<label for="nameBuscar" class="col-form-label">Informe o nome:</label>
+				<input type="text" class="form-control" id="nameBuscar" placeholder="Pesquise pelo nome da Empresa">
+			</div>
+			<button type="button" class="btn btn-outline-success btn-sm" onclick="pesquisarFornecedor()">Buscar</button>
+		</form>
+		<table class="table" id="tabelaresultados">
+			<thead class="mod-thead">
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>Selecionar</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

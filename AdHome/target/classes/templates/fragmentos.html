@@ -1,0 +1,150 @@
+<head th:fragment="head(titulo)">
+<link rel="icon" href="data:,">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>	
+<link rel="stylesheet" href="/css/style.css">
+<title th:text="${titulo}">Home</title>
+</head>
+
+<header th:fragment="header(titulo)">
+	<div class="container mt-3">
+		<ul class="nav nav-tabs">
+			<li class="nav-item "><a aria-current="page" class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().equals('/index') ? 'active' : ''}"
+				href="/index">Home</a></li>
+			<li class="nav-item"><a class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/cliente/listar') ? 'active' : ''}"
+				href="/cliente/listar">Clientes</a></li>
+			<li class="nav-item"><a class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/fornecedor') ? 'active' : ''}"
+				href="/fornecedor">Fornecedores</a></li>
+			<li class="nav-item"><a class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/produto') ? 'active' : ''}"
+				href="/produto">Produtos</a></li>
+				<li class="nav-item"><a class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/pedido') ? 'active' : ''}"
+				href="/pedido">Pedidos</a></li>
+			<li class="nav-item"><a class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/login') ? 'active' : ''}"
+				href="/login">Login</a>
+			</li>
+			<li class="nav-item"><a class="nav-link"
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/logout') ? 'active' : ''}"
+				href="/login">Logout</a>
+			</li>
+		</ul>
+	</div>
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-12">
+				<h1 th:text="${titulo}">Adm-Home</h1>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="container" th:fragment="form(clienteDto,contatoDto,enderecoDto, action)">
+	<div class="row">
+		<form th:action="${action}" method="POST">
+			<div class="row mb-3">
+				<label for="nome" class="col-sm-1 col-form-label">Nome</label> 
+				<div class="col-sm-3">
+					<input class="form-control" th:errorclass="is-invalid" type="text"
+					       th:field="*{clienteDto.nome}" placeholder="Digite seu nome" />
+				</div>
+				<div class="invalid-feedback" th:errors="*{clienteDto.nome}"></div>
+				
+				<label for="dataNasci" class="col-sm-2 col-form-label">Data de Nascimento</label>
+				<div class="col-sm-2">
+					<input type="date" class="form-control" th:errorclass="is-invalid" th:field="*{clienteDto.dataNasci}" />
+				</div>
+				<div class="invalid-feedback" th:errors="*{clienteDto.dataNasci}"></div>
+				
+				<label for="Feminino" class="col-sm-1 form-check-label">Feminino</label>
+				<div class="col-sm-1">
+					<input type="radio" class="form-check-input" th:field="*{clienteDto.sexo}" value="Feminino">
+				</div>
+				<label for="Masculino" class="col-sm-1 form-check-label">Masculino</label>
+				<div class="col-sm-1">
+				<input type="radio" class="form-check-input" th:field="*{clienteDto.sexo}" value="Masculino"> 
+				</div>
+			</div>
+			<label class="col-sm-3 form-select-label">Escolha o Tipo de Contato</label> 
+			<div class="row mb-3 ">
+				<select class="form-select" th:field="*{clienteDto.contatoEnum}">
+					<option th:each="contato : ${listaContato}" 
+					        th:value="${contato}" th:text="${contato}">
+					</option>
+				</select>
+			</div>
+			<div class="row mb-3 align-items-center">
+				<label for="telefone" class="col-sm-2 form-label">Telefone de Contato</label> 
+			<div class="col-sm-3">
+				<input class="form-control" th:errorclass="is-invalid"  th:field="*{contatoDto.telefone}"  
+					   type="text" placeholder="Digite seu Telefone" />
+			</div>
+				<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>
+				<label for="email"class="col-sm-1 form-label">E-mail</label> 
+				<div class="col-sm-3">
+				<input class="form-control" th:errorclass="is-invalid" type="text" th:field="*{contatoDto.email}"
+				       placeholder="Digite seu e-mail" />
+			</div>	       
+				 <div class="invalid-feedback" th:errors="*{contatoDto.email}"></div>
+			</div>
+			<div class="mb-3">
+				<label for="endereco" class="form-label">Escolha o tipo de Endereço</label>
+				 <select class="form-select" th:field="*{clienteDto.enderecoEnum}">
+					<option th:each="endereco : ${listaEndereco}" 
+					        th:value="${endereco}" th:text="${endereco}">
+					</option>
+				</select>
+				<div class="mb-3">
+					<label for="uf" class="form-label">UF</label>
+					<input class="form-control" type="text" placeholder="Digite seu UF" 
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.uf}" />
+					<div class="invalid-feedback" th:errors="*{enderecoDto.uf}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="cidade" class="form-label">Cidade</label> 
+					<input class="form-control" type="text" placeholder="Digite sua Cidade" 
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.cidade}"/>     
+				     <div class="invalid-feedback" th:errors="*{enderecoDto.cidade}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="bairro" class="form-label">Bairro</label>
+					<input class="form-control" type="text" placeholder="Digite seu Bairro" 
+					       th:errorclass="is-invalid"  th:field="*{enderecoDto.bairro}"/>
+				    <div class="invalid-feedback" th:errors="*{enderecoDto.bairro}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="cep"class="form-label">CEP</label>
+					<input class="form-control" type="text" placeholder="Digite seu CEP" 
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.cep}"/>
+				     <div class="invalid-feedback" th:errors="*{enderecoDto.cep}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="logradouro" class="form-label">Logradouro</label>
+					<input class="form-control" type="text" placeholder="Digite rua, av..."
+					       th:errorclass="is-invalid" th:field="*{enderecoDto.logradouro}"/>
+				    <div class="invalid-feedback" th:errors="*{enderecoDto.logradouro}"></div>
+				</div>
+				<div class="mb-3">
+					<label for="complemento" class="form-label">Complemento</label> 
+					<input class="form-control" type="text" th:field="*{enderecoDto.complemento}"/>
+				</div>
+				<div class="mb-3">
+					<label fro="numero" class="form-label">Número</label> 
+					<input class="form-control" type="text" placeholder="Informe número da residencia"
+						   th:field="*{enderecoDto.numero}"/>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+			<a href="javascript:history.back()-1" class="btn btn-outline-warning btn-sm">Voltar</a>
+		</form>
+	</div>
+</div>
+

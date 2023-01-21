@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+.error-message {
+	color: #dc3545;
+}
+
+.success-message {
+	color: #198754;
+}
+
+.modal-header {
+	background: #F7941E;
+	color: #fff;
+}
+
+.thead {
+	color: #fff;
+}
+/*
+body{
+	background: #172031;
+	color: #fff;
+}
+*/ 
+.mod-thead {
+	color: #000;
+}
