@@ -57,7 +57,7 @@ function pesquisarProduto() {
 					$('#tabDescricaoProduto > tbody').append('<tr><td>' + response[i]
 					.produtoId + '</td><td>' + response[i]
 					.descricao + 
-					'</td><td><button type="button" onClick="carregarProduto(' + response[i].produtoId + ')" class="btn btn-primary">Selecionar</button></td></tr>'
+				    '</td><td><button type="button" onClick="carregarProduto(' + response[i].produtoId + ')" class="btn btn-primary">Selecionar</button></td></tr>'
 					//'</td><td><button type="button" onClick="psq()" class="btn btn-primary">Selecionar</button></td></tr>'
 					);
 				}
@@ -133,12 +133,17 @@ function carregarProduto(produtoId) {
 					td_estoqueQtd.innerText = response.estoqueQtd;
 					td_remover.innerHtml = 
 				*/
+				
 				$('#listaPedido > tbody > tr').remove();
+				
 				for (var i = 0; i < response.length; i++) {
-					$('#listaPedido> tbody').append('<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + 
-					'</td><td>'+response[i].marca+'</td><td>'+response[i].preco+'</td><td><input type="number" id="qtd"/></td><td><input type="text" id="subTotal"/></td><td><button type="button" class="btn btn-primary">Remover</button></td></tr>'
-			
+					
+					$('#listaPedido > tbody').append(
+						'<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + '</td><td>' + response[i].marca + 
+						'</td><td>' + response[i].preco +
+						'</td><td><input type="number" id="qtd"/></td><td><input type="text" id="subTotal"/></td><td><button type="button" class="btn btn-primary">Remover</button></td></tr>'
 					);
+					
 				}
 				
 			$("#pesquisarProdutoModal").modal('hide');

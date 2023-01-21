@@ -24,18 +24,25 @@ public class Endereco implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "endereco_id",nullable = false, length = 10, unique = true)
 	private Long enderecoId;
+	
 	@Column(name = "UF",nullable = false, length = 2)
 	private String uf;
+	
 	@Column(name = "cidade",nullable = false, length = 255)
 	private String cidade;
+	
 	@Column(name = "bairro",nullable = false, length = 255)
 	private String bairro;
+	
 	@Column(name = "cep",nullable = false, length = 30)
 	private String cep;
+	
 	@Column(name = "logradouro", nullable = false, length = 255)
 	private String logradouro;
+	
 	@Column(name = "complemento",nullable = true, length = 255)
 	private String complemento;
+	
 	@Column(name = "numero", nullable = true, length = 10)
 	private String numero;
 	
