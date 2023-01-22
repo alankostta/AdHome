@@ -29,7 +29,7 @@ public class Endereco implements Serializable{
 	private String uf;
 	
 	@Column(name = "cidade",nullable = false, length = 255)
-	private String cidade;
+	private String localidade;
 	
 	@Column(name = "bairro",nullable = false, length = 255)
 	private String bairro;
@@ -61,11 +61,11 @@ public class Endereco implements Serializable{
 		
 	}
 
-	public Endereco(String uf, String cidade, String bairro, String cep, String logradouro, String complemento,
+	public Endereco(String uf, String localidade, String bairro, String cep, String logradouro, String complemento,
 			String numero, Set<Cliente> cliente, Set<Fornecedor> fornecedor) {
 		super();
 		this.setUf(uf);
-		this.setCidade(cidade);
+		this.setLocalidade(localidade);
 		this.setBairro(bairro);
 		this.setCep(cep);
 		this.setLogradouro(logradouro);
@@ -97,11 +97,11 @@ public class Endereco implements Serializable{
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	public String getCidade() {
-		return cidade;
+	public String getLocalidade() {
+		return localidade;
 	}
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
 	}
 	public String getBairro() {
 		return bairro;
@@ -159,7 +159,7 @@ public class Endereco implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Endereco [enderecoId=" + enderecoId + ", uf=" + uf + ", cidade=" + cidade + ", bairro=" + bairro
+		return "Endereco [enderecoId=" + enderecoId + ", uf=" + uf + ", localidade=" + localidade + ", bairro=" + bairro
 				+ ", cep=" + cep + ", logradouro=" + logradouro + ", complemento=" + complemento + ", numero=" + numero
 				+ ", cliente=" + cliente + ", fornecedor=" + fornecedor + "]";
 	}	

@@ -18,7 +18,7 @@ public class EnderecoDto {
 	private String uf;
 	@NotBlank
 	@Size(max = 255)
-	private String cidade;
+	private String localidade;
 	@NotBlank
 	@Size(max = 255)
 	private String bairro;
@@ -41,11 +41,11 @@ public class EnderecoDto {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-	public String getCidade() {
-		return cidade;
+	public String getLocalidade() {
+		return localidade;
 	}
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
 	}
 	public String getBairro() {
 		return bairro;
@@ -80,7 +80,7 @@ public class EnderecoDto {
 	public Endereco toEndereco() {
 		Endereco endereco = new Endereco();
 		endereco.setUf(this.uf);
-		endereco.setCidade(this.cidade);
+		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
 		endereco.setCep(this.cep);
 		endereco.setLogradouro(this.logradouro);
@@ -90,7 +90,7 @@ public class EnderecoDto {
 	}
 	public Endereco toEndereco(Endereco endereco) {
 		endereco.setUf(this.uf);
-		endereco.setCidade(this.cidade);
+		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
 		endereco.setCep(this.cep);
 		endereco.setLogradouro(this.logradouro);
@@ -100,7 +100,7 @@ public class EnderecoDto {
 	}
 	public void fromEndereco(Endereco endereco) {
 		this.uf = endereco.getUf();
-		this.cidade = endereco.getCidade();
+		this.localidade = endereco.getLocalidade();
 		this.bairro = endereco.getBairro();
 		this.cep = endereco.getCep();
 		this.logradouro = endereco.getLogradouro();
