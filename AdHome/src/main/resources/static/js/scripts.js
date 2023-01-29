@@ -55,10 +55,10 @@ function pesquisarProduto() {
 				$('#tabDescricaoProduto > tbody > tr').remove();
 				for (var i = 0; i < response.length; i++) {
 					$('#tabDescricaoProduto > tbody').append('<tr><td>' + response[i]
-					.produtoId + '</td><td>' + response[i]
-					.descricao + 
-				    '</td><td><button type="button" onClick="carregarProduto(' + response[i].produtoId + ')" class="btn btn-primary">Selecionar</button></td></tr>'
-					//'</td><td><button type="button" onClick="psq()" class="btn btn-primary">Selecionar</button></td></tr>'
+						.produtoId + '</td><td>' + response[i]
+							.descricao +
+						'</td><td><button type="button" onClick="carregarProduto(' + response[i].produtoId + ')" class="btn btn-primary">Selecionar</button></td></tr>'
+						//'</td><td><button type="button" onClick="psq()" class="btn btn-primary">Selecionar</button></td></tr>'
 					);
 				}
 			}
@@ -108,54 +108,39 @@ function carregarCliente(clienteId) {
 	});
 }
 function carregarProduto(produtoId) {
-	
-	//let tbody = document.getElementById('tbody');
-	
+
 	$.ajax({
 		method: "GET",
 		url: "pedido/buscarProdutoId/",
 		data: "produtoId=" + produtoId,
 		success: function(response) {
-				/*
-					let tr = tbody.insertRow();
-					
-					let td_produtoId = tr.insertCell();
-					let td_descricao = tr.insertCell();
-					let td_marca = tr.insertCell();
-					let td_preco = tr.insertCell();
-					let td_estoqueQtd = tr.insertCell();
-					let td_remover = tr.insertCell();
-					
-					td_produtoId.innerText = response.produtoId;
-					td_descricao.innerText = response.descricao;
-					td_marca.innerText = response.marca;
-					td_preco.innerText = response.valorSaida;
-					td_estoqueQtd.innerText = response.estoqueQtd;
-					td_remover.innerHtml = 
-				*/
-				
-				$('#listaPedido > tbody > tr').remove();
-				
-				for (var i = 0; i < response.length; i++) {
-					
-					$('#listaPedido > tbody').append(
-						'<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + '</td><td>' + response[i].marca + 
-						'</td><td>' + response[i].preco +
-						'</td><td><input type="number" id="qtd"/></td><td><input type="text" id="subTotal"/></td><td><button type="button" class="btn btn-primary">Remover</button></td></tr>'
-					);
-					
-				}
-				
+
+			for (var i = 0; i < response.length; i++) {
+
+				$('#listaPedido > tbody').append(
+					'<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + '</td><td>' + response[i].marca +
+					'</td><td>' + response[i].preco +
+					'</td><td><input type="number" id="qtd"/></td><td><input type="text" id="subTotal"/></td><td><button class="btn btn-danger remove-btn">Remover</button></td></tr>'
+				);
+
+				$(document).on('click', '.remove-btn', function() {
+					$(this).closest('tr').remove();
+				});
+
+			}
+
 			$("#pesquisarProdutoModal").modal('hide');
-			//$("#pesquisarModal").hide('close');
-			//$(".modal-backdrop").css("display","none");
+
+			$(document).on('change', '#qtd', function() {
+				var qtd = $(this).val();
+				var preco = $(this).closest('tr').find('td:nth-child(4)').text();
+				var subTotal = qtd * preco;
+				$(this).closest('tr').find('#subTotal').val(subTotal);
+
+			});
+
 		}
-	}).fail(function(xhr, status, errorThrow) {alert("Erro ao buscar fornecedor: " + xhr.responseText);});
+	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
 }
-function limparCampos(){
-	
-}
-function removerItens(){
-	
-}
- 
+
+

@@ -66,16 +66,20 @@ public class ClienteController {
 		mv.addObject("listaEndereco",EnderecoEnum.values());
 		return mv;
 	}
-	// Criando os metodos getPost onde irá receber as requisições
-	// que serão persistidas no banco
-	@GetMapping(value = "buscarCep")
+	@GetMapping("/buscarCep")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@ResponseBody
-	public ResponseEntity <EnderecoDto> buscarCep(@RequestParam(name="localidade") String cep) throws Exception{
-		ViacepService viacepService = new ViacepService();
-		EnderecoDto enderecoDto = new EnderecoDto();
-		enderecoDto = viacepService.getEndereco(cep);
-		return new ResponseEntity<EnderecoDto>(enderecoDto,HttpStatus.OK);
+	public ResponseEntity<EnderecoDto> buscarCep(@RequestParam(name="cep") String cep) {
+	    ViacepService viacepService = new ViacepService();
+	    try {
+	        EnderecoDto enderecoDto = viacepService.getEndereco(cep);
+	        return new ResponseEntity<EnderecoDto>(enderecoDto, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<EnderecoDto>(HttpStatus.BAD_REQUEST);
+	    }
 	}
+	// Criando os metodos getPost onde irá receber as requisições
+	// que serão persistidas no banco	
 	@PostMapping("/cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView saveCliente(@Valid ClienteDto clienDto, BindingResult resultCliente,
