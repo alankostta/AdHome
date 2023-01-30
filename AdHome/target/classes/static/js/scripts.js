@@ -120,27 +120,44 @@ function carregarProduto(produtoId) {
 				$('#listaPedido > tbody').append(
 					'<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + '</td><td>' + response[i].marca +
 					'</td><td>' + response[i].preco +
-					'</td><td><input type="number" id="qtd"/></td><td><input type="text" id="subTotal"/></td><td><button class="btn btn-danger remove-btn">Remover</button></td></tr>'
+					'</td><td><input type="number" id="qtd"/></td><td><input type="number" id="subTotal" readonly="readonly"/></td><td><button class="btn btn-danger remove-btn">Remover</button></td></tr>'
 				);
 
 				$(document).on('click', '.remove-btn', function() {
 					$(this).closest('tr').remove();
+					calcularTotal();
 				});
 
 			}
-
-			$("#pesquisarProdutoModal").modal('hide');
 
 			$(document).on('change', '#qtd', function() {
 				var qtd = $(this).val();
 				var preco = $(this).closest('tr').find('td:nth-child(4)').text();
 				var subTotal = qtd * preco;
 				$(this).closest('tr').find('#subTotal').val(subTotal);
-
+				calcularTotal();
 			});
+
+			$("#pesquisarProdutoModal").modal('hide');
 
 		}
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
 }
+function calcularTotal() {
+    var total = 0.0;
+    $('#listaPedido tr').each(function() {
+		var qtd = parseFloat($(this).find('#qtd').val());
+	    var preco = $(this).closest('tr').find('td:nth-child(4)').text();
+	    var subTotal = qtd * preco;
+	    total += subTotal;
+	    alert("Qtd "+qtd);
+	    alert("preço "+preco);
+	    alert("sub-total "+subTotal);
+	    alert("total "+total);
+    });
+        
+  $("#total").val(total);
+}
+
 
 

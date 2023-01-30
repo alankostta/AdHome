@@ -43,7 +43,7 @@
 							data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar
 							produto</button>
 
-						<table class="table" id="listaPedido">
+						<table id="listaPedido" class="table table-striped">
 							<thead>
 								<tr>
 									<th scope="col">Código.</th>
@@ -57,9 +57,14 @@
 							</thead>
 							<tbody id="tbody">
 							</tbody>
-							
+							<tfoot>
+								<tr>
+									<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>
+									<th socpe="col">
+									<input id="total" name="monto" class="form-control" readonly="readonly" style="background-color: #DCDCDC"></th>
+								</tr>
+							</tfoot>
 						</table>
-						
 						<div class="row justify-content-between" id="loaders">
 							<div class="col-md-4 mb-2">
 								<button href="#" class="btn btn-outline-primary">Finalizar
