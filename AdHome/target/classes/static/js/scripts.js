@@ -120,7 +120,7 @@ function carregarProduto(produtoId) {
 				$('#listaPedido > tbody').append(
 					'<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + '</td><td>' + response[i].marca +
 					'</td><td>' + response[i].preco +
-					'</td><td><input type="number" id="qtd"/></td><td><input type="number" id="subTotal" readonly="readonly"/></td><td><button class="btn btn-danger remove-btn">Remover</button></td></tr>'
+					'</td><td><input type="number" min="0" class="form-control" id="qtd"/></td><td><input type="number" id="subTotal" min="0" class="form-control" style="background-color: #DCDCDC" readonly="readonly"/></td><td><button class="btn btn-danger remove-btn">Remover</button></td></tr>'
 				);
 
 				$(document).on('click', '.remove-btn', function() {
@@ -144,19 +144,57 @@ function carregarProduto(produtoId) {
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
 }
 function calcularTotal() {
-    var total = 0.0;
-    $('#listaPedido tr').each(function() {
-		var qtd = parseFloat($(this).find('#qtd').val());
-	    var preco = $(this).closest('tr').find('td:nth-child(4)').text();
-	    var subTotal = qtd * preco;
-	    total += subTotal;
-	    alert("Qtd "+qtd);
-	    alert("preço "+preco);
-	    alert("sub-total "+subTotal);
-	    alert("total "+total);
-    });
-        
-  $("#total").val(total);
+	var total = 0.0;
+	$('#listaPedido > tbody > tr').each(function() {
+		var subTotal = parseFloat($(this).find('#subTotal').val());
+		total += subTotal;
+	});
+
+	$("#total").val(total);
+}
+function buscarCep() {
+	var cep = $('#cep').val();
+	if (cep != null && cep.trim() != '') {
+		$.ajax({
+			method: "GET",
+			url: "cep",
+			data: "cep=" + cep,
+			success: function(response) {
+				$("#uf").val(response.uf);
+				$("#cep").val(response.cep);
+				$("#cidade").val(response.localidade);
+				$("#bairro").val(response.bairro);
+				$("#logradouro").val(response.logradouro);
+			}
+		}).fail(function(xhr, status, errorThrow) {
+			alert("Erro ao buscar cep informado!: " + xhr.responseText);
+		});
+	}
+	else {
+		alert("Por favor insira um cep!!!");
+	}
+}
+function limparPedido(){
+  $('#listaPedido tbody tr').remove();
+  alert("PEDIDO CANCELADO!");
+  verificarDisponibilidadeDaPagina();
+}
+
+function verificarDisponibilidadeDaPagina(){
+  // Verifica se a página está disponível
+  $.ajax({
+    method: "GET",
+    url: "/pedido",
+    success: function(data){
+      // Se a página estiver disponível, você pode acessá-la aqui
+      window.location.href = "/pedido";
+    },
+    error: function(){
+      // Se a página não estiver disponível, você pode exibir uma mensagem de erro ou redirecionar para outra página
+      alert("A página não está disponível. Redirecionando para a página inicial.");
+      window.location.href = "/index.html";
+    }
+  });
 }
 
 

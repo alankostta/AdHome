@@ -57,6 +57,7 @@ public class FornecedorController{
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		return mv;
 	}
+	
 	@PostMapping(value="/fornecedor")
 	public ModelAndView saveFornecedor(@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor,
 			@Valid ContatoDto contatoDto, BindingResult resultContato, @Valid EnderecoDto enderecoDto,

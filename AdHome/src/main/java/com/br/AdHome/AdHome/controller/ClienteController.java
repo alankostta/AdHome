@@ -6,22 +6,15 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.validation.Valid;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.br.AdHome.AdHome.configs.ViacepService;
 import com.br.AdHome.AdHome.dto.ClienteDto;
 import com.br.AdHome.AdHome.dto.ContatoDto;
@@ -49,13 +42,15 @@ public class ClienteController {
 	final ClienteService clienteService;
 	final EnderecoService enderecoService;
 	final ContatoService contatoService;
-	//Metodo construtor da classe Cliente Controller
+	final ViacepService viacepService;
+		//Metodo construtor da classe Cliente Controller
 	public ClienteController(ClienteService clienteSerice, EnderecoService enderecoService,
-			ContatoService contatoService) {
+			ContatoService contatoService, ViacepService viacepService) {
 		
 		this.clienteService = clienteSerice;
 		this.enderecoService = enderecoService;
 		this.contatoService = contatoService;
+		this.viacepService = viacepService;
 	}
 	@GetMapping("/cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
@@ -65,18 +60,6 @@ public class ClienteController {
 		mv.addObject("listaContato",ContatoEnum.values());
 		mv.addObject("listaEndereco",EnderecoEnum.values());
 		return mv;
-	}
-	@GetMapping("/buscarCep")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@ResponseBody
-	public ResponseEntity<EnderecoDto> buscarCep(@RequestParam(name="cep") String cep) {
-	    ViacepService viacepService = new ViacepService();
-	    try {
-	        EnderecoDto enderecoDto = viacepService.getEndereco(cep);
-	        return new ResponseEntity<EnderecoDto>(enderecoDto, HttpStatus.OK);
-	    } catch (Exception e) {
-	        return new ResponseEntity<EnderecoDto>(HttpStatus.BAD_REQUEST);
-	    }
 	}
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco	

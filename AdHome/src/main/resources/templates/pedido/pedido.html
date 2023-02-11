@@ -22,21 +22,37 @@
 			<div class="row mt-3">
 				<div class="col">
 					<form class="formulario" action="/pedido" method="POST">
-						<div class="form-group row mb-3">
-							<label for="Cod" class="col-12 col-md-2 col-form-label h2">Código:</label>
-							<div class="col-12 col-md-10">
-								<input type="text" id="idClie" class="form-control"
-									readonly="readonly" style="background-color: #DCDCDC">
-								<br>
+						<div class="form-group mb-3">
+							<div class="form-group mb-3">
+								<select class="form-select" aria-label="Default select example">
+									<option selected>Status do Pedido</option>
+									<option value="1">Aberto</option>
+									<option value="2">Pago</option>
+								</select>
 							</div>
-							<label for="cliente" class="col-12 col-md-2 col-form-label h2">Cliente:</label>
-							<div class="col-12 col-md-10">
-								<input type="text" id="nomeClie" class="form-control"
-									readonly="readonly" style="background-color: #DCDCDC">
-								<br>
-								<button type="button" class="btn btn-outline-primary"
-									data-bs-toggle="modal" data-bs-target="#pesquisarClienteModal">Pesquisar
-									Cliente</button>
+							<div class="form-group mb-3">
+								<select class="form-select" aria-label="Default select example">
+									<option selected>Tipo de pagamento</option>
+									<option value="1">Pix</option>
+									<option value="2">Dinheiro</option>
+									<option value="2">Cartão</option>
+									<option value="2">Não Pago</option>
+								</select>
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">Código:</span>
+								</div>
+								<input type="text" class="form-control" id="idClie"
+									readonly="readonly">
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<button class="btn btn-outline-primary" type="button"
+										data-bs-toggle="modal" data-bs-target="#pesquisarClienteModal">Pesquisar</button>
+								</div>
+								<input type="text" class="form-control" id="nomeClie"
+									placeholder="Digite o nome do cliente">
 							</div>
 						</div>
 						<button type="button" class="btn btn-outline-warning"
@@ -60,21 +76,22 @@
 							<tfoot>
 								<tr>
 									<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>
-									<th socpe="col">
-									<input id="total" name="monto" class="form-control" readonly="readonly" style="background-color: #DCDCDC"></th>
+									<th socpe="col"><input id="total" name="monto"
+										class="form-control" readonly="readonly"
+										style="background-color: #DCDCDC"></th>
 								</tr>
 							</tfoot>
 						</table>
 						<div class="row justify-content-between" id="loaders">
 							<div class="col-md-4 mb-2">
-								<button href="#" class="btn btn-outline-primary">Finalizar
+								<button type="submit" class="btn btn-outline-primary">Finalizar
 									Pedido</button>
 							</div>
 							<div class="col-md-4 mb-2">
-								<button type="submit" class="btn btn-outline-danger">Cancelar
+								<button onClick="limparPedido()" class="btn btn-outline-danger">Cancelar
 									Compra</button>
+								</di>
 							</div>
-						</div>
 					</form>
 				</div>
 			</div>
