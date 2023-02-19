@@ -36,6 +36,8 @@ public class Pedido implements Serializable {
 	private Integer anoRef;
 	@Column(name = "qtd_itens", nullable = false)
 	private Integer qtdItens;
+	@Column(name="total_pedido",nullable=false)
+	private Double totalPedido;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pedido")
@@ -49,10 +51,11 @@ public class Pedido implements Serializable {
 		
 	}
 	public Pedido(LocalDateTime dataPedido,LocalDateTime dataAlteraPedido, Integer qtdItens,
-			Cliente cliente, Integer anoRef) {
+			Double totalPedido, Cliente cliente, Integer anoRef) {
 		super();
 		this.setDataPedido(dataPedido);
 		this.setDataAlteraPedido(dataAlteraPedido);
+		this.setTotalPedido(totalPedido);
 		this.setQtdItens(qtdItens);
 		this.setCliente(cliente);
 		this.setAnoRef(anoRef);
@@ -86,6 +89,12 @@ public class Pedido implements Serializable {
 	}
 	public void setQtdItens(Integer qtdItens) {
 		this.qtdItens = qtdItens;
+	}
+	public Double getTotalPedido() {
+		return totalPedido;
+	}
+	public void setTotalPedido(Double totalPedido) {
+		this.totalPedido = totalPedido;
 	}
 	public Cliente getCliente() {
 		return cliente;

@@ -3,6 +3,7 @@ package com.br.AdHome.AdHome.controller;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -72,13 +73,18 @@ public class PedidoController {
 				Pedido pedido = pedidoDto.toPedido();
 				Produto produto = produtoDto.toProduto();
 				Cliente cliente = clienteDto.toCliente();
+				Calendar cal = Calendar.getInstance();
 				pedido.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")));
+				pedido.setAnoRef(cal.get(Calendar.YEAR));
+				pedido.setItens(pedido.getItens());
+				pedido.setQtdItens(pedido.getQtdItens());
+				pedido.setTotalPedido(pedido.getTotalPedido());
 				List<Produto> produtos = new ArrayList<Produto>();
 				produtos.add(produto);
 				pedido.setCliente(cliente);
 				pedidoService.savePedido(pedido);
 				
-				return new ModelAndView("redirect:/pedido/listar");
+				return new ModelAndView("redirect:/pedido");
 		}
 	}
 	public ModelAndView findAllPedidos() {

@@ -12,6 +12,8 @@ public class PedidoDto {
 	
 	@NotNull
 	private Integer qtdItens;
+	@NotNull
+	private Double totalPedido;
 	
 	public Integer getQtdItens() {
 		return qtdItens;
@@ -19,17 +21,26 @@ public class PedidoDto {
 	public void setQtdItensDto(Integer qtdItens) {
 		this.qtdItens = qtdItens;
 	}
+	public Double getTotalPedido() {
+		return totalPedido;
+	}
+	public void setTotalPedido(Double totalPedido) {
+		this.totalPedido = totalPedido;
+	}
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
 		pedido.setQtdItens(qtdItens);
+		pedido.setTotalPedido(totalPedido);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
 		pedido.setQtdItens(qtdItens);
+		pedido.setTotalPedido(totalPedido);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {
 		this.qtdItens = pedido.getQtdItens();
+		this.totalPedido = pedido.getTotalPedido();
 	
 	}
 }

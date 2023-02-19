@@ -1,5 +1,6 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +21,7 @@ import com.br.AdHome.AdHome.models.EnderecoEnum;
  */
 public class ClienteDto{
 	
+	private BigInteger clienteId;
 	@NotBlank
 	@NotNull
 	@Size(max = 70)
@@ -46,6 +48,12 @@ public class ClienteDto{
 	}
 	public void setContato(Set<Contato> contato) {
 		this.contato = contato;
+	}
+	public BigInteger getClienteId() {
+		return clienteId;
+	}
+	public void setClienteId(BigInteger clienteId) {
+		this.clienteId = clienteId;
 	}
 	public String getNome() {
 		return nome;
