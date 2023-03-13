@@ -1,8 +1,12 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.util.Set;
+
 import javax.validation.constraints.NotNull;
 
 import com.br.AdHome.AdHome.models.Pedido;
+import com.br.AdHome.AdHome.models.PedidoEnumStatus;
+import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
 /*Classe responsável por validações de campos que 
  * receberão os dados de entrada
  * dos usúarios tipos de validação{campos vazios ou nulos, limita o campo 
@@ -12,8 +16,12 @@ public class PedidoDto {
 	
 	@NotNull
 	private Integer qtdItens;
-	@NotNull
-	private Double totalPedido;
+	
+	private PedidoEnumStatus enumStatus;
+	
+	private PedidoEnumTipoPagamento enumPagamento;
+	
+	private Set<Pedido> pedido;
 	
 	public Integer getQtdItens() {
 		return qtdItens;
@@ -21,26 +29,43 @@ public class PedidoDto {
 	public void setQtdItensDto(Integer qtdItens) {
 		this.qtdItens = qtdItens;
 	}
-	public Double getTotalPedido() {
-		return totalPedido;
+	public PedidoEnumStatus getEnumStatus() {
+		return enumStatus;
 	}
-	public void setTotalPedido(Double totalPedido) {
-		this.totalPedido = totalPedido;
+	public void setEnumStatus(PedidoEnumStatus enumStatus) {
+		this.enumStatus = enumStatus;
+	}
+	public PedidoEnumTipoPagamento getEnumPagamento() {
+		return enumPagamento;
+	}
+	public void setEnumPagamento(PedidoEnumTipoPagamento enumPagamento) {
+		this.enumPagamento = enumPagamento;
+	}
+	public void setQtdItens(Integer qtdItens) {
+		this.qtdItens = qtdItens;
+	}
+	public Set<Pedido> getPedido() {
+		return pedido;
+	}
+	public void setPedido(Set<Pedido> pedido) {
+		this.pedido = pedido;
 	}
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
 		pedido.setQtdItens(qtdItens);
-		pedido.setTotalPedido(totalPedido);
+		pedido.setEnumStatus(enumStatus);
+		pedido.setEnumPagamento(enumPagamento);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
 		pedido.setQtdItens(qtdItens);
-		pedido.setTotalPedido(totalPedido);
+		pedido.setEnumStatus(enumStatus);
+		pedido.setEnumPagamento(enumPagamento);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {
 		this.qtdItens = pedido.getQtdItens();
-		this.totalPedido = pedido.getTotalPedido();
-	
+		this.enumPagamento = pedido.getEnumPagamento();
+		this.enumStatus = pedido.getEnumStatus();
 	}
 }

@@ -22,6 +22,8 @@ import com.br.AdHome.AdHome.dto.PedidoDto;
 import com.br.AdHome.AdHome.dto.ProdutoDto;
 import com.br.AdHome.AdHome.models.Cliente;
 import com.br.AdHome.AdHome.models.Pedido;
+import com.br.AdHome.AdHome.models.PedidoEnumStatus;
+import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
 import com.br.AdHome.AdHome.models.Produto;
 import com.br.AdHome.AdHome.services.ClienteService;
 import com.br.AdHome.AdHome.services.PedidoService;
@@ -52,6 +54,8 @@ public class PedidoController {
 	public ModelAndView exibirPedido(ProdutoDto produtoDto, PedidoDto pedidoDto,
 			ClienteDto clienteDto) {
 		var mv = new ModelAndView("pedido/pedido");
+		mv.addObject("listaStatus",PedidoEnumStatus.values());
+		mv.addObject("listaPagamento",PedidoEnumTipoPagamento.values());
 		return mv;
 	}
 	// Criando os metodos getPost onde irá receber as requisições
@@ -78,7 +82,6 @@ public class PedidoController {
 				pedido.setAnoRef(cal.get(Calendar.YEAR));
 				pedido.setItens(pedido.getItens());
 				pedido.setQtdItens(pedido.getQtdItens());
-				pedido.setTotalPedido(pedido.getTotalPedido());
 				List<Produto> produtos = new ArrayList<Produto>();
 				produtos.add(produto);
 				pedido.setCliente(cliente);

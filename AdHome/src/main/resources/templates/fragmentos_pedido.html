@@ -3,78 +3,115 @@
 		<div class="row mt-3">
 			<div class="col">
 				<form class="formulario" th:action="${action}" method="POST">
-					<div class="form-group mb-3">
-						<div class="form-group mb-3">
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Status do Pedido</option>
-								<option value="1">Aberto</option>
-								<option value="2">Pago</option>
-							</select>
-						</div>
-						<div class="form-group mb-3">
-							<select class="form-select" aria-label="Default select example">
-								<option selected>Tipo de pagamento</option>
-								<option value="1">Pix</option>
-								<option value="2">Dinheiro</option>
-								<option value="3">Cartão</option>
-								<option value="4">Não Pago</option>
-							</select>
-						</div>
-						<div class="input-group mb-3">
-							<div class="input-group-prepend">
-								<span class="input-group-text" id="basic-addon1">Código:</span>
-							</div>
-							<input type="text" class="form-control" id="idClie" th:field="*{clienteDto.clienteId}"
-								readonly="readonly">
-						</div>
-						<div class="input-group mb-3">
-							<div class="input-group-prepend">
-								<button class="btn btn-outline-primary" type="button"
-									data-bs-toggle="modal" data-bs-target="#pesquisarClienteModal">Pesquisar</button>
-							</div>
-							<input type="text" class="form-control" id="nomeClie" th:field="*{clienteDto.nome}"
-								placeholder="Digite o nome do cliente">
-						</div>
-					</div>
-					<button type="button" class="btn btn-outline-warning"
-						data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar
-						produto</button>
-
-					<table id="listaPedido" class="table table-striped">
-						<thead>
-							<tr>
-								<th scope="col">Código.</th>
-								<th scope="col">Nome.</th>
-								<th scope="col">Marca.</th>
-								<th scope="col">Preço.</th>
-								<th scope="col">Qtd.</th>
-								<th scope="col">Sub Total.</th>
-								<th scope="col">Remover</th>
-							</tr>
-						</thead>
-						<tbody id="tbody">
-						</tbody>
-						<tfoot>
-							<tr>
-								<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>
-								<th socpe="col"><input id="total" name="monto"
-									class="form-control" readonly="readonly"
-									style="background-color: #DCDCDC"></th>
-							</tr>
-						</tfoot>
-					</table>
 					<div class="row justify-content-between" id="loaders">
-						<div class="col-md-4 mb-2">
-							<button type="submit" class="btn btn-outline-primary">Finalizar
+						<div class="col-md-2 mb-2">
+							<button type="submit" class="btn btn-outline-success">Finalizar
 								Pedido</button>
 						</div>
-						<div class="col-md-4 mb-2">
+						<div class="col-md-2 mb-3">
+							<button type="button" class="btn btn-outline-warning"
+							data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar
+							produto</button>
+						</div>
+						<div class="col-md-2 mb-2">
 							<button onClick="limparPedido()" class="btn btn-outline-danger">Cancelar
 								Compra</button>
-							</di>
 						</div>
+						<div class="col-md-2 mb-2">
+						<button type="button" class="btn btn-outline-primary">Pesquisar Pedido</button>
+						</div>
+					</div>
+					<div class="form-group mb-2 row">
+						<label class="col-sm-2 col-form-label">Status do Pedido</label>
+						<div class="col-sm-4">
+							<select class="form-select form-select-sm"
+								aria-label="Default select example"
+								th:field="*{pedidoDto.enumStatus}">
+								<option th:each="pedido : ${listaStatus}" th:value="${pedido}"
+									th:text="${pedido}"></option>
+							</select>
+						</div>
+						<label class="col-sm-2 col-form-label">Tipo de pagamento</label>
+						<div class="col-sm-4">
+							<select class="form-select form-select-sm"
+								aria-label="Default select example"
+								th:field="*{pedidoDto.enumPagamento}">
+								<option th:each="pedido : ${listaPagamento}"
+									th:value="${pedido}" th:text="${pedido}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">Código
+										do cliente:</span>
+								</div>
+								<input type="text" class="form-control form-control-sm"
+									id="idClie" th:field="*{clienteDto.clienteId}"
+									readonly="readonly" style="max-width: 120px;">
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<button class="btn btn-outline-primary btn-sm" type="button"
+										data-bs-toggle="modal" data-bs-target="#pesquisarClienteModal">Pesquisar</button>
+								</div>
+								<input type="text" class="form-control form-control-sm"
+									id="nomeClie" th:field="*{clienteDto.nome}"
+									placeholder="Digite o nome do cliente">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-md-2 col-form-label">Vendedor:</label>
+						<div class="col-md-4">
+							<select class="form-select form-select-sm"
+								aria-label="Default select example">
+								<option value="1">Alan</option>
+								<option value="2">Maria</option>
+								<option value="3">Marcos</option>
+							</select>
+						</div>
+						<label class="col-md-2 col-form-label">Valor do Desconto:</label>
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-text" id="basic-addon1">R$</span> <input
+									type="number" class="form-control form-control-sm"
+									aria-describedby="basic-addon1">
+							</div>
+						</div>
+					</div>
+
+
+
+					
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a class="nav-link active"
+							data-bs-toggle="tab" data-bs-target="#itens">Itens</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+							data-bs-target="#entrega">Dados da entrega</a></li>
+						<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+							data-bs-target="#observacao">Observação do Pedido</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="itens" class="tab-pane fade show active">
+							<div th:replace="~{pedido/tabela_itens :: tabelaItens(itensDto)}"></div>
+						</div>
+						<div id="entrega" class="tab-pane fade">
+							<div th:replace="~{pedido/form_entrega :: dadosEntrega}"></div>
+						</div>
+						<div id="observacao" class="tab-pane fade">
+							<div th:replace="~{pedido/form_observacao :: observacao}"></div>
+						</div>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 </main>
+
+

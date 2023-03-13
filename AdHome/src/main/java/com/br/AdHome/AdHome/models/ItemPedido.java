@@ -23,6 +23,7 @@ public class ItemPedido implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="item_pedido_id")
 	private Long itemPedidoId;
+	
 	@Column(name="qtd_itens")
 	private Integer quantidade;
 	

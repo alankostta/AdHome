@@ -4,61 +4,68 @@
 	<div>
 		<div class="row">
 			<form th:action="${action}" method="POST">
-				<div class="input-group mb-3">
+			<div class="d-flex flex-row">
+				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text">Código do Fornecedor:</span>
 					</div>
-					<input type="text" class="form-control" id="idFor" readonly="readonly" th:field="*{fornecedorDto.fornecedorId}">
+					<input style="max-width: 300px" type="text" class="form-control" id="idFor" readonly="readonly" th:field="*{fornecedorDto.fornecedorId}">
 				</div>
-				<div class="input-group mb-3">
+				<div class="mb-3 d-flex align-items-center flex-grow-1">
 					<div class="input-group-prepend">
 						<button class="btn btn-outline-primary" type="button"
 							data-bs-toggle="modal" data-bs-target="#pesquisarModal">Pesquisar</button>
 					</div>
-					<input type="text" class="form-control" id="nomeFor" readonly="readonly" th:field="*{fornecedorDto.nome}"
+					<input style="max-width: 500px" type="text" class="form-control" id="nomeFor" readonly="readonly" th:field="*{fornecedorDto.nome}"
 						placeholder="Pesquise a empresa para encontrar o fornecedor">
 				</div>
-				<div class="mb-3">
-					<label class="form-label">Descrição do produto</label> <input
+				</div>
+				<div class="d-flex flex-row">
+				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
+					<input  style="max-width: 500px"
 						class="form-control" type="text"
 						th:field="*{produtoDto.descricao}" th:errorclass="is-invalid"
 						placeholder="Informe a descrição do produto">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.descricao}">
 				</div>
-				<div class="mb-3">
-					<label class="form-label">Marca do produto</label> <input
+				<div class="mb-3 d-flex align-items-center flex-grow-1">
+					<input  style="max-width: 600px"
 						class="form-control" type="text" th:field="*{produtoDto.marca}"
 						th:errorclass="is-invalid" placeholder="Informe a marca">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.marca}">
 				</div>
-				<div class="mb-3">
-					<label class="form-label">Valor de Entrada</label> <input
+				</div>
+				<div class="d-flex flex-row">
+				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
+					<input style="max-width: 300px"
 						class="form-control" type="text"
 						th:field="*{produtoDto.valorEntrada}" th:errorclass="is-invalid"
 						placeholder="Digite o valor de entrada">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.valorEntrada}">
 				</div>
-				<div class="mb-3">
-					<label class="form-label">Preço do Produto</label> <input
+				<div class="mb-3 d-flex align-items-center flex-grow-1">
+					<input style="max-width: 350px"
 						class="form-control" type="text" th:field="*{produtoDto.preco}"
 						th:errorclass="is-invalid" placeholder="Digite o preco de venda">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.preco}">
 				</div>
-				<div class="mb-3">
-					<label class="form-label">Quantidade do produto</label> <input
+				<div class="mb-3 d-flex align-items-center flex-grow-1">
+					<input style="max-width: 400px"
 						class="form-control" type="number"
 						th:field="*{produtoDto.estoqueQtd}" th:errorclass="is-invalid"
 						placeholder="Informe a quantidade em estoque">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.estoqueQtd}">
 				</div>
+				</div>
 				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
 				<a href="javascript:history.back()"
 					class="btn btn-outline-warning btn-sm">Voltar</a>
+				<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
 			</form>
 		</div>
 	</div>

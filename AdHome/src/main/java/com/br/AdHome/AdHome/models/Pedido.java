@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,16 +30,24 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "pedido_id", nullable = false, length = 10, unique = true)
 	private Long pedidoId;
+	
 	@Column(name = "data_pedido", nullable = false)
 	private LocalDateTime dataPedido;
+	
 	@Column(name = "data_altera", nullable = false)
 	private LocalDateTime dataAlteraPedido;
+	
 	@Column(name = "ano_ref",nullable = false)
 	private Integer anoRef;
+	
 	@Column(name = "qtd_itens", nullable = false)
 	private Integer qtdItens;
-	@Column(name="total_pedido",nullable=false)
-	private Double totalPedido;
+	
+	@Enumerated(EnumType.STRING)
+	private PedidoEnumStatus enumStatus;
+	
+	@Enumerated(EnumType.STRING)
+	private PedidoEnumTipoPagamento enumPagamento;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pedido")
@@ -51,11 +61,10 @@ public class Pedido implements Serializable {
 		
 	}
 	public Pedido(LocalDateTime dataPedido,LocalDateTime dataAlteraPedido, Integer qtdItens,
-			Double totalPedido, Cliente cliente, Integer anoRef) {
+		Cliente cliente, Integer anoRef) {
 		super();
 		this.setDataPedido(dataPedido);
 		this.setDataAlteraPedido(dataAlteraPedido);
-		this.setTotalPedido(totalPedido);
 		this.setQtdItens(qtdItens);
 		this.setCliente(cliente);
 		this.setAnoRef(anoRef);
@@ -90,12 +99,6 @@ public class Pedido implements Serializable {
 	public void setQtdItens(Integer qtdItens) {
 		this.qtdItens = qtdItens;
 	}
-	public Double getTotalPedido() {
-		return totalPedido;
-	}
-	public void setTotalPedido(Double totalPedido) {
-		this.totalPedido = totalPedido;
-	}
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -107,6 +110,18 @@ public class Pedido implements Serializable {
 	}
 	public void setItens(Set<ItemPedido> itens) {
 		this.itens = itens;
+	}
+	public PedidoEnumStatus getEnumStatus() {
+		return enumStatus;
+	}
+	public void setEnumStatus(PedidoEnumStatus enumStatus) {
+		this.enumStatus = enumStatus;
+	}
+	public PedidoEnumTipoPagamento getEnumPagamento() {
+		return enumPagamento;
+	}
+	public void setEnumPagamento(PedidoEnumTipoPagamento enumPagamento) {
+		this.enumPagamento = enumPagamento;
 	}
 	@Override
 	public int hashCode() {

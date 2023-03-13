@@ -51,115 +51,122 @@
 
 <div class="container"
 	th:fragment="form(clienteDto,contatoDto,enderecoDto, action)">
-	<div class="row">
-		<form th:action="${action}" method="POST">
-			<div class="row mb-3">
-				<label for="nome" class="col-sm-1 col-form-label">Nome</label>
-				<div class="col-sm-3">
-					<input class="form-control" th:errorclass="is-invalid" type="text"
-						th:field="*{clienteDto.nome}" placeholder="Digite seu nome" />
-				</div>
-				<div class="invalid-feedback" th:errors="*{clienteDto.nome}"></div>
+	<div class="row mb-3">
+		<label for="nome" class="col-sm-1 col-form-label">Nome</label>
+		<div class="col-sm-3">
+			<input class="form-control" th:errorclass="is-invalid" type="text"
+				th:field="*{clienteDto.nome}" placeholder="Digite seu nome" />
+		</div>
+		<div class="invalid-feedback" th:errors="*{clienteDto.nome}"></div>
 
-				<label for="dataNasci" class="col-sm-2 col-form-label">Data
-					de Nascimento</label>
-				<div class="col-sm-2">
-					<input type="date" class="form-control" th:errorclass="is-invalid"
-						th:field="*{clienteDto.dataNasci}" />
-				</div>
-				<div class="invalid-feedback" th:errors="*{clienteDto.dataNasci}"></div>
+		<label for="dataNasci" class="col-sm-2 col-form-label">Data de
+			Nascimento</label>
+		<div class="col-sm-2">
+			<input type="date" class="form-control" th:errorclass="is-invalid"
+				th:field="*{clienteDto.dataNasci}" />
+		</div>
+		<div class="invalid-feedback" th:errors="*{clienteDto.dataNasci}"></div>
 
-				<label for="Feminino" class="col-sm-1 form-check-label">Feminino</label>
-				<div class="col-sm-1">
-					<input type="radio" class="form-check-input"
-						th:field="*{clienteDto.sexo}" value="Feminino">
-				</div>
-				<label for="Masculino" class="col-sm-1 form-check-label">Masculino</label>
-				<div class="col-sm-1">
-					<input type="radio" class="form-check-input"
-						th:field="*{clienteDto.sexo}" value="Masculino">
-				</div>
+		<div class="col-sm-4">
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input"
+					th:field="*{clienteDto.sexo}" value="Feminino"> <label
+					for="Feminino" class="form-check-label col-sm-offset-1">Feminino</label>
 			</div>
-			<label class="col-sm-3 form-select-label">Escolha o Tipo de
-				Contato</label>
-			<div class="row mb-3 ">
-				<select class="form-select" th:field="*{clienteDto.contatoEnum}">
-					<option th:each="contato : ${listaContato}" th:value="${contato}"
-						th:text="${contato}"></option>
-				</select>
+			<div class="form-check form-check-inline">
+				<input type="radio" class="form-check-input"
+					th:field="*{clienteDto.sexo}" value="Masculino"> <label
+					for="Masculino" class="form-check-label col-sm-offset-1">Masculino</label>
 			</div>
-			<div class="row mb-3 align-items-center">
-				<label for="telefone" class="col-sm-2 form-label">Telefone
-					de Contato</label>
-				<div class="col-sm-3">
-					<input class="form-control" th:errorclass="is-invalid"
-						th:field="*{contatoDto.telefone}" type="text"
-						placeholder="Digite seu Telefone" />
-				</div>
-				<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>
-				<label for="email" class="col-sm-1 form-label">E-mail</label>
-				<div class="col-sm-3">
-					<input class="form-control" th:errorclass="is-invalid" type="text"
-						th:field="*{contatoDto.email}" placeholder="Digite seu e-mail" />
-				</div>
-				<div class="invalid-feedback" th:errors="*{contatoDto.email}"></div>
+		</div>
+	</div>
+
+
+	<label class="col-sm-3 form-select-label">Escolha o Tipo de
+		Contato</label>
+	<div class="row mb-3 ">
+		<select class="form-select" th:field="*{clienteDto.contatoEnum}">
+			<option th:each="contato : ${listaContato}" th:value="${contato}"
+				th:text="${contato}"></option>
+		</select>
+	</div>
+	<div class="row mb-3 align-items-center">
+		<label for="telefone" class="col-sm-2 form-label">Telefone de
+			Contato</label>
+		<div class="col-sm-3">
+			<input class="form-control" th:errorclass="is-invalid"
+				th:field="*{contatoDto.telefone}" type="text"
+				placeholder="Digite seu Telefone" />
+		</div>
+		<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>
+		<label for="email" class="col-sm-1 form-label">E-mail</label>
+		<div class="col-sm-3">
+			<input class="form-control" th:errorclass="is-invalid" type="text"
+				th:field="*{contatoDto.email}" placeholder="Digite seu e-mail" />
+		</div>
+		<div class="invalid-feedback" th:errors="*{contatoDto.email}"></div>
+	</div>
+	<div class="mb-3">
+		<label for="endereco" class="form-label">Escolha o tipo de
+			Endereço</label> <select class="form-select"
+			th:field="*{clienteDto.enderecoEnum}">
+			<option th:each="endereco : ${listaEndereco}" th:value="${endereco}"
+				th:text="${endereco}"></option>
+		</select>
+		</br>
+		<div class="row mb-3">
+			<div class="col-md-2">
+				<input id="uf" class="form-control" type="text"
+					placeholder="Digite seu UF" th:errorclass="is-invalid"
+					th:field="*{enderecoDto.uf}" />
+				<div class="invalid-feedback" th:errors="*{enderecoDto.uf}"></div>
 			</div>
-			<div class="mb-3">
-				<label for="endereco" class="form-label">Escolha o tipo de
-					Endereço</label> <select class="form-select"
-					th:field="*{clienteDto.enderecoEnum}">
-					<option th:each="endereco : ${listaEndereco}"
-						th:value="${endereco}" th:text="${endereco}"></option>
-				</select>
-				<div class="mb-3">
-					<input
-						id="uf"
-						class="form-control" type="text" placeholder="Digite seu UF"
-						th:errorclass="is-invalid" th:field="*{enderecoDto.uf}" />
-					<div class="invalid-feedback" th:errors="*{enderecoDto.uf}"></div>
-				</div>
-				<div class="mb-3"> 
-					<input id="cidade"
-						class="form-control" type="text" placeholder="Digite sua Cidade"
-						th:errorclass="is-invalid" th:field="*{enderecoDto.localidade}" />
-					<div class="invalid-feedback" th:errors="*{enderecoDto.localidade}"></div>
-				</div>
-				<div class="mb-3">
-					<input id="bairro"
-						class="form-control" type="text" placeholder="Digite seu Bairro"
-						th:errorclass="is-invalid" th:field="*{enderecoDto.bairro}" />
-					<div class="invalid-feedback" th:errors="*{enderecoDto.bairro}"></div>
-				</div>
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<button class="btn btn-outline-secondary" type="button"
-							onClick="buscarCep()">Pesquisar</button>
-					</div>
-					<input id="cep" type="text" class="form-control" placeholder="Digite seu CEP"
-						th:errorclass="is-invalid" th:field="*{enderecoDto.cep}">
+			<div class="col-md-4">
+				<input id="cidade" class="form-control" type="text"
+					placeholder="Digite sua Cidade" th:errorclass="is-invalid"
+					th:field="*{enderecoDto.localidade}" />
+				<div class="invalid-feedback" th:errors="*{enderecoDto.localidade}"></div>
+			</div>
+			<div class="col-md-3">
+				<input id="bairro" class="form-control" type="text"
+					placeholder="Digite seu Bairro" th:errorclass="is-invalid"
+					th:field="*{enderecoDto.bairro}" />
+				<div class="invalid-feedback" th:errors="*{enderecoDto.bairro}"></div>
+			</div>
+			<div class="col-md-3">
+				<input placeholder="Complemento" 
+					class="form-control" type="text"
+					th:field="*{enderecoDto.complemento}" />
+			</div>
+		</div>
+		<div class="row mb-3">
+			<div class="col-md-3">
+				<div class="input-group">
+					<input id="cep" type="text" class="form-control"
+						placeholder="Digite seu CEP" th:errorclass="is-invalid"
+						th:field="*{enderecoDto.cep}" />
+					<button class="btn btn-outline-secondary" type="button"
+						onClick="buscarCep()">Pesquisar</button>
 					<div class="invalid-feedback" th:errors="*{enderecoDto.cep}"></div>
 				</div>
-				<div class="mb-3">
-					<input id="logradouro"
-						class="form-control" type="text" placeholder="Digite rua, av..."
-						th:errorclass="is-invalid" th:field="*{enderecoDto.logradouro}" />
-					<div class="invalid-feedback" th:errors="*{enderecoDto.logradouro}"></div>
-				</div>
-				<div class="mb-3">
-					<label for="complemento" class="form-label">Complemento</label> <input
-						class="form-control" type="text"
-						th:field="*{enderecoDto.complemento}" />
-				</div>
-				<div class="mb-3">
-					<label fro="numero" class="form-label">Número</label> <input
-						class="form-control" type="text"
-						placeholder="Informe número da residencia"
-						th:field="*{enderecoDto.numero}" />
-				</div>
 			</div>
-			<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
-			<a href="javascript:history.back()-1"
-				class="btn btn-outline-warning btn-sm">Voltar</a>
+			<div class="col-md-6">
+				<input id="logradouro" class="form-control" type="text"
+					placeholder="Digite rua, av..." th:errorclass="is-invalid"
+					th:field="*{enderecoDto.logradouro}" />
+				<div class="invalid-feedback" th:errors="*{enderecoDto.logradouro}"></div>
+			</div>
+			<div class="col-md-3">
+				<input
+					class="form-control" type="text"
+					placeholder="Informe número da residencia"
+					th:field="*{enderecoDto.numero}" />
+			</div>
+		</div>
+		<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+		<a href="javascript:history.back()-1"
+			class="btn btn-outline-warning btn-sm">Voltar</a>
+		<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
 		</form>
 	</div>
 </div>
