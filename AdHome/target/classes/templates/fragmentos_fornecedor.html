@@ -1,6 +1,8 @@
 <div class="container"
 	th:fragment="formFor(fornecedorDto,contatoDto,enderecoDto, action)">
 	<div class="row">
+	<fieldset class="fieldset text-left mb-5">
+		<legend>Menu</legend>
 		<form th:action="${action}" method="POST">
 			<div class="d-flex flex-row">
 				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
@@ -97,5 +99,6 @@
 				class="btn btn-outline-warning btn-sm">Voltar</a>
 			<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
 		</form>
+	</fieldset>
 	</div>
 </div>

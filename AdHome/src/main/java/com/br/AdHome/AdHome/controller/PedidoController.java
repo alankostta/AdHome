@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+
 import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.br.AdHome.AdHome.dto.CategoriaDto;
 import com.br.AdHome.AdHome.dto.ClienteDto;
 import com.br.AdHome.AdHome.dto.PedidoDto;
 import com.br.AdHome.AdHome.dto.ProdutoDto;
@@ -25,6 +29,7 @@ import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
 import com.br.AdHome.AdHome.models.Produto;
+import com.br.AdHome.AdHome.services.CategoriaService;
 import com.br.AdHome.AdHome.services.ClienteService;
 import com.br.AdHome.AdHome.services.PedidoService;
 import com.br.AdHome.AdHome.services.ProdutoService;
@@ -44,15 +49,18 @@ public class PedidoController {
 	final PedidoService pedidoService;
 	final ProdutoService produtoService;
 	final ClienteService clienteService;
+	final CategoriaService categoriaService;
 	
-	public PedidoController(PedidoService pedidoService, ProdutoService produtoService, ClienteService clienteService) {
+	public PedidoController(PedidoService pedidoService, ProdutoService produtoService,
+			ClienteService clienteService, CategoriaService categoriaService) {
 		this.pedidoService = pedidoService;
 		this.produtoService = produtoService;
 		this.clienteService = clienteService;
+		this.categoriaService = categoriaService;
 	}
 	@GetMapping("")
 	public ModelAndView exibirPedido(ProdutoDto produtoDto, PedidoDto pedidoDto,
-			ClienteDto clienteDto) {
+			ClienteDto clienteDto, CategoriaDto categoriaDto) {
 		var mv = new ModelAndView("pedido/pedido");
 		mv.addObject("listaStatus",PedidoEnumStatus.values());
 		mv.addObject("listaPagamento",PedidoEnumTipoPagamento.values());
@@ -63,12 +71,16 @@ public class PedidoController {
 	@PostMapping("/pedido")
 	public ModelAndView savePedido(@Valid ClienteDto clienteDto, BindingResult resultCliente,
 			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
-			@Valid ProdutoDto produtoDto, BindingResult resultProduto) {
+			@Valid ProdutoDto produtoDto, BindingResult resultProduto,
+			@Valid CategoriaDto categoriaDto, BindingResult resultCategoria) {
 		
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 		
 		
-		if (resultCliente.hasErrors()&& resultPedido.hasErrors()&& resultProduto.hasErrors()) {
+		if (resultCliente.hasErrors()&& 
+				resultPedido.hasErrors()&& 
+				resultProduto.hasErrors()
+				&& resultCategoria.hasErrors()) {
 			
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;

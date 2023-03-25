@@ -11,7 +11,6 @@ import com.br.AdHome.AdHome.models.Contato;
  * dos usúarios tipos de validação{campos vazios ou nulos, limita o campo 
  * onde serão introduzidos os dados entre outras anotações como @email @Cpf @NotNull @Empty}
  */
-
 public class ContatoDto {
 	
 	@NotBlank
@@ -37,7 +36,7 @@ public class ContatoDto {
 	public Contato toContato() {
 		Contato contato = new Contato();
 		contato.setEmail(this.email);
-		contato.setTelefone(this.email);
+		contato.setTelefone(this.telefone);
 		return contato;
 	}
 	public Contato toContato(Contato contato) {

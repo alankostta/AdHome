@@ -97,6 +97,12 @@ function carregarCliente(clienteId) {
 		success: function(response) {
 			$("#idClie").val(response.clienteId);
 			$("#nomeClie").val(response.nome);
+			$("#pedidoCidade").val(response.uf);
+			$("#pedidoBairro").val(response.localidade);
+			$("#pedidoLogradouro").val(response.bairro);
+			$("#pedidoNumero").val(response.logradouro);
+			$("#pedidoCep").val(response.cep);
+			$("#pedidoComplemento").val(response.complemento);
 
 			$("#pesquisarClienteModal").modal('hide');
 			//$("#pesquisarModal").hide('close');

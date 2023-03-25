@@ -15,6 +15,6 @@
 <body>
 	<script src="js/scripts.js"></script>
   	<header th:replace="~{fragmentos :: header('Cadastrar Produto')}"></header>
-  	<div th:replace="~{fragmentos_produto :: formPro(produtoDto,fornecedorDto,pedidoDto,'../produto')}">Cadastrar Fornecedor</div>
+  	<div th:replace="~{fragmentos_produto :: formPro(produtoDto,fornecedorDto,pedidoDto,categoriaDto,'../produto')}">Cadastrar Fornecedor</div>
   </body>
 </html>

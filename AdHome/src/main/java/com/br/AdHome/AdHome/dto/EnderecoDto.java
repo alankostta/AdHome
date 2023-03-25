@@ -3,6 +3,7 @@ package com.br.AdHome.AdHome.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 import com.br.AdHome.AdHome.models.Endereco;
 
 /*Classe responsável por validações de campos que 
@@ -26,9 +27,8 @@ public class EnderecoDto {
 	@Size(max = 255)
 	private String bairro;
 
-	@NotBlank
-	@Size(max = 8)
-	@Pattern(regexp = "\\d{5}-\\d{3}")
+	@NotBlank(message = "cep é obrigatório")
+	@Pattern(regexp = "\\d{8}", message = "cep deve ter 8 dígitos numéricos")
 	private String cep;
 
 	@NotBlank
@@ -66,7 +66,10 @@ public class EnderecoDto {
 	}
 
 	public String getCep() {
-		return cep;
+		if (this.cep != null) {
+			return this.cep.replaceAll("[^0-9]", "");
+		}
+		return null;
 	}
 
 	public void setCep(String cep) {
@@ -97,7 +100,7 @@ public class EnderecoDto {
 		this.numero = numero;
 	}
 
-	public Endereco toEndereco() {//Passsando os Obj para classe endereço sem parametros no metodo
+	public Endereco toEndereco() {// Passsando os Obj para classe endereço sem parametros no metodo
 		Endereco endereco = new Endereco();
 		endereco.setUf(this.uf);
 		endereco.setLocalidade(this.localidade);
@@ -109,7 +112,7 @@ public class EnderecoDto {
 		return endereco;
 	}
 
-	public Endereco toEndereco(Endereco endereco) { //Passsando os Obj para classe endereço com parametros no metodo
+	public Endereco toEndereco(Endereco endereco) { // Passsando os Obj para classe endereço com parametros no metodo
 		endereco.setUf(this.uf);
 		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
@@ -120,7 +123,7 @@ public class EnderecoDto {
 		return endereco;
 	}
 
-	public void fromEndereco(Endereco endereco) { //Pegando da classe Endereco seus atributos.
+	public void fromEndereco(Endereco endereco) { // Pegando da classe Endereco seus atributos.
 		this.uf = endereco.getUf();
 		this.localidade = endereco.getLocalidade();
 		this.bairro = endereco.getBairro();

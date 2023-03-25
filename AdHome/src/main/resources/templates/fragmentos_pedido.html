@@ -1,11 +1,13 @@
 <main th:fragment="main(pedidoDto,clienteDto,produtoDto, action)">
 	<div class="container">
+	<fieldset class="fieldset text-left mb-5">
+		<legend>Menu</legend>
 		<div class="row mt-3">
 			<div class="col">
 				<form class="formulario" th:action="${action}" method="POST">
 					<div class="row justify-content-between" id="loaders">
 						<div class="col-md-2 mb-2">
-							<button type="submit" class="btn btn-outline-success">Finalizar
+							<button type="submit" class="btn btn-outline-success">Salvar
 								Pedido</button>
 						</div>
 						<div class="col-md-2 mb-3">
@@ -14,11 +16,11 @@
 							produto</button>
 						</div>
 						<div class="col-md-2 mb-2">
-							<button onClick="limparPedido()" class="btn btn-outline-danger">Cancelar
-								Compra</button>
-						</div>
-						<div class="col-md-2 mb-2">
 						<button type="button" class="btn btn-outline-primary">Pesquisar Pedido</button>
+						</div>
+							<div class="col-md-2 mb-2">
+							<button onClick="limparPedido()" class="btn btn-outline-danger">Cancelar
+								Pedido</button>
 						</div>
 					</div>
 					<div class="form-group mb-2 row">
@@ -85,10 +87,6 @@
 							</div>
 						</div>
 					</div>
-
-
-
-					
 					<ul class="nav nav-tabs">
 						<li class="nav-item"><a class="nav-link active"
 							data-bs-toggle="tab" data-bs-target="#itens">Itens</a></li>
@@ -111,6 +109,7 @@
 				</form>
 			</div>
 		</div>
+		</fieldset>
 	</div>
 </main>
 

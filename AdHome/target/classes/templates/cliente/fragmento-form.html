@@ -1,0 +1,35 @@
+<div class="container" th:fragment="form(clienteDto, action)">
+	<fieldset class="fieldset text-left mb-5">
+		<legend>Dados Cliente</legend>
+		<form th:action="${action}" method="POST" action="#">
+			<div class="row mb-3">
+				<div class="col-sm-5">
+					<input class="form-control" th:errorclass="is-invalid" type="text"
+						th:field="*{clienteDto.nome}" placeholder="Digite seu nome" />
+				</div>
+				<div class="invalid-feedback" th:errors="*{clienteDto.nome}"></div>
+				<div class="col-sm-2">
+					<input type="date" class="form-control" th:errorclass="is-invalid"
+						th:field="*{clienteDto.dataNasci}" />
+				</div>
+				<div class="invalid-feedback" th:errors="*{clienteDto.dataNasci}"></div>
+
+				<div class="col-sm-4">
+					<div class="form-check form-check-inline">
+						<input type="radio" class="form-check-input"
+							th:field="*{clienteDto.sexo}" value="Feminino"> <label
+							for="Feminino" class="form-check-label col-sm-offset-1">Feminino</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input type="radio" class="form-check-input"
+							th:field="*{clienteDto.sexo}" value="Masculino"> <label
+							for="Masculino" class="form-check-label col-sm-offset-1">Masculino</label>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+			<a href="javascript:history.back()-1"
+				class="btn btn-outline-warning btn-sm">Voltar</a>
+		</form>
+	</fieldset>
+</div>

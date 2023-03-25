@@ -1,7 +1,9 @@
 
 <div class="container mb-3"
-	th:fragment="formPro(produtoDto,fornecedorDto,pedidoDto, action)">
+	th:fragment="formPro(produtoDto,fornecedorDto,pedidoDto,categoriaDto, action)">
 	<div>
+	<fieldset class="fieldset text-left mb-5">
+		<legend>Menu</legend>
 		<div class="row">
 			<form th:action="${action}" method="POST">
 			<div class="d-flex flex-row">
@@ -59,15 +61,30 @@
 						th:field="*{produtoDto.estoqueQtd}" th:errorclass="is-invalid"
 						placeholder="Informe a quantidade em estoque">
 				</div>
-				<div class="invalid-feedback" th:errors="*{produtoDto.estoqueQtd}">
+				<div class="invalid-feedback" th:errors="*{produtoDto.estoqueQtd}"></div>
+				
+				<div class="mb-3 d-flex align-items-center flex-grow-1">
+					<input style="max-width: 400px" class="form-control" type="text"
+						th:field="*{categoriaDto.nomeCategoria}" th:errorclass="is-invalid"
+						placeholder="Informe a quantidade em estoque">
 				</div>
+				<div class="invalid-feedback" th:errors="*{categoriaDto.nomeCategoria}"></div>
+				
+				
+				<div class="mb-3 d-flex align-items-center flex-grow-1">
+					<input style="max-width: 400px" class="form-control" type="text"
+						th:field="*{categoriaDto.descricaoCategoria}" th:errorclass="is-invalid"
+						placeholder="Informe a quantidade em estoque">
 				</div>
+				<div class="invalid-feedback" th:errors="*{categoriaDto.descricaoCategoria}"></div>
+				
 				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
 				<a href="javascript:history.back()"
 					class="btn btn-outline-warning btn-sm">Voltar</a>
 				<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
 			</form>
 		</div>
+		</fieldset>
 	</div>
 	<div class="modal fade" id="pesquisarModal" tabindex="-1"
 		aria-labelledby="modalLongTitle" aria-hidden="true">

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,30 +15,34 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_fornecedor")
-public class Fornecedor implements Serializable{
-	
+public class Fornecedor implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "fornecedor_id",nullable = false, length = 10, unique = true)
+	@Column(name = "fornecedor_id", nullable = false, length = 10, unique = true)
 	private Long fornecedorId;
-	@Column(name = "nome_fornecedor",nullable = false, length = 60)
+	@Column(name = "nome_fornecedor", nullable = false, length = 60)
 	private String nome;
-	@Column(name = "empresa_fornecedor",nullable = false, length = 80)
+	@Column(name = "empresa_fornecedor", nullable = false, length = 80)
 	private String nomeEmpresa;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "data_cadastro", nullable = false, length = 60)
 	private LocalDateTime dataCadastroForne;
-	@Column(name = "ano_ref",nullable = false)
+	@Column(name = "ano_ref", nullable = false)
 	private Integer anoRef;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "data_altera", nullable = false, length = 60)
@@ -48,30 +53,31 @@ public class Fornecedor implements Serializable{
 	@Column(name = "contato_enum", nullable = false, length = 60)
 	@Enumerated(EnumType.STRING)
 	private ContatoEnum contatoEnum;
-	
-	@JsonIgnore
-	@ManyToMany(mappedBy="fornecedor",cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "Fornecedor_Endereco", 
+		joinColumns = @JoinColumn(name = "fornecedor_fk", nullable = false), 
+		inverseJoinColumns = @JoinColumn(name = "endereco_fk", nullable = false))
 	private Set<Endereco> endereco = new HashSet<>();
 	/*
-	 * Quando e criado um Set<> ele ao invés de criar uma lista de objetos
-	 * ele cria um grupo único de objetos evitando ser criado várias instancias 
-	 * do mesmo objeto
+	 * Quando e criado um Set<> ele ao invés de criar uma lista de objetos ele cria
+	 * um grupo único de objetos evitando ser criado várias instancias do mesmo
+	 * objeto
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy="fornecedor", cascade = {
-			CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "fornecedor")
 	private Set<Contato> contatos = new HashSet<>();
+
 	@JsonIgnore
-	@OneToMany(mappedBy="fornecedor", cascade = {
-			CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY,
-			orphanRemoval = true)	
+	@OneToMany(mappedBy = "fornecedor", cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.LAZY)
 	private Set<Produto> produtos = new HashSet<>();
-	
+
 	public Fornecedor() {
-		
+
 	}
-	public Fornecedor(String nome, String nomeEmpresa, LocalDateTime dataCadastroForne, LocalDateTime dataAlteraForne, Set<Endereco> endereco,
-			Set<Contato> contato, Set<Produto> produto, Integer anoRef) {
+
+	public Fornecedor(String nome, String nomeEmpresa, LocalDateTime dataCadastroForne, LocalDateTime dataAlteraForne,
+			Set<Endereco> endereco, Set<Contato> contato, Set<Produto> produto, Integer anoRef) {
 		super();
 		this.setNome(nome);
 		this.setNomeEmpresa(nomeEmpresa);
@@ -82,78 +88,113 @@ public class Fornecedor implements Serializable{
 		this.setDataCadastroForne(dataCadastroForne);
 		this.setAnoRef(anoRef);
 	}
+
 	public Long getFornecedorId() {
 		return fornecedorId;
 	}
+
 	public void setFornecedorId(Long fornecedorId) {
 		this.fornecedorId = fornecedorId;
 	}
+
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public Integer getAnoRef() {
 		return anoRef;
 	}
+
 	public void setAnoRef(Integer anoRef) {
 		this.anoRef = anoRef;
 	}
+
 	public String getNomeEmpresa() {
 		return nomeEmpresa;
 	}
+
 	public void setNomeEmpresa(String nomeEmpresa) {
 		this.nomeEmpresa = nomeEmpresa;
 	}
+
 	public LocalDateTime getDataCadastroForne() {
 		return dataCadastroForne;
 	}
+
 	public void setDataCadastroForne(LocalDateTime dataCadastroForne) {
 		this.dataCadastroForne = dataCadastroForne;
 	}
+
 	public LocalDateTime getDataAlteraForne() {
 		return dataAlteraForne;
 	}
+
 	public void setDataAlteraForne(LocalDateTime dataAlteraForne) {
 		this.dataAlteraForne = dataAlteraForne;
 	}
+
 	public Set<Endereco> getEndereco() {
 		return endereco;
 	}
+
 	public void setEndereco(Set<Endereco> endereco) {
 		this.endereco = endereco;
 	}
+
 	public Set<Contato> getContatos() {
 		return contatos;
 	}
+
 	public void setContatos(Set<Contato> contatos) {
 		this.contatos = contatos;
 	}
+
 	public Set<Produto> getProdutos() {
 		return produtos;
 	}
+
 	public void setProdutos(Set<Produto> produtos) {
 		this.produtos = produtos;
 	}
-	
+
 	public EnderecoEnum getEnderecoEnum() {
 		return enderecoEnum;
 	}
+
 	public void setEnderecoEnum(EnderecoEnum enderecoEnum) {
 		this.enderecoEnum = enderecoEnum;
 	}
+
 	public ContatoEnum getContatoEnum() {
 		return contatoEnum;
 	}
+
 	public void setContatoEnum(ContatoEnum contatoEnum) {
 		this.contatoEnum = contatoEnum;
 	}
+
+	@PreRemove
+	private void removeAssociations() {
+		for (Contato c : contatos) {
+			c.setFornecedor(null);
+		}
+		contatos.clear();
+
+		for (Endereco e : endereco) {
+			e.getFornecedor().remove(this);
+		}
+		endereco.clear();
+	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(contatoEnum, contatos, dataAlteraForne, dataCadastroForne, endereco, enderecoEnum, fornecedorId, nome,
-				produtos, nomeEmpresa, anoRef);
+		return Objects.hash(contatoEnum, contatos, dataAlteraForne, dataCadastroForne, endereco, enderecoEnum,
+				fornecedorId, nome, produtos, nomeEmpresa, anoRef);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -164,17 +205,19 @@ public class Fornecedor implements Serializable{
 			return false;
 		Fornecedor other = (Fornecedor) obj;
 		return contatoEnum == other.contatoEnum && Objects.equals(contatos, other.contatos)
-				&& Objects.equals(dataAlteraForne, other.dataAlteraForne) && Objects.equals(dataCadastroForne, other.dataCadastroForne)
+				&& Objects.equals(dataAlteraForne, other.dataAlteraForne)
+				&& Objects.equals(dataCadastroForne, other.dataCadastroForne)
 				&& Objects.equals(endereco, other.endereco) && enderecoEnum == other.enderecoEnum
 				&& Objects.equals(fornecedorId, other.fornecedorId) && Objects.equals(nome, other.nome)
-				&& Objects.equals(produtos, other.produtos)&& Objects.equals(nomeEmpresa, other.nomeEmpresa)
+				&& Objects.equals(produtos, other.produtos) && Objects.equals(nomeEmpresa, other.nomeEmpresa)
 				&& Objects.equals(anoRef, other.anoRef);
 	}
+
 	@Override
 	public String toString() {
 		return "Fornecedor [fornecedorId=" + fornecedorId + ", nome=" + nome + ", nomeEmpresa=" + nomeEmpresa
-				+ ", dataCadastroForne=" + dataCadastroForne + ", dataAlteraForne=" + dataAlteraForne +"anoRef="+ anoRef
-				+ ", enderecoEnum=" + enderecoEnum + ", contatoEnum=" + contatoEnum + ", endereco=" + endereco
+				+ ", dataCadastroForne=" + dataCadastroForne + ", dataAlteraForne=" + dataAlteraForne + "anoRef="
+				+ anoRef + ", enderecoEnum=" + enderecoEnum + ", contatoEnum=" + contatoEnum + ", endereco=" + endereco
 				+ ", contatos=" + contatos + ", produtos=" + produtos + "]";
 	}
 }

@@ -3,59 +3,75 @@ package com.br.AdHome.AdHome.models;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_produto")
 public class Produto implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "produto_id",nullable = false, length = 10, unique = true)
 	private Long produtoId;
+	
 	@Column(name = "descricao",nullable = false, length = 255)
 	private String descricao;
+	
 	@Column(name = "marca",nullable = false, length = 255)
 	private String marca;
+	
 	@Column(name = "valor_Entrada",nullable = false)
 	private Double valorEntrada;
+	
 	@Column(name = "valor_saida", nullable = true)
 	private Double valorSaida;
+	
 	@Column(name = "Qtd_estoque", nullable = false)
 	private Integer estoqueQtd = 0;
+	
 	@Column(name = "preco", nullable = false)
 	private Double preco;
+	
 	@Column(name = "data_cadastro", nullable = false, length = 30)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataCadastro;
+	
 	@Column(name = "ano_ref",nullable = false, length = 20)
 	private Integer anoRef;
+	
 	@Column(name = "data_altera", nullable = false, length = 30)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 	
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "fornecedor_id")
 	private Fornecedor fornecedor;
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name = "categoria_id")
+	private Categoria categorias;
 	
 	public Produto() {
 		
 	}
 	public Produto(String descricao, Double valorEntrada, Double valorSaida, Integer estoqueQtd, Double preco,
 			LocalDateTime dataCadastro,LocalDateTime dataAltera, Fornecedor fornecedor, Integer anoRef) {
-		super();
 	
 		this.setDescricao(descricao);
 		this.setValorEntrada(valorEntrada);

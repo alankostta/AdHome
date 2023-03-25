@@ -5,16 +5,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -26,26 +25,35 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class AdUser implements UserDetails, Serializable{
 
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id", nullable=false, unique=true, length=10)
 	private Long userId;
+	
 	@Column(name="nome_user", nullable=false, length=60)
 	@Size(min = 3)
 	private String nomeUser;
+	
 	@Column(name="nome", nullable=true, length=60)
 	private String nome;
+	
 	@Column(name="email_user", nullable=false, length=60)
 	private String emailUser;
+	
 	@Column(name="senha_user", nullable=false, length=60)
 	private String password;
 	
-	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+	@ManyToMany
 	@JoinTable(name = "tb_user_roles",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 			)
 	private List<RoleModel> roles;
+	
+	@OneToOne(mappedBy = "user")
+	private Pedido pedidos;
+	
 	public AdUser() {
 		
 	}
@@ -55,6 +63,7 @@ public class AdUser implements UserDetails, Serializable{
 		this.nomeUser = nomeUser;
 		this.emailUser = emailUser;
 		this.password = password;
+		
 	}
 	public Long getUserId() {
 		return userId;
@@ -80,7 +89,12 @@ public class AdUser implements UserDetails, Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	public Pedido getPedidos() {
+		return pedidos;
+	}
+	public void setPedidos(Pedido pedidos) {
+		this.pedidos = pedidos;
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -95,7 +109,7 @@ public class AdUser implements UserDetails, Serializable{
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(emailUser, nomeUser, password, userId);
+		return Objects.hash(emailUser, nomeUser, password, userId, pedidos);
 	}
 	
 	@Override
@@ -109,12 +123,12 @@ public class AdUser implements UserDetails, Serializable{
 		AdUser other = (AdUser) obj;
 		return Objects.equals(emailUser, other.emailUser) && Objects.equals(nomeUser, other.nomeUser)
 				&& Objects.equals(password, other.password) && Objects.equals(userId, other.userId)
-				&& Objects.equals(nome, other.nome) && Objects.equals(roles, other.roles);
+				&& Objects.equals(nome, other.nome) && Objects.equals(roles, other.roles) && Objects.equals(pedidos, other.pedidos);
 	}
 	@Override
 	public String toString() {
 		return "User [userId=" + userId +", nome=" + nome + ", nomeUser=" + nomeUser + 
-				", emailUser=" + emailUser + ", password="+ password + "]";
+				", emailUser=" + emailUser + ", password="+ password + ", pedidos="+ pedidos +"]";
 	}
  
 	@Override

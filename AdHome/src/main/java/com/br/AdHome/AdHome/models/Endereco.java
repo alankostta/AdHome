@@ -3,23 +3,20 @@ package com.br.AdHome.AdHome.models;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_endereco")
 public class Endereco implements Serializable{
-	private static final long serialVersionUID = 3L; 
+	private static final long serialVersionUID = 1L; 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "endereco_id",nullable = false, length = 10, unique = true)
@@ -45,16 +42,12 @@ public class Endereco implements Serializable{
 	
 	@Column(name = "numero", nullable = true, length = 10)
 	private String numero;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "client_id", nullable = true)
+	@JsonIgnore
+	@ManyToMany(mappedBy = "endereco")
 	private Set<Cliente> cliente;
 		
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(
-			name = "Fornecedor_Endereco",
-			joinColumns = @JoinColumn(name =  "endereco_fk",nullable = true),
-			inverseJoinColumns = @JoinColumn(name = "fornecedor_fk",nullable = true))
+	@JsonIgnore
+	@ManyToMany(mappedBy = "endereco")
 	private Set<Fornecedor> fornecedor;
 	
 	public Endereco() {
