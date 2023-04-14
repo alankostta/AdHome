@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_cliente")
 public class Cliente implements Serializable {
@@ -60,17 +62,20 @@ public class Cliente implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private ContatoEnum contatoEnum;
-
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
 	private Set<Contato> contato = new HashSet<>();
-
-	@ManyToMany
+	
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "cliente_endereco", 
 	joinColumns = @JoinColumn(name = "cliente_fk"), 
 	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private Set<Endereco> endereco = new HashSet<>();
-
-	@OneToMany(mappedBy = "cliente")
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
 	private Set<Pedido> pedido = new HashSet<>();
 
 	public Cliente() {

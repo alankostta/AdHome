@@ -38,8 +38,11 @@ public class ClienteService {
 	public void deleteCliente(Cliente cliente) {
 		clienteRepository.delete(cliente);
 	}
-	public List<Cliente> findByNameContaining(String nome){
+	public List<Cliente>  findByNameContaining(String nome){
 		return clienteRepository.findByNomeContaining(nome);
+	}
+	public List<Object[]> findClienteEndereco(Long id) {
+		return clienteRepository.findClienteEnderecoById(id);
 	}
 	
 }

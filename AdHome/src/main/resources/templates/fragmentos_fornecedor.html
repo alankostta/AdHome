@@ -50,34 +50,38 @@
 				<div class="d-flex flex-row">
 				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
 					 <input
-						class="form-control" type="text" placeholder="Digite seu UF"
+						class="form-control" id="uf" type="text" placeholder="Digite seu UF"
 						th:errorclass="is-invalid" th:field="*{enderecoDto.uf}" style="max-width: 300px"/>
 					<div class="invalid-feedback" th:errors="*{enderecoDto.uf}"></div>
 				</div>
 				<div class="mb-3 d-flex align-items-center flex-grow-1">
 					 <input
-						class="form-control" type="text" placeholder="Digite sua Cidade"
+						class="form-control" id="cidade" type="text" placeholder="Digite sua Cidade"
 						style="max-width: 300px" th:errorclass="is-invalid" th:field="*{enderecoDto.localidade}" />
 					<div class="invalid-feedback" th:errors="*{enderecoDto.localidade}"></div>
 				</div>
 				<div class="mb-3 d-flex align-items-center flex-grow-1">
 					 <input style="max-width: 400px"
-						class="form-control" type="text" placeholder="Digite seu Bairro"
+						class="form-control" id="bairro" type="text" placeholder="Digite seu Bairro"
 						th:errorclass="is-invalid" th:field="*{enderecoDto.bairro}" />
 					<div class="invalid-feedback" th:errors="*{enderecoDto.bairro}"></div>
 				</div>
 				</div>
 				<div class="d-flex flex-row">
 				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
-					<input style="max-width: 250px"
-						class="form-control" type="text" placeholder="Digite seu CEP"
-						th:errorclass="is-invalid" th:field="*{enderecoDto.cep}" />
+					<div class="input-group">
+						<input style="max-width: 250px" id="cep"
+							class="form-control" type="text" placeholder="Digite seu CEP"
+							th:errorclass="is-invalid" th:field="*{enderecoDto.cep}" />
+							<button class="btn btn-outline-secondary" type="button"
+									onClick="buscarCep()">Pesquisar</button>
+					</div>
 					<div class="invalid-feedback" th:errors="*{enderecoDto.cep}">
 				</div>
 				</div>
 				<div class="mb-3 d-flex align-items-center flex-grow-1">
 					 <input style="max-width: 250px"
-						class="form-control" type="text" placeholder="Digite rua, av..."
+						class="form-control" type="text" id="logradouro" placeholder="Digite rua, av..."
 						th:errorclass="is-invalid" th:field="*{enderecoDto.logradouro}" />
 					<div class="invalid-feedback" th:errors="*{enderecoDto.logradouro}"></div>
 				</div>

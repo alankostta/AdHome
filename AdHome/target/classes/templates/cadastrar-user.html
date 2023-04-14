@@ -99,7 +99,7 @@
 <body>
 	<div class="container">
         <form class="cadastroUser" id="formPost"
-        	  th:object="${userDto}" method="POST" action="/cadastrar-user"> 
+        	  th:object="${aduserDto}" method="POST" th:action="@{/cadastrar-user}"> 
          <h3>Cadastrar Usuários do Sistema AdHome</h3>
 		<br>
 			<div class="box-user">

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.br.AdHome.AdHome.dto.UserDto;
+import com.br.AdHome.AdHome.dto.AduserDto;
 
 @Controller
 public class HomeController {
@@ -14,7 +14,7 @@ public class HomeController {
 		return mv;
 	}
 	@GetMapping("/login")
-	public ModelAndView exibirLoguin(UserDto nomeUser, UserDto emailUser, UserDto password) {
+	public ModelAndView exibirLoguin(AduserDto nomeUser, AduserDto emailUser, AduserDto password) {
 		var mv = new ModelAndView("/login");
 		return mv;
 	}

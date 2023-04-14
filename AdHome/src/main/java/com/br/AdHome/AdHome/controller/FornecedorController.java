@@ -80,11 +80,16 @@ public class FornecedorController{
 			fornecedo.setDataCadastroForne(LocalDateTime.now(ZoneId.of("UTC")));
 			fornecedo.setDataAlteraForne(LocalDateTime.now(ZoneId.of("UTC")));
 			fornecedo.setAnoRef(cal.get(Calendar.YEAR));
+			
 			Set<Contato> conta = new HashSet<Contato>();
 			conta.add(contat);
 			fornecedo.setContatos(conta);
+			contatoService.saveContato(contat);
+			
 			Set<Endereco> endere = new HashSet<Endereco>();
 			endere.add(enderec);
+			enderecoService.saveEndereco(enderec);
+			
 			fornecedo.setEndereco(endere);
 			fornecedorService.saveFornecedor(fornecedo);
 

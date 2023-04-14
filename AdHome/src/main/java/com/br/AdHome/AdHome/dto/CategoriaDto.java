@@ -1,5 +1,7 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,8 +20,8 @@ public class CategoriaDto {
 	public CategoriaDto() {
 	}
 
-	public CategoriaDto(String nomeCategoria, String descricaoCategoria) {
-		super();
+	public CategoriaDto(String nomeCategoria, String descricaoCategoria, Date dataCasdastro) {
+		
 		this.nomeCategoria = nomeCategoria;
 		this.descricaoCategoria = descricaoCategoria;
 	}
@@ -39,21 +41,25 @@ public class CategoriaDto {
 	public void setDescricaoCategoria(String descricaoCategoria) {
 		this.descricaoCategoria = descricaoCategoria;
 	}
+
 	public Categoria toCategoria() {
 		
 		Categoria categorias = new Categoria();
 		categorias.setNomeCategoria(this.nomeCategoria);
 		categorias.setDescricaoCategoria(this.descricaoCategoria);
+		
 		return categorias;
 	}
 	public Categoria toCategoria(Categoria categorias) {
 			
 			categorias.setNomeCategoria(this.nomeCategoria);
 			categorias.setDescricaoCategoria(this.descricaoCategoria);
+			
 			return categorias;
 	}
 	public void fromCategoria(Categoria categorias) {
 		this.descricaoCategoria = categorias.getDescricaoCategoria();
 		this.nomeCategoria = categorias.getNomeCategoria();
+		
 	}
 }

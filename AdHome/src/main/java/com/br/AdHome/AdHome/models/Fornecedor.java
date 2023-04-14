@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,29 +34,36 @@ public class Fornecedor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "fornecedor_id", nullable = false, length = 10, unique = true)
 	private Long fornecedorId;
+	
 	@Column(name = "nome_fornecedor", nullable = false, length = 60)
 	private String nome;
+	
 	@Column(name = "empresa_fornecedor", nullable = false, length = 80)
 	private String nomeEmpresa;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "data_cadastro", nullable = false, length = 60)
 	private LocalDateTime dataCadastroForne;
+	
 	@Column(name = "ano_ref", nullable = false)
 	private Integer anoRef;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "data_altera", nullable = false, length = 60)
 	private LocalDateTime dataAlteraForne;
+	
 	@Column(name = "endereco_enum", nullable = false, length = 60)
 	@Enumerated(EnumType.STRING)
 	private EnderecoEnum enderecoEnum;
+	
 	@Column(name = "contato_enum", nullable = false, length = 60)
 	@Enumerated(EnumType.STRING)
 	private ContatoEnum contatoEnum;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(name = "Fornecedor_Endereco", 
-		joinColumns = @JoinColumn(name = "fornecedor_fk", nullable = false), 
-		inverseJoinColumns = @JoinColumn(name = "endereco_fk", nullable = false))
+		joinColumns = @JoinColumn(name = "fornecedor_fk"), 
+		inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private Set<Endereco> endereco = new HashSet<>();
 	/*
 	 * Quando e criado um Set<> ele ao invés de criar uma lista de objetos ele cria
@@ -65,11 +71,11 @@ public class Fornecedor implements Serializable {
 	 * objeto
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy = "fornecedor")
+	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.PERSIST)
 	private Set<Contato> contatos = new HashSet<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "fornecedor", cascade = { CascadeType.PERSIST, CascadeType.REMOVE }, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.PERSIST)
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Fornecedor() {

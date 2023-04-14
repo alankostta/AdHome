@@ -1,5 +1,6 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -23,11 +24,16 @@ public class PedidoDto {
 	
 	private Set<Pedido> pedido;
 	
+	private Date dataCadastro;
+	
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
 	public Integer getQtdItens() {
 		return qtdItens;
-	}
-	public void setQtdItensDto(Integer qtdItens) {
-		this.qtdItens = qtdItens;
 	}
 	public PedidoEnumStatus getEnumStatus() {
 		return enumStatus;
@@ -55,17 +61,20 @@ public class PedidoDto {
 		pedido.setQtdItens(qtdItens);
 		pedido.setEnumStatus(enumStatus);
 		pedido.setEnumPagamento(enumPagamento);
+		pedido.setDataCadastro(dataCadastro);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
 		pedido.setQtdItens(qtdItens);
 		pedido.setEnumStatus(enumStatus);
 		pedido.setEnumPagamento(enumPagamento);
+		pedido.setDataCadastro(dataCadastro);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {
 		this.qtdItens = pedido.getQtdItens();
 		this.enumPagamento = pedido.getEnumPagamento();
 		this.enumStatus = pedido.getEnumStatus();
+		this.dataCadastro = pedido.getDataCadastro();
 	}
 }

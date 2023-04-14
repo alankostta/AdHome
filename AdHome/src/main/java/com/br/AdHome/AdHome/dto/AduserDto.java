@@ -2,7 +2,7 @@ package com.br.AdHome.AdHome.dto;
 
 import com.br.AdHome.AdHome.models.AdUser;
 
-public class UserDto {
+public class AduserDto {
 	
 	private String nomeUser;
 	

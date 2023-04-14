@@ -2,8 +2,11 @@ package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,31 +31,20 @@ public class Categoria implements Serializable {
 	@Column(name="descri_cate", nullable = false, length = 150)
 	private String descricaoCategoria;
 	
-	@Column(name = "data_Cadastro", nullable = false, length = 30)
-	private LocalDateTime dataCadasto;
-	
-	@Column(name = "data_Alte", nullable = false, length = 30)
-	private LocalDateTime dataAlte;
-	
-	@Column(name = "ano_ref", nullable = false)
-	private Integer anoRef;
-	
-	@OneToMany(mappedBy = "categorias")
+	@OneToMany(mappedBy = "categorias", cascade = CascadeType.PERSIST)
 	private List<Produto> produtos;
 	
 	public Categoria() {
-		super();
+		
 	}
 
-	public Categoria(Long categoriaId, String nomeCategoria, String descricaoCategoria, LocalDateTime dataCadasto,
+	public Categoria(Long categoriaId, String nomeCategoria, String descricaoCategoria, Date dataCadasto,
 			LocalDateTime dataAlte, Integer ano_ref) {
-		super();
+
 		this.categoriaId = categoriaId;
 		this.nomeCategoria = nomeCategoria;
 		this.descricaoCategoria = descricaoCategoria;
-		this.dataCadasto = dataCadasto;
-		this.dataAlte = dataAlte;
-		this.anoRef = ano_ref;
+	
 		this.setProdutos(produtos);
 	}
 
@@ -79,30 +71,6 @@ public class Categoria implements Serializable {
 	public void setDescricaoCategoria(String descricaoCategoria) {
 		this.descricaoCategoria = descricaoCategoria;
 	}
-
-	public LocalDateTime getDataCadasto() {
-		return dataCadasto;
-	}
-
-	public void setDataCadasto(LocalDateTime dataCadasto) {
-		this.dataCadasto = dataCadasto;
-	}
-
-	public LocalDateTime getDataAlte() {
-		return dataAlte;
-	}
-
-	public void setDataAlte(LocalDateTime dataAlte) {
-		this.dataAlte = dataAlte;
-	}
-
-	public Integer getAno_ref() {
-		return anoRef;
-	}
-
-	public void setAno_ref(Integer anoRef) {
-		this.anoRef = anoRef;
-	}
 	
 	public List<Produto> getProdutos() {
 		return produtos;
@@ -115,13 +83,12 @@ public class Categoria implements Serializable {
 	@Override
 	public String toString() {
 		return "Categoria [categoriaId=" + categoriaId + ", nomeCategoria=" + nomeCategoria + ", descricaoCategoria="
-				+ descricaoCategoria + ", dataCadasto=" + dataCadasto + ", dataAlte=" + dataAlte + ", anoRef="
-				+ anoRef + ", produtos=" +produtos+"]";
+				+ descricaoCategoria + ", produtos=" + produtos + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, categoriaId, dataAlte, dataCadasto, descricaoCategoria, nomeCategoria, produtos);
+		return Objects.hash(categoriaId, descricaoCategoria, nomeCategoria, produtos);
 	}
 
 	@Override
@@ -133,10 +100,8 @@ public class Categoria implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Categoria other = (Categoria) obj;
-		return Objects.equals(anoRef, other.anoRef) && Objects.equals(categoriaId, other.categoriaId)
-				&& Objects.equals(dataAlte, other.dataAlte) && Objects.equals(dataCadasto, other.dataCadasto)
+		return Objects.equals(categoriaId, other.categoriaId)
 				&& Objects.equals(descricaoCategoria, other.descricaoCategoria)
-				&& Objects.equals(nomeCategoria, other.nomeCategoria)
-				&& Objects.equals(produtos, other.produtos);
+				&& Objects.equals(nomeCategoria, other.nomeCategoria) && Objects.equals(produtos, other.produtos);
 	}
 }

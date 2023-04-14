@@ -1,7 +1,10 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -32,14 +37,13 @@ public class ItemPedido implements Serializable{
 	private Pedido pedido;
 	
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name="produto_id")
-	private Produto produto;
+	@OneToMany(mappedBy = "itens", cascade = CascadeType.PERSIST)
+	private List<Produto> produto;
 	
 	public ItemPedido() {
 		
 	}
-	public ItemPedido(Integer quantidade, Pedido Pedido, Produto produto) {
+	public ItemPedido(Integer quantidade, Pedido Pedido, List<Produto> produto) {
 		this.setQuantidade(quantidade);
 		this.setPedido(Pedido);
 		this.setProduto(produto);
@@ -62,10 +66,10 @@ public class ItemPedido implements Serializable{
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-	public Produto getProduto() {
+	public List<Produto> getProduto() {
 		return produto;
 	}
-	public void setProduto(Produto produto) {
+	public void setProduto(List<Produto> produto) {
 		this.produto = produto;
 	}
 	@Override

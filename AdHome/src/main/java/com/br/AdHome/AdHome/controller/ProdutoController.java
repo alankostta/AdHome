@@ -5,7 +5,9 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+
 import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,10 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.br.AdHome.AdHome.dto.CategoriaDto;
 import com.br.AdHome.AdHome.dto.FornecedorDto;
 import com.br.AdHome.AdHome.dto.ProdutoDto;
+import com.br.AdHome.AdHome.models.Categoria;
 import com.br.AdHome.AdHome.models.Fornecedor;
 import com.br.AdHome.AdHome.models.Produto;
+import com.br.AdHome.AdHome.services.CategoriaService;
 import com.br.AdHome.AdHome.services.FornecedorService;
 import com.br.AdHome.AdHome.services.ProdutoService;
 /*
@@ -43,37 +49,48 @@ public class ProdutoController {
 	FornecedorService fornecedorService;
 	@Autowired
 	ModelMapper modelMapper;
+	@Autowired
+	CategoriaService categoriaService;
+	
 
-	public ProdutoController(ProdutoService produtoService, FornecedorService fornecedorService){
+	public ProdutoController(ProdutoService produtoService, FornecedorService fornecedorService,
+			CategoriaService categoriaService){
 		this.produtoService = produtoService;
 		this.fornecedorService = fornecedorService;
+		this.categoriaService = categoriaService;
 	}
 	@GetMapping("")
-	public ModelAndView exibiProdutos(ProdutoDto produtoDto, FornecedorDto fornecedorDto) {
+	public ModelAndView exibiProdutos(ProdutoDto produtoDto, FornecedorDto fornecedorDto, 
+			CategoriaDto categoriaDto) {
 		var mv = new ModelAndView("produto/produto");
 		return mv;
 	}
 	@PostMapping("")
 	public ModelAndView saveProdutos(@Valid ProdutoDto produtoDto, BindingResult resultProduto,
-		@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor) {
+		@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor, 
+		CategoriaDto categoriaDto, BindingResult resultCategoria) {
 
 		ModelAndView mv = new ModelAndView("produto/produto");
 
-		if (resultFornecedor.hasErrors() && resultProduto.hasErrors()) {
+		if (resultFornecedor.hasErrors() && resultProduto.hasErrors()&& resultCategoria.hasErrors()) {
 			this.retornaErroProduto("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
 			
 			Fornecedor fornecedor = fornecedorDto.toFornecedor();
-			fornecedor.setFornecedorId(fornecedorDto.getFornecedorId().longValue());
+			Categoria categoria = categoriaDto.toCategoria();
 			Produto produto = produtoDto.toProduto();
+			fornecedor.setFornecedorId(fornecedorDto.getFornecedorId().longValue());
 			produto.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
 			produto.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
 			Calendar cal = Calendar.getInstance();
 			produto.setAnoRef(cal.get(Calendar.YEAR));
-			produto.setFornecedor(fornecedor);
 			
-			if(produto.getValorSaida() == null) {
+			produto.setFornecedor(fornecedor);
+			produto.setCategorias(categoria);
+			categoriaService.saveCategoria(categoria);
+
+			if (produto.getValorSaida() == null) {
 				produto.setValorSaida(0.0);
 				produtoService.salvarProduto(produto);
 			}

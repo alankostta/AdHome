@@ -5,14 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -44,14 +43,10 @@ public class AdUser implements UserDetails, Serializable{
 	@Column(name="senha_user", nullable=false, length=60)
 	private String password;
 	
-	@ManyToMany
-	@JoinTable(name = "tb_user_roles",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-			)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private List<RoleModel> roles;
 	
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private Pedido pedidos;
 	
 	public AdUser() {

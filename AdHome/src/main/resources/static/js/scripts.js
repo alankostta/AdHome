@@ -33,7 +33,10 @@ function pesquisarCliente() {
 			success: function(response) {
 				$('#tabResultadosCliente > tbody > tr').remove();
 				for (var i = 0; i < response.length; i++) {
-					$('#tabResultadosCliente > tbody').append('<tr><td>' + response[i].clienteId + '</td><td>' + response[i].nome + '</td><td><button type="button" onClick="carregarCliente(' + response[i].clienteId + ')" class="btn btn-primary">Selecionar</button></td></tr>');
+					$('#tabResultadosCliente > tbody')
+						.append('<tr><td>' + response[i].clienteId + '</td><td>' + response[i].nome
+							+ '</td><td><button type="button" onClick="carregarCliente('
+							+ response[i].clienteId + ')" class="btn btn-primary">Selecionar</button></td></tr>');
 				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
@@ -95,14 +98,30 @@ function carregarCliente(clienteId) {
 		url: "pedido/buscarPorIdCliente/",
 		data: "clienteId=" + clienteId,
 		success: function(response) {
-			$("#idClie").val(response.clienteId);
-			$("#nomeClie").val(response.nome);
-			$("#pedidoCidade").val(response.uf);
-			$("#pedidoBairro").val(response.localidade);
-			$("#pedidoLogradouro").val(response.bairro);
-			$("#pedidoNumero").val(response.logradouro);
-			$("#pedidoCep").val(response.cep);
-			$("#pedidoComplemento").val(response.complemento);
+
+			for (var i = 0; i < response.length; i++) {
+				var clienteId = response[i][0];
+				var nome = response[i][1];
+				var bairro = response[i][2];
+				var uf = response[i][3];
+				var localidade = response[i][4];
+				var enderecoId = response[i][5];
+				var complemento = response[i][6];
+				var numero = response[i][7];
+				var cep = response[i][8];
+				var logradouro = response[i][9];
+			}
+
+			$("#idClie").val(clienteId);
+			$("#nomeClie").val(nome);
+			$("#pedidoUf").val(uf);
+			$("#pedidoCidade").val(localidade);
+			$("#pedidoBairro").val(bairro);
+			$("#pedidoLogradouro").val(logradouro);
+			$("#pedidoNumero").val(numero);
+			$("#pedidoCep").val(cep);
+			$("#pedidoComplemento").val(complemento);
+			$("#codigoEndereco").val(enderecoId);
 
 			$("#pesquisarClienteModal").modal('hide');
 			//$("#pesquisarModal").hide('close');
@@ -180,27 +199,43 @@ function buscarCep() {
 		alert("Por favor insira um cep!!!");
 	}
 }
-function limparPedido(){
-  $('#listaPedido tbody tr').remove();
-  alert("PEDIDO CANCELADO!");
-  verificarDisponibilidadeDaPagina();
+function limparPedido() {
+	$('#listaPedido tbody tr').remove();
+	alert("PEDIDO CANCELADO!");
+	verificarDisponibilidadeDaPagina();
 }
 
-function verificarDisponibilidadeDaPagina(){
-  // Verifica se a página está disponível
-  $.ajax({
-    method: "GET",
-    url: "/pedido",
-    success: function(data){
-      // Se a página estiver disponível, você pode acessá-la aqui
-      window.location.href = "/pedido";
-    },
-    error: function(){
-      // Se a página não estiver disponível, você pode exibir uma mensagem de erro ou redirecionar para outra página
-      alert("A página não está disponível. Redirecionando para a página inicial.");
-      window.location.href = "/index.html";
-    }
-  });
+function verificarDisponibilidadeDaPagina() {
+	// Verifica se a página está disponível
+	$.ajax({
+		method: "GET",
+		url: "/pedido",
+		success: function(data) {
+			// Se a página estiver disponível, você pode acessá-la aqui
+			window.location.href = "/pedido";
+		},
+		error: function() {
+			// Se a página não estiver disponível, você pode exibir uma mensagem de erro ou redirecionar para outra página
+			alert("A página não está disponível. Redirecionando para a página inicial.");
+			window.location.href = "/index.html";
+		}
+	});
+}
+function listarUser() {
+	$.ajax({
+		method: "GET",
+		url: "/usuarios",
+		success: function(response) {
+			// popular a tag <select> com os dados retornados
+			var select = $("select.form-select");
+			$.each(response, function(index, usuario) {
+				select.append("<option value='" + usuario.id + "'>" + usuario.nome + "</option>");
+			});
+		},
+		error: function(error) {
+			console.log(error);
+		}
+	});
 }
 
 

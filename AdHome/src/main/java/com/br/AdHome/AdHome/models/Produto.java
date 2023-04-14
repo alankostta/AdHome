@@ -67,11 +67,16 @@ public class Produto implements Serializable {
 	@JoinColumn(name = "categoria_id")
 	private Categoria categorias;
 	
+	@ManyToOne
+	@JoinColumn(name = "itens_id")
+	private ItemPedido itens;
+	
 	public Produto() {
 		
 	}
 	public Produto(String descricao, Double valorEntrada, Double valorSaida, Integer estoqueQtd, Double preco,
-			LocalDateTime dataCadastro,LocalDateTime dataAltera, Fornecedor fornecedor, Integer anoRef) {
+			LocalDateTime dataCadastro,LocalDateTime dataAltera, Fornecedor fornecedor, Integer anoRef, 
+			Categoria categorias, ItemPedido itens) {
 	
 		this.setDescricao(descricao);
 		this.setValorEntrada(valorEntrada);
@@ -81,29 +86,10 @@ public class Produto implements Serializable {
 		this.setDataAltera(dataAltera);
 		this.setFornecedor(fornecedor);
 		this.setPreco(preco);
-		
+		this.setCategorias(categorias);
+		this.setItens(itens);
 	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(dataAltera, dataCadastro, descricao, estoqueQtd, fornecedor, marca, preco,
-				produtoId, valorEntrada, valorSaida, anoRef);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Produto other = (Produto) obj;
-		return Objects.equals(dataAltera, other.dataAltera) && Objects.equals(dataCadastro, other.dataCadastro)
-				&& Objects.equals(descricao, other.descricao) && Objects.equals(estoqueQtd, other.estoqueQtd)
-				&& Objects.equals(fornecedor, other.fornecedor) && Objects.equals(marca, other.marca)
-				&& Objects.equals(preco, other.preco)
-				&& Objects.equals(produtoId, other.produtoId) && Objects.equals(valorEntrada, other.valorEntrada)
-				&& Objects.equals(valorSaida, other.valorSaida) && Objects.equals(anoRef, other.anoRef);
-	}
+	
 	public Long getProdutoId() {
 		return produtoId;
 	}
@@ -141,6 +127,18 @@ public class Produto implements Serializable {
 		this.estoqueQtd = estoqueQtd;
 	}
 	
+	public Categoria getCategorias() {
+		return categorias;
+	}
+	public void setCategorias(Categoria categorias) {
+		this.categorias = categorias;
+	}
+	public ItemPedido getItens() {
+		return itens;
+	}
+	public void setItens(ItemPedido itens) {
+		this.itens = itens;
+	}
 	public LocalDateTime getDataCadastro() {
 		return dataCadastro;
 	}
@@ -175,7 +173,29 @@ public class Produto implements Serializable {
 	public String toString() {
 		return "Produto [produtoId=" + produtoId + ", descricao=" + descricao + ", marca=" + marca + ", valorEntrada="
 				+ valorEntrada + ", valorSaida=" + valorSaida + ", estoqueQtd=" + estoqueQtd + ", preco=" + preco
-				+ ", dataCadastro=" + dataCadastro + ", dataAltera=" + dataAltera + 
-				", fornecedor=" + fornecedor + "]";
+				+ ", dataCadastro=" + dataCadastro + ", anoRef=" + anoRef + ", dataAltera=" + dataAltera
+				+ ", fornecedor=" + fornecedor + ", categorias=" + categorias + ", itens=" + itens + "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(anoRef, categorias, dataAltera, dataCadastro, descricao, estoqueQtd, fornecedor, itens,
+				marca, preco, produtoId, valorEntrada, valorSaida);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		return Objects.equals(anoRef, other.anoRef) && Objects.equals(categorias, other.categorias)
+				&& Objects.equals(dataAltera, other.dataAltera) && Objects.equals(dataCadastro, other.dataCadastro)
+				&& Objects.equals(descricao, other.descricao) && Objects.equals(estoqueQtd, other.estoqueQtd)
+				&& Objects.equals(fornecedor, other.fornecedor) && Objects.equals(itens, other.itens)
+				&& Objects.equals(marca, other.marca) && Objects.equals(preco, other.preco)
+				&& Objects.equals(produtoId, other.produtoId) && Objects.equals(valorEntrada, other.valorEntrada)
+				&& Objects.equals(valorSaida, other.valorSaida);
 	}
 }

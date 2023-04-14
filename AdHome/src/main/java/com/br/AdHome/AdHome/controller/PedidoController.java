@@ -20,8 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.br.AdHome.AdHome.dto.CategoriaDto;
+import com.br.AdHome.AdHome.dto.AduserDto;
 import com.br.AdHome.AdHome.dto.ClienteDto;
+import com.br.AdHome.AdHome.dto.ItemPedidoDto;
 import com.br.AdHome.AdHome.dto.PedidoDto;
 import com.br.AdHome.AdHome.dto.ProdutoDto;
 import com.br.AdHome.AdHome.models.Cliente;
@@ -29,8 +30,9 @@ import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
 import com.br.AdHome.AdHome.models.Produto;
-import com.br.AdHome.AdHome.services.CategoriaService;
+import com.br.AdHome.AdHome.services.AduserService;
 import com.br.AdHome.AdHome.services.ClienteService;
+import com.br.AdHome.AdHome.services.ItemPedidoService;
 import com.br.AdHome.AdHome.services.PedidoService;
 import com.br.AdHome.AdHome.services.ProdutoService;
 
@@ -49,18 +51,23 @@ public class PedidoController {
 	final PedidoService pedidoService;
 	final ProdutoService produtoService;
 	final ClienteService clienteService;
-	final CategoriaService categoriaService;
+	final AduserService aduserService;
+	final ItemPedidoService itemPedidoService;
+	
 	
 	public PedidoController(PedidoService pedidoService, ProdutoService produtoService,
-			ClienteService clienteService, CategoriaService categoriaService) {
+			ClienteService clienteService, ItemPedidoService itemPedidoService,
+			AduserService aduserService) {
 		this.pedidoService = pedidoService;
 		this.produtoService = produtoService;
 		this.clienteService = clienteService;
-		this.categoriaService = categoriaService;
+		this.aduserService = aduserService;
+		this.itemPedidoService = itemPedidoService;
+		
 	}
 	@GetMapping("")
 	public ModelAndView exibirPedido(ProdutoDto produtoDto, PedidoDto pedidoDto,
-			ClienteDto clienteDto, CategoriaDto categoriaDto) {
+			ClienteDto clienteDto, ItemPedidoDto itemPedidoDto, AduserDto aduserDto) {
 		var mv = new ModelAndView("pedido/pedido");
 		mv.addObject("listaStatus",PedidoEnumStatus.values());
 		mv.addObject("listaPagamento",PedidoEnumTipoPagamento.values());
@@ -71,16 +78,14 @@ public class PedidoController {
 	@PostMapping("/pedido")
 	public ModelAndView savePedido(@Valid ClienteDto clienteDto, BindingResult resultCliente,
 			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
-			@Valid ProdutoDto produtoDto, BindingResult resultProduto,
-			@Valid CategoriaDto categoriaDto, BindingResult resultCategoria) {
+			@Valid ProdutoDto produtoDto, BindingResult resultProduto) {
 		
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 		
 		
 		if (resultCliente.hasErrors()&& 
 				resultPedido.hasErrors()&& 
-				resultProduto.hasErrors()
-				&& resultCategoria.hasErrors()) {
+				resultProduto.hasErrors()) {
 			
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
@@ -110,21 +115,17 @@ public class PedidoController {
 	}
 	@GetMapping(value="buscarPorNomeCliente")
 	@ResponseBody//Retorna os dados para o corpo da resposta.
-	public ResponseEntity<List<Cliente>> buscarPorNomecliente(@RequestParam(name="name") String name) {
+	public ResponseEntity<List<Cliente> > buscarPorNomecliente(@RequestParam(name="name") String name) {
 		//List<Fornecedor> fornecedor = fornecedorService.findByName(name.trim().toLowerCase());
-		List<Cliente> cliente = clienteService.findByNameContaining(name);//Execeuta a consulta no banco de dados ao qual está sendo por nome
+		List<Cliente>  cliente = clienteService.findByNameContaining(name);//Execeuta a consulta no banco de dados ao qual está sendo por nome
 	
 		return new ResponseEntity<List<Cliente>>(cliente,HttpStatus.OK);//Retorna uma lista de nomes em formato JSON
 	}
 	@GetMapping(value = "buscarPorIdCliente")
 	@ResponseBody
-	public ResponseEntity<Cliente> buscarPorIdCliente(@RequestParam(name="clienteId") Long clienteId) {
-		Optional<Cliente> clienteOptional = clienteService.findById(clienteId);
-		if(clienteOptional.isPresent()) {
-			Cliente cliente = clienteOptional.get();
-			return new ResponseEntity<Cliente>(cliente,HttpStatus.OK);
-		}
-		return new  ResponseEntity<Cliente>(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<List<Object[]>> buscarPorIdCliente(@RequestParam(name="clienteId") Long clienteId) {
+		List<Object[]> clientes = clienteService.findClienteEndereco(clienteId);
+		return new ResponseEntity<List<Object[]>>(clientes,HttpStatus.OK);
 	}
 	@GetMapping(value = "buscarProduto")
 	@ResponseBody

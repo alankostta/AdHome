@@ -41,17 +41,17 @@
 				</div>
 				<div class="d-flex flex-row">
 				<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
-					<input style="max-width: 300px"
+					<input style="max-width: 250px"
 						class="form-control" type="text"
 						th:field="*{produtoDto.valorEntrada}" th:errorclass="is-invalid"
-						placeholder="Digite o valor de entrada">
+						placeholder="Valor de entrada do produto">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.valorEntrada}">
 				</div>
 				<div class="mb-3 d-flex align-items-center flex-grow-1">
 					<input style="max-width: 350px"
 						class="form-control" type="text" th:field="*{produtoDto.preco}"
-						th:errorclass="is-invalid" placeholder="Digite o preco de venda">
+						th:errorclass="is-invalid" placeholder="Informe o valor de venda do produto">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.preco}">
 				</div>
@@ -62,26 +62,26 @@
 						placeholder="Informe a quantidade em estoque">
 				</div>
 				<div class="invalid-feedback" th:errors="*{produtoDto.estoqueQtd}"></div>
-				
+				</div>
+				<div class="d-flex flex-row">
 				<div class="mb-3 d-flex align-items-center flex-grow-1">
 					<input style="max-width: 400px" class="form-control" type="text"
 						th:field="*{categoriaDto.nomeCategoria}" th:errorclass="is-invalid"
-						placeholder="Informe a quantidade em estoque">
+						placeholder="Informe a categoria">
 				</div>
 				<div class="invalid-feedback" th:errors="*{categoriaDto.nomeCategoria}"></div>
-				
-				
 				<div class="mb-3 d-flex align-items-center flex-grow-1">
-					<input style="max-width: 400px" class="form-control" type="text"
+					<input style="max-width: 600px" class="form-control" type="text"
 						th:field="*{categoriaDto.descricaoCategoria}" th:errorclass="is-invalid"
-						placeholder="Informe a quantidade em estoque">
+						placeholder="Informe a descrição da categoria">
 				</div>
 				<div class="invalid-feedback" th:errors="*{categoriaDto.descricaoCategoria}"></div>
-				
+				</div>
 				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
 				<a href="javascript:history.back()"
 					class="btn btn-outline-warning btn-sm">Voltar</a>
 				<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
+				<button type="button" class="btn btn-outline-dark btn-sm">Excluir</button>
 			</form>
 		</div>
 		</fieldset>

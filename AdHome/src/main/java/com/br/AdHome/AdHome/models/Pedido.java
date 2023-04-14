@@ -2,10 +2,12 @@ package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -50,6 +54,10 @@ public class Pedido implements Serializable {
 	@Column(name = "desconto_pedido", nullable = false)
 	private Double descontoPedido;
 	
+	@Column(name = "data_cadastro", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date dataCadastro;
+	
 	@Enumerated(EnumType.STRING)
 	private PedidoEnumStatus enumStatus;
 	
@@ -60,7 +68,7 @@ public class Pedido implements Serializable {
 	private BandeiraCartao enumcartao;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "pedido")
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.PERSIST)
     private Set<ItemPedido> itens =  new HashSet<>();
 	
 	@JsonIgnore
@@ -77,13 +85,15 @@ public class Pedido implements Serializable {
 		
 	}
 	public Pedido(LocalDateTime dataPedido,LocalDateTime dataAlteraPedido, Integer qtdItens,
-		Cliente cliente, Integer anoRef) {
-		super();
+		Cliente cliente, Integer anoRef, Date dataCadastro) {
+
 		this.setDataPedido(dataPedido);
 		this.setDataAlteraPedido(dataAlteraPedido);
 		this.setQtdItens(qtdItens);
 		this.setCliente(cliente);
 		this.setAnoRef(anoRef);
+		this.setDataCadastro(dataCadastro);
+	
 	}
 	public Long getPedidoId() {
 		return pedidoId;
@@ -158,17 +168,31 @@ public class Pedido implements Serializable {
 	public void setEnumcartao(BandeiraCartao enumcartao) {
 		this.enumcartao = enumcartao;
 	}
+	
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+	public AdUser getUser() {
+		return user;
+	}
+	public void setUser(AdUser user) {
+		this.user = user;
+	}
 	@Override
 	public String toString() {
 		return "Pedido [pedidoId=" + pedidoId + ", dataPedido=" + dataPedido + ", dataAlteraPedido=" + dataAlteraPedido
 				+ ", anoRef=" + anoRef + ", qtdItens=" + qtdItens + ", valorPedido=" + valorPedido + ", descontoPedido="
-				+ descontoPedido + ", enumStatus=" + enumStatus + ", enumPagamento=" + enumPagamento + ", enumcartao="
-				+ enumcartao + ", itens=" + itens + ", cliente=" + cliente + "]";
+				+ descontoPedido + ", dataCadastro=" + dataCadastro + ", enumStatus=" + enumStatus + ", enumPagamento="
+				+ enumPagamento + ", enumcartao=" + enumcartao + ", itens=" + itens + ", cliente=" + cliente + ", user="
+				+ user + "]";
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, cliente, dataAlteraPedido, dataPedido, descontoPedido, enumPagamento, enumStatus,
-				enumcartao, itens, pedidoId, qtdItens, valorPedido);
+		return Objects.hash(anoRef, cliente, dataAlteraPedido, dataCadastro, dataPedido, descontoPedido, enumPagamento,
+				enumStatus, enumcartao, itens, pedidoId, qtdItens, user, valorPedido);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -181,10 +205,11 @@ public class Pedido implements Serializable {
 		Pedido other = (Pedido) obj;
 		return Objects.equals(anoRef, other.anoRef) && Objects.equals(cliente, other.cliente)
 				&& Objects.equals(dataAlteraPedido, other.dataAlteraPedido)
-				&& Objects.equals(dataPedido, other.dataPedido) && Objects.equals(descontoPedido, other.descontoPedido)
-				&& enumPagamento == other.enumPagamento && enumStatus == other.enumStatus
-				&& enumcartao == other.enumcartao && Objects.equals(itens, other.itens)
-				&& Objects.equals(pedidoId, other.pedidoId) && Objects.equals(qtdItens, other.qtdItens)
+				&& Objects.equals(dataCadastro, other.dataCadastro) && Objects.equals(dataPedido, other.dataPedido)
+				&& Objects.equals(descontoPedido, other.descontoPedido) && enumPagamento == other.enumPagamento
+				&& enumStatus == other.enumStatus && enumcartao == other.enumcartao
+				&& Objects.equals(itens, other.itens) && Objects.equals(pedidoId, other.pedidoId)
+				&& Objects.equals(qtdItens, other.qtdItens) && Objects.equals(user, other.user)
 				&& Objects.equals(valorPedido, other.valorPedido);
 	}
 }
