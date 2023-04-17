@@ -12,7 +12,7 @@
 									Pedido</button>
 							</div>
 							<div class="col-md-2 mb-3">
-								<button type="button" class="btn btn-outline-warning"
+								<button type="button" class="btn btn-warning"
 									data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar
 									produto</button>
 							</div>
@@ -83,17 +83,15 @@
 							<label class="col-md-2 col-form-label">Vendedor:</label>
 							<div class="col-md-4">
 								<select class="form-select form-select-sm"
-									aria-label="Default select example">
-									<c:forEach items="${usuarios}" var="usuario">
-										<option value="${usuario.id}">${usuario.nome}</option>
-									</c:forEach>
+									aria-label="Default select example" id="selectUsuarios">
 								</select>
-
 							</div>
-							<label class="col-md-2 col-form-label">Valor do Desconto:</label>
-							<div class="col-md-4">
+							<label class="col-md-2 col-form-label">Valor/Desconto:</label>
+							<button type="button" class="col-md-1 btn btn-warning" onClick="calcularDescontoPedido()">Calcular</button>
+							<div class="col-md-3">
 								<div class="input-group">
-									<span class="input-group-text" id="basic-addon1">R$</span> <input
+									<span class="input-group-text" id="basic-addon1">R$</span> 
+									<input id="porcentagem"
 										type="number" class="form-control form-control-sm"
 										aria-describedby="basic-addon1">
 								</div>

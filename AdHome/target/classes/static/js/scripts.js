@@ -221,22 +221,35 @@ function verificarDisponibilidadeDaPagina() {
 		}
 	});
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+	listarUser();
+});
 function listarUser() {
 	$.ajax({
 		method: "GET",
 		url: "/usuarios",
 		success: function(response) {
-			// popular a tag <select> com os dados retornados
-			var select = $("select.form-select");
+			// criar um elemento option para cada usuário
+			var options = "";
 			$.each(response, function(index, usuario) {
-				select.append("<option value='" + usuario.id + "'>" + usuario.nome + "</option>");
+				options += "<option value='" + usuario.id + "'>" + usuario.nome + "</option>";
 			});
+
+			// substituir o conteúdo da tag select pelas opções
+			var select = document.getElementById("selectUsuarios");
+			select.innerHTML = options;
 		},
 		error: function(error) {
 			console.log(error);
 		}
 	});
 }
+function calcularDescontoPedido() {
+		var desconto = parseFloat($('#porcentagem').val());
+		var total = parseFloat($('#total').val());
+		var novoTotal = total - (total * (desconto / 100));
+		$("#total").val(novoTotal);
 
-
+}
 
