@@ -3,7 +3,6 @@ package com.br.AdHome.AdHome.models;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -37,7 +35,7 @@ public class ItemPedido implements Serializable{
 	private Pedido pedido;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "itens", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "itens", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Produto> produto;
 	
 	public ItemPedido() {

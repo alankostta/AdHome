@@ -3,14 +3,17 @@ package com.br.AdHome.AdHome.models;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -49,6 +52,10 @@ public class Endereco implements Serializable{
 	@JsonIgnore
 	@ManyToMany(mappedBy = "endereco")
 	private Set<Fornecedor> fornecedor;
+	
+	@JsonIgnore
+	@OneToOne(mappedBy = "endereco")
+	private Pedido pedido;
 	
 	public Endereco() {
 		

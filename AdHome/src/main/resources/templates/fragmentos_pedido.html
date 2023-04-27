@@ -1,5 +1,4 @@
-<main
-	th:fragment="main(pedidoDto,clienteDto,produtoDto,itemPedidoDto,aduserDto, action)">
+<main th:fragment="main(pedidoDto,clienteDto,produtoDto,itemPedidoDto,aduserDto, action)">
 	<div class="container">
 		<fieldset class="fieldset text-left mb-5">
 			<legend>Menu</legend>
@@ -110,7 +109,7 @@
 						<div class="tab-content">
 							<div id="itens" class="tab-pane fade show active">
 								<div
-									th:replace="~{pedido/tabela_itens :: tabelaItens(itensDto)}"></div>
+									th:replace="~{pedido/tabela_itens :: tabelaItens}"></div>
 							</div>
 							<div id="entrega" class="tab-pane fade">
 								<div th:replace="~{pedido/form_entrega :: dadosEntrega}"></div>

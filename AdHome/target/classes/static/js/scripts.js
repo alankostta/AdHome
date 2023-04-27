@@ -162,8 +162,17 @@ function carregarProduto(produtoId) {
 				$(this).closest('tr').find('#subTotal').val(subTotal);
 				calcularTotal();
 			});
+			var produtos = {
+				id: response[i].produtoId,
+				descricao: response[i].descricao,
+				marca: response[i].marca,
+				preco: response[i].preco,
+				quantidade: qtd,
+				subTotal: subTotal
+			};
 
 			$("#pesquisarProdutoModal").modal('hide');
+			$('#listaProdutos').val(JSON.stringify(produtos));
 
 		}
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });

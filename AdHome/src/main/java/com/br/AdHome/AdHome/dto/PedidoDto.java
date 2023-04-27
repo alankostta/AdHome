@@ -1,10 +1,6 @@
 package com.br.AdHome.AdHome.dto;
 
 import java.util.Date;
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
@@ -15,14 +11,15 @@ import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
  */
 public class PedidoDto {
 	
-	@NotNull
-	private Integer qtdItens;
+	private Double valorPedido;
+
+	private Double descontoPedido;
+	
+	private String observacaoPedido;
 	
 	private PedidoEnumStatus enumStatus;
 	
 	private PedidoEnumTipoPagamento enumPagamento;
-	
-	private Set<Pedido> pedido;
 	
 	private Date dataCadastro;
 	
@@ -31,9 +28,6 @@ public class PedidoDto {
 	}
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
-	}
-	public Integer getQtdItens() {
-		return qtdItens;
 	}
 	public PedidoEnumStatus getEnumStatus() {
 		return enumStatus;
@@ -47,34 +41,47 @@ public class PedidoDto {
 	public void setEnumPagamento(PedidoEnumTipoPagamento enumPagamento) {
 		this.enumPagamento = enumPagamento;
 	}
-	public void setQtdItens(Integer qtdItens) {
-		this.qtdItens = qtdItens;
+	public Double getValorPedido() {
+		return valorPedido;
 	}
-	public Set<Pedido> getPedido() {
-		return pedido;
+	public void setValorPedido(Double valorPedido) {
+		this.valorPedido = valorPedido;
 	}
-	public void setPedido(Set<Pedido> pedido) {
-		this.pedido = pedido;
+	public Double getDescontoPedido() {
+		return descontoPedido;
+	}
+	public void setDescontoPedido(Double descontoPedido) {
+		this.descontoPedido = descontoPedido;
+	}
+	public String getObservacaoPedido() {
+		return observacaoPedido;
+	}
+	public void setObservacaoPedido(String observacaoPedido) {
+		this.observacaoPedido = observacaoPedido;
 	}
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
-		pedido.setQtdItens(qtdItens);
 		pedido.setEnumStatus(enumStatus);
 		pedido.setEnumPagamento(enumPagamento);
 		pedido.setDataCadastro(dataCadastro);
+		pedido.setValorPedido(valorPedido);
+		pedido.setObservacaoPedido(observacaoPedido);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
-		pedido.setQtdItens(qtdItens);
 		pedido.setEnumStatus(enumStatus);
 		pedido.setEnumPagamento(enumPagamento);
 		pedido.setDataCadastro(dataCadastro);
+		pedido.setObservacaoPedido(observacaoPedido);
+		pedido.setValorPedido(valorPedido);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {
-		this.qtdItens = pedido.getQtdItens();
 		this.enumPagamento = pedido.getEnumPagamento();
 		this.enumStatus = pedido.getEnumStatus();
 		this.dataCadastro = pedido.getDataCadastro();
+		this.valorPedido = pedido.getValorPedido();
+		this.descontoPedido = pedido.getDescontoPedido();
+		this.observacaoPedido = pedido.getObservacaoPedido();
 	}
 }

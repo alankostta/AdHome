@@ -1,4 +1,5 @@
-<div th:fragment="tabelaItens(itensDto)">
+<div th:fragment="tabelaItens">
+<input type="hidden" name="listaProdutos" id="listaProdutos">
 <table id="listaPedido" class="table table-striped">
 	<thead>
 		<tr>
@@ -12,7 +13,8 @@
 		</tr>
 	</thead>
 	<tbody id="tbody">
-	</tbody>
+			
+		</tbody>
 	<tfoot>
 		<tr>
 			<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>
@@ -25,6 +27,8 @@
 	</tfoot>
 </table>
 </div>
+
+
 
 
 

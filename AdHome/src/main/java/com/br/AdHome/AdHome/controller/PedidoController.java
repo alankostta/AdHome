@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -26,6 +28,7 @@ import com.br.AdHome.AdHome.dto.ItemPedidoDto;
 import com.br.AdHome.AdHome.dto.PedidoDto;
 import com.br.AdHome.AdHome.dto.ProdutoDto;
 import com.br.AdHome.AdHome.models.Cliente;
+import com.br.AdHome.AdHome.models.ItemPedido;
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
@@ -35,6 +38,8 @@ import com.br.AdHome.AdHome.services.ClienteService;
 import com.br.AdHome.AdHome.services.ItemPedidoService;
 import com.br.AdHome.AdHome.services.PedidoService;
 import com.br.AdHome.AdHome.services.ProdutoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /*
  * Controlador: responder interações do usuśrio
@@ -75,10 +80,11 @@ public class PedidoController {
 	}
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
-	@PostMapping("/pedido")
+	@PostMapping("")
 	public ModelAndView savePedido(@Valid ClienteDto clienteDto, BindingResult resultCliente,
 			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
-			@Valid ProdutoDto produtoDto, BindingResult resultProduto) {
+			@Valid ProdutoDto produtoDto, BindingResult resultProduto,
+			@RequestParam("listaProdutos") String listaProdutos) {
 		
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 		
@@ -98,9 +104,16 @@ public class PedidoController {
 				pedido.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")));
 				pedido.setAnoRef(cal.get(Calendar.YEAR));
 				pedido.setItens(pedido.getItens());
-				pedido.setQtdItens(pedido.getQtdItens());
-				List<Produto> produtos = new ArrayList<Produto>();
-				produtos.add(produto);
+				Set<ItemPedido> produtos = new HashSet<>();
+			    ObjectMapper objectMapper = new ObjectMapper();
+
+			    try {
+			        produtos = objectMapper.readValue(listaProdutos, TypeFactory.defaultInstance().constructCollectionType(List.class, Produto.class));
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			    }
+			    pedido.setItens(produtos);
+			    pedidoService.savePedido(pedido);
 				pedido.setCliente(cliente);
 				pedidoService.savePedido(pedido);
 				
