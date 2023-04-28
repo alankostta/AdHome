@@ -17,7 +17,7 @@
 	<script src="js/scripts.js"></script>
 	<header th:replace="~{fragmentos :: header('Cadastrar Pedido')}"></header>
 	<br>
-	<main th:replace="~{fragmentos_pedido :: main(pedidoDto,clienteDto,produtoDto,itemPedidoDto,aduserDto,'../pedido')}"></main>
+	<main th:replace="~{fragmentos_pedido :: main(pedidoDto,clienteDto,produtoDto,itemPedidoDto,aduserDto,enderecoDto,'../pedido')}"></main>
 	<div class="modal fade" id="pesquisarClienteModal" tabindex="-1"
 		aria-labelledby="clienteModalpesquisa" aria-hidden="true">
 		<div class="modal-dialog">

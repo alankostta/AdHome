@@ -23,13 +23,13 @@ public class ClienteDto{
 	
 	private BigInteger clienteId;
 	@NotBlank
-	@NotNull
+	//@NotNull
 	@Size(max = 70)
 	private String nome;
-	@NotNull
+	//@NotNull
 	@Size(max = 15)
 	private String sexo;
-	@NotNull
+	//@NotNull
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataNasci;
 	private EnderecoEnum enderecoEnum;

@@ -1,5 +1,7 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.math.BigInteger;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -15,6 +17,8 @@ import com.br.AdHome.AdHome.models.Endereco;
 
 public class EnderecoDto {
 
+	private BigInteger enderecoId;
+	
 	@NotBlank
 	@Size(max = 2)
 	private String uf;
@@ -40,6 +44,14 @@ public class EnderecoDto {
 
 	@Size(max = 10)
 	private String numero;
+
+	public BigInteger getEnderecoId() {
+		return enderecoId;
+	}
+
+	public void setEnderecoId(BigInteger enderecoId) {
+		this.enderecoId = enderecoId;
+	}
 
 	public String getUf() {
 		return uf;

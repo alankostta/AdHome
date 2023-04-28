@@ -171,8 +171,9 @@ function carregarProduto(produtoId) {
 				subTotal: subTotal
 			};
 
-			$("#pesquisarProdutoModal").modal('hide');
+			
 			$('#listaProdutos').val(JSON.stringify(produtos));
+			$("#pesquisarProdutoModal").modal('hide');
 
 		}
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
@@ -243,6 +244,7 @@ function listarUser() {
 			var options = "";
 			$.each(response, function(index, usuario) {
 				options += "<option value='" + usuario.id + "'>" + usuario.nome + "</option>";
+				//option th:each="usuario : ${paises}" th:value="${pais.id}" th:text="${pais.descricao}"
 			});
 
 			// substituir o conteúdo da tag select pelas opções

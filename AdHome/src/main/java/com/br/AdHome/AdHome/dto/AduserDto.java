@@ -1,8 +1,12 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.math.BigInteger;
+
 import com.br.AdHome.AdHome.models.AdUser;
 
 public class AduserDto {
+	
+	private BigInteger userId;
 	
 	private String nomeUser;
 	
@@ -12,7 +16,14 @@ public class AduserDto {
 
 	private String nome;
 	
-	
+	public BigInteger getUserId() {
+		return userId;
+	}
+
+	public void setUserId(BigInteger userId) {
+		this.userId = userId;
+	}
+
 	public String getNome() {
 		return nome;
 	}

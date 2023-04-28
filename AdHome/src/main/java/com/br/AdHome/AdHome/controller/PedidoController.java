@@ -52,112 +52,116 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
-	
+
 	final PedidoService pedidoService;
 	final ProdutoService produtoService;
 	final ClienteService clienteService;
 	final AduserService aduserService;
 	final ItemPedidoService itemPedidoService;
-	
-	
-	public PedidoController(PedidoService pedidoService, ProdutoService produtoService,
-			ClienteService clienteService, ItemPedidoService itemPedidoService,
-			AduserService aduserService) {
+
+	public PedidoController(PedidoService pedidoService, ProdutoService produtoService, ClienteService clienteService,
+			ItemPedidoService itemPedidoService, AduserService aduserService) {
 		this.pedidoService = pedidoService;
 		this.produtoService = produtoService;
 		this.clienteService = clienteService;
 		this.aduserService = aduserService;
 		this.itemPedidoService = itemPedidoService;
-		
+
 	}
+
 	@GetMapping("")
-	public ModelAndView exibirPedido(ProdutoDto produtoDto, PedidoDto pedidoDto,
-			ClienteDto clienteDto, ItemPedidoDto itemPedidoDto, AduserDto aduserDto) {
+	public ModelAndView exibirPedido(ProdutoDto produtoDto, PedidoDto pedidoDto, ClienteDto clienteDto,
+			ItemPedidoDto itemPedidoDto, AduserDto aduserDto) {
 		var mv = new ModelAndView("pedido/pedido");
-		mv.addObject("listaStatus",PedidoEnumStatus.values());
-		mv.addObject("listaPagamento",PedidoEnumTipoPagamento.values());
+		mv.addObject("listaStatus", PedidoEnumStatus.values());
+		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		return mv;
 	}
+
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
 	@PostMapping("")
 	public ModelAndView savePedido(@Valid ClienteDto clienteDto, BindingResult resultCliente,
-			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
-			@Valid ProdutoDto produtoDto, BindingResult resultProduto,
-			@RequestParam("listaProdutos") String listaProdutos) {
-		
+			@Valid PedidoDto pedidoDto, BindingResult resultPedido, @Valid ProdutoDto produtoDto,
+			BindingResult resultProduto, @RequestParam("listaProdutos") String listaProdutos) {
+
 		ModelAndView mv = new ModelAndView("pedido/pedido");
-		
-		
-		if (resultCliente.hasErrors()&& 
-				resultPedido.hasErrors()&& 
-				resultProduto.hasErrors()) {
-			
+
+		if (resultCliente.hasErrors() && resultPedido.hasErrors() && resultProduto.hasErrors()) {
+
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
-		}
-		else {
-				Pedido pedido = pedidoDto.toPedido();
-				Produto produto = produtoDto.toProduto();
-				Cliente cliente = clienteDto.toCliente();
-				Calendar cal = Calendar.getInstance();
-				pedido.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")));
-				pedido.setAnoRef(cal.get(Calendar.YEAR));
-				pedido.setItens(pedido.getItens());
-				Set<ItemPedido> produtos = new HashSet<>();
-			    ObjectMapper objectMapper = new ObjectMapper();
+		} else {
+			Pedido pedido = pedidoDto.toPedido();
+			Produto produto = produtoDto.toProduto();
+			Cliente cliente = clienteDto.toCliente();
+			Calendar cal = Calendar.getInstance();
+			pedido.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")));
+			pedido.setAnoRef(cal.get(Calendar.YEAR));
+			pedido.setItens(pedido.getItens());
+			Set<ItemPedido> produtos = new HashSet<>();
+			ObjectMapper objectMapper = new ObjectMapper();
 
-			    try {
-			        produtos = objectMapper.readValue(listaProdutos, TypeFactory.defaultInstance().constructCollectionType(List.class, Produto.class));
-			    } catch (Exception e) {
-			        e.printStackTrace();
-			    }
-			    pedido.setItens(produtos);
-			    pedidoService.savePedido(pedido);
-				pedido.setCliente(cliente);
-				pedidoService.savePedido(pedido);
-				
-				return new ModelAndView("redirect:/pedido");
+			try {
+				produtos = objectMapper.readValue(listaProdutos,
+						TypeFactory.defaultInstance().constructCollectionType(List.class, Produto.class));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			pedido.setItens(produtos);
+			pedidoService.savePedido(pedido);
+			pedido.setCliente(cliente);
+			pedidoService.savePedido(pedido);
+
+			return new ModelAndView("redirect:/pedido");
 		}
 	}
+
 	public ModelAndView findAllPedidos() {
 		var mv = new ModelAndView("pedido/pedido");
 		List<Pedido> pedidos = pedidoService.findAll();
-		mv.addObject("listaPedido",pedidos);
+		mv.addObject("listaPedido", pedidos);
 		return mv;
 	}
-	@GetMapping(value="buscarPorNomeCliente")
-	@ResponseBody//Retorna os dados para o corpo da resposta.
-	public ResponseEntity<List<Cliente> > buscarPorNomecliente(@RequestParam(name="name") String name) {
-		//List<Fornecedor> fornecedor = fornecedorService.findByName(name.trim().toLowerCase());
-		List<Cliente>  cliente = clienteService.findByNameContaining(name);//Execeuta a consulta no banco de dados ao qual está sendo por nome
-	
-		return new ResponseEntity<List<Cliente>>(cliente,HttpStatus.OK);//Retorna uma lista de nomes em formato JSON
+
+	@GetMapping(value = "buscarPorNomeCliente")
+	@ResponseBody // Retorna os dados para o corpo da resposta.
+	public ResponseEntity<List<Cliente>> buscarPorNomecliente(@RequestParam(name = "name") String name) {
+		// List<Fornecedor> fornecedor =
+		// fornecedorService.findByName(name.trim().toLowerCase());
+		List<Cliente> cliente = clienteService.findByNameContaining(name);// Execeuta a consulta no banco de dados ao
+																			// qual está sendo por nome
+
+		return new ResponseEntity<List<Cliente>>(cliente, HttpStatus.OK);// Retorna uma lista de nomes em formato JSON
 	}
+
 	@GetMapping(value = "buscarPorIdCliente")
 	@ResponseBody
-	public ResponseEntity<List<Object[]>> buscarPorIdCliente(@RequestParam(name="clienteId") Long clienteId) {
+	public ResponseEntity<List<Object[]>> buscarPorIdCliente(@RequestParam(name = "clienteId") Long clienteId) {
 		List<Object[]> clientes = clienteService.findClienteEndereco(clienteId);
-		return new ResponseEntity<List<Object[]>>(clientes,HttpStatus.OK);
+		return new ResponseEntity<List<Object[]>>(clientes, HttpStatus.OK);
 	}
+
 	@GetMapping(value = "buscarProduto")
 	@ResponseBody
-	public ResponseEntity<List<Produto>> buscarProduto(@RequestParam(name="descricao") String descricao) {
+	public ResponseEntity<List<Produto>> buscarProduto(@RequestParam(name = "descricao") String descricao) {
 		List<Produto> produto = produtoService.findBydescricao(descricao);
-		return new ResponseEntity<List<Produto>>(produto,HttpStatus.OK);
+		return new ResponseEntity<List<Produto>>(produto, HttpStatus.OK);
 	}
+
 	@GetMapping(value = "buscarProdutoId")
 	@ResponseBody
-	public ResponseEntity<List<Produto>> buscarProdutoPorId(@RequestParam(name="produtoId") Long produtoId) {
+	public ResponseEntity<List<Produto>> buscarProdutoPorId(@RequestParam(name = "produtoId") Long produtoId) {
 		Optional<Produto> produtoOptional = produtoService.findById(produtoId);
-		if(produtoOptional.isPresent()) {
+		if (produtoOptional.isPresent()) {
 			Produto produto = produtoOptional.get();
 			List<Produto> produtoList = new ArrayList<Produto>();
 			produtoList.add(produto);
-			return new ResponseEntity<List<Produto>>(produtoList,HttpStatus.OK);
+			return new ResponseEntity<List<Produto>>(produtoList, HttpStatus.OK);
 		}
-		return new  ResponseEntity<List<Produto>>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<List<Produto>>(HttpStatus.BAD_REQUEST);
 	}
+
 	public ModelAndView retornaErroPedido(String msg) {
 		ModelAndView mv = new ModelAndView("redirect:/pedido/listar");
 		mv.addObject("mensagem", msg);

@@ -1,4 +1,4 @@
-<main th:fragment="main(pedidoDto,clienteDto,produtoDto,itemPedidoDto,aduserDto, action)">
+<main th:fragment="main(pedidoDto,clienteDto,produtoDto,itemPedidoDto,aduserDto,enderecoDto, action)">
 	<div class="container">
 		<fieldset class="fieldset text-left mb-5">
 			<legend>Menu</legend>
@@ -81,7 +81,7 @@
 						<div class="form-group row">
 							<label class="col-md-2 col-form-label">Vendedor:</label>
 							<div class="col-md-4">
-								<select class="form-select form-select-sm"
+								<select class="form-select form-select-sm" 
 									aria-label="Default select example" id="selectUsuarios">
 								</select>
 							</div>
@@ -90,7 +90,7 @@
 							<div class="col-md-3">
 								<div class="input-group">
 									<span class="input-group-text" id="basic-addon1">R$</span> 
-									<input id="porcentagem"
+									<input id="porcentagem" th:field="*{pedidoDto.descontoPedido}"
 										type="number" class="form-control form-control-sm"
 										aria-describedby="basic-addon1">
 								</div>
