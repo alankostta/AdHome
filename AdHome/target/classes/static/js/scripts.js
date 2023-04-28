@@ -241,12 +241,18 @@ function listarUser() {
 		url: "/usuarios",
 		success: function(response) {
 			// criar um elemento option para cada usuário
+			
 			var options = "";
+			
+			for (var i = 0; i < response.length; i++){
+				options += "<option value='" + response[i].userId + "'>" + response[i].userId + "- " + response[i].nome + "</option>";
+			}
+			
+			/*
 			$.each(response, function(index, usuario) {
 				options += "<option value='" + usuario.id + "'>" + usuario.nome + "</option>";
-				//option th:each="usuario : ${paises}" th:value="${pais.id}" th:text="${pais.descricao}"
 			});
-
+			*/
 			// substituir o conteúdo da tag select pelas opções
 			var select = document.getElementById("selectUsuarios");
 			select.innerHTML = options;
