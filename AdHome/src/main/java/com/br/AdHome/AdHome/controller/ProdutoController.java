@@ -66,9 +66,10 @@ public class ProdutoController {
 		return mv;
 	}
 	@PostMapping("")
-	public ModelAndView saveProdutos(@Valid ProdutoDto produtoDto, BindingResult resultProduto,
-		@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor, 
-		CategoriaDto categoriaDto, BindingResult resultCategoria) {
+	public ModelAndView saveProdutos(
+			@Valid ProdutoDto produtoDto, BindingResult resultProduto,
+			@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor, 
+			@Valid CategoriaDto categoriaDto, BindingResult resultCategoria) {
 
 		ModelAndView mv = new ModelAndView("produto/produto");
 

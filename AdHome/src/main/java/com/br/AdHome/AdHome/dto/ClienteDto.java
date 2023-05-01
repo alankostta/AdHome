@@ -4,10 +4,8 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.Set;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import com.br.AdHome.AdHome.models.Cliente;
 import com.br.AdHome.AdHome.models.Contato;
 import com.br.AdHome.AdHome.models.ContatoEnum;
@@ -25,7 +23,7 @@ public class ClienteDto{
 	@NotBlank
 	//@NotNull
 	@Size(max = 70)
-	private String nome;
+	private String nomeClie;
 	//@NotNull
 	@Size(max = 15)
 	private String sexo;
@@ -55,11 +53,11 @@ public class ClienteDto{
 	public void setClienteId(BigInteger clienteId) {
 		this.clienteId = clienteId;
 	}
-	public String getNome() {
-		return nome;
+	public String getNomeClie() {
+		return nomeClie;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeClie(String nome) {
+		this.nomeClie = nome;
 	}
 	public String getSexo() {
 		return sexo;
@@ -88,7 +86,7 @@ public class ClienteDto{
 	public Cliente toCliente() {
 		
 		Cliente cliente = new Cliente();
-		cliente.setNome(this.nome);
+		cliente.setNome(this.nomeClie);
 		cliente.setSexo(this.sexo);
 		cliente.setDataNasci(this.dataNasci);
 		cliente.setEndereco(this.endereco);
@@ -99,7 +97,7 @@ public class ClienteDto{
 	}
 	public Cliente toCliente(Cliente cliente) {
 		
-		cliente.setNome(this.nome);
+		cliente.setNome(this.nomeClie);
 		cliente.setSexo(this.sexo);
 		cliente.setDataNasci(this.dataNasci);
 		cliente.setEndereco(this.endereco);
@@ -109,7 +107,7 @@ public class ClienteDto{
 		return cliente;
 	}
 	public void fromCliente(Cliente cliente) {
-		this.nome = cliente.getNome();
+		this.nomeClie = cliente.getNome();
 		this.sexo = cliente.getSexo();
 		this.dataNasci = cliente.getDataNasci();
 		this.endereco = cliente.getEndereco();

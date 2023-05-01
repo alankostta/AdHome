@@ -1,16 +1,13 @@
 package com.br.AdHome.AdHome.controller;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,20 +18,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.br.AdHome.AdHome.configs.UserDetailsServiceImpl;
 import com.br.AdHome.AdHome.dto.AduserDto;
 import com.br.AdHome.AdHome.dto.ClienteDto;
+import com.br.AdHome.AdHome.dto.EnderecoDto;
 import com.br.AdHome.AdHome.dto.ItemPedidoDto;
 import com.br.AdHome.AdHome.dto.PedidoDto;
 import com.br.AdHome.AdHome.dto.ProdutoDto;
+import com.br.AdHome.AdHome.models.AdUser;
+import com.br.AdHome.AdHome.models.BandeiraCartao;
 import com.br.AdHome.AdHome.models.Cliente;
 import com.br.AdHome.AdHome.models.ItemPedido;
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
 import com.br.AdHome.AdHome.models.Produto;
-import com.br.AdHome.AdHome.services.AduserService;
 import com.br.AdHome.AdHome.services.ClienteService;
+import com.br.AdHome.AdHome.services.EnderecoService;
 import com.br.AdHome.AdHome.services.ItemPedidoService;
 import com.br.AdHome.AdHome.services.PedidoService;
 import com.br.AdHome.AdHome.services.ProdutoService;
@@ -56,38 +56,52 @@ public class PedidoController {
 	final PedidoService pedidoService;
 	final ProdutoService produtoService;
 	final ClienteService clienteService;
-	final AduserService aduserService;
+	final UserDetailsServiceImpl userDetailsServiceImpl;
 	final ItemPedidoService itemPedidoService;
+	final EnderecoService enderecoService;
 
-	public PedidoController(PedidoService pedidoService, ProdutoService produtoService, ClienteService clienteService,
-			ItemPedidoService itemPedidoService, AduserService aduserService) {
+	public PedidoController(
+			PedidoService pedidoService, ProdutoService produtoService, 
+			ClienteService clienteService, ItemPedidoService itemPedidoService,
+			UserDetailsServiceImpl userDetailsServiceImpl, EnderecoService enderecoService) {
+		
 		this.pedidoService = pedidoService;
 		this.produtoService = produtoService;
 		this.clienteService = clienteService;
-		this.aduserService = aduserService;
+		this.userDetailsServiceImpl = userDetailsServiceImpl;
 		this.itemPedidoService = itemPedidoService;
+		this.enderecoService = enderecoService;
 
 	}
 
 	@GetMapping("")
-	public ModelAndView exibirPedido(ProdutoDto produtoDto, PedidoDto pedidoDto, ClienteDto clienteDto,
-			ItemPedidoDto itemPedidoDto, AduserDto aduserDto) {
+	public ModelAndView exibirPedido(
+			ProdutoDto produtoDto, PedidoDto pedidoDto, 
+			ClienteDto clienteDto, ItemPedidoDto itemPedidoDto,
+			AduserDto aduserDto, EnderecoDto enderecoDto) {
+		
 		var mv = new ModelAndView("pedido/pedido");
 		mv.addObject("listaStatus", PedidoEnumStatus.values());
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
+		mv.addObject("listaCartao", BandeiraCartao.values());
+		List<AdUser> user = userDetailsServiceImpl.findAllUser();
+		mv.addObject("listaAduserDto",aduserDto.listUser(user));
 		return mv;
 	}
-
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
 	@PostMapping("")
-	public ModelAndView savePedido(@Valid ClienteDto clienteDto, BindingResult resultCliente,
-			@Valid PedidoDto pedidoDto, BindingResult resultPedido, @Valid ProdutoDto produtoDto,
-			BindingResult resultProduto, @RequestParam("listaProdutos") String listaProdutos) {
+	public ModelAndView savePedido(
+			@Valid ClienteDto clienteDto, BindingResult resultCliente,
+			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
+			@Valid ProdutoDto produtoDto,BindingResult resultProduto, 
+			@Valid EnderecoDto enderecoDto, BindingResult resultEnderecoDto,
+			@Valid AduserDto aduserDto, BindingResult resultAduserDto) {
 
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 
-		if (resultCliente.hasErrors() && resultPedido.hasErrors() && resultProduto.hasErrors()) {
+		if (resultCliente.hasErrors() && resultPedido.hasErrors() 
+				&& resultEnderecoDto.hasErrors() && resultProduto.hasErrors()) {
 
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
@@ -96,18 +110,11 @@ public class PedidoController {
 			Produto produto = produtoDto.toProduto();
 			Cliente cliente = clienteDto.toCliente();
 			Calendar cal = Calendar.getInstance();
-			pedido.setDataPedido(LocalDateTime.now(ZoneId.of("UTC")));
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
+			pedido.setDataAlteraPedido(LocalDateTime.now());
 			pedido.setItens(pedido.getItens());
 			Set<ItemPedido> produtos = new HashSet<>();
-			ObjectMapper objectMapper = new ObjectMapper();
 
-			try {
-				produtos = objectMapper.readValue(listaProdutos,
-						TypeFactory.defaultInstance().constructCollectionType(List.class, Produto.class));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			pedido.setItens(produtos);
 			pedidoService.savePedido(pedido);
 			pedido.setCliente(cliente);

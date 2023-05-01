@@ -162,17 +162,7 @@ function carregarProduto(produtoId) {
 				$(this).closest('tr').find('#subTotal').val(subTotal);
 				calcularTotal();
 			});
-			var produtos = {
-				id: response[i].produtoId,
-				descricao: response[i].descricao,
-				marca: response[i].marca,
-				preco: response[i].preco,
-				quantidade: qtd,
-				subTotal: subTotal
-			};
-
 			
-			$('#listaProdutos').val(JSON.stringify(produtos));
 			$("#pesquisarProdutoModal").modal('hide');
 
 		}
@@ -231,10 +221,12 @@ function verificarDisponibilidadeDaPagina() {
 		}
 	});
 }
-
+/*
 document.addEventListener('DOMContentLoaded', function() {
 	listarUser();
 });
+*/
+/*
 function listarUser() {
 	$.ajax({
 		method: "GET",
@@ -248,11 +240,11 @@ function listarUser() {
 				options += "<option value='" + response[i].userId + "'>" + response[i].userId + "- " + response[i].nome + "</option>";
 			}
 			
-			/*
-			$.each(response, function(index, usuario) {
-				options += "<option value='" + usuario.id + "'>" + usuario.nome + "</option>";
-			});
-			*/
+			
+		//	$.each(response, function(index, usuario) {
+			//	options += "<option value='" + usuario.id + "'>" + usuario.nome + "</option>";
+			//});
+			
 			// substituir o conteúdo da tag select pelas opções
 			var select = document.getElementById("selectUsuarios");
 			select.innerHTML = options;
@@ -262,6 +254,7 @@ function listarUser() {
 		}
 	});
 }
+*/
 function calcularDescontoPedido() {
 		var desconto = parseFloat($('#porcentagem').val());
 		var total = parseFloat($('#total').val());

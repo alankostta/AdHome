@@ -26,11 +26,11 @@ public class AdUser implements UserDetails, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="user_id", nullable=false, unique=true, length=10)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id", nullable = false, unique = true, length = 10)
 	private Long userId;
 	
-	@Column(name="nome_user", nullable=false, length=60)
+	@Column(name = "nome_user", nullable = false, length = 60)
 	@Size(min = 3)
 	private String nomeUser;
 	
@@ -53,7 +53,6 @@ public class AdUser implements UserDetails, Serializable{
 		
 	}
 	public AdUser(String nome, String nomeUser, String emailUser, String password) {
-		super();
 		this.nome = nome;
 		this.nomeUser = nomeUser;
 		this.emailUser = emailUser;
@@ -104,7 +103,7 @@ public class AdUser implements UserDetails, Serializable{
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(emailUser, nomeUser, password, userId, pedidos);
+		return Objects.hash(nome, emailUser, nomeUser, password, userId, pedidos);
 	}
 	
 	@Override

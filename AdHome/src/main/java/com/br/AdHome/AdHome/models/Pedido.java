@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +21,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -35,9 +33,6 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "pedido_id", nullable = false, length = 10, unique = true)
 	private Long pedidoId;
-	
-	@Column(name = "data_pedido", nullable = false)
-	private LocalDateTime dataPedido;
 	
 	@Column(name = "data_altera", nullable = false)
 	private LocalDateTime dataAlteraPedido;
@@ -65,7 +60,7 @@ public class Pedido implements Serializable {
 	private PedidoEnumTipoPagamento enumPagamento;
 	
 	@Enumerated(EnumType.STRING)
-	private BandeiraCartao enumcartao;
+	private BandeiraCartao enumCartao;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -89,10 +84,9 @@ public class Pedido implements Serializable {
 	public Pedido() {
 		
 	}
-	public Pedido(LocalDateTime dataPedido,LocalDateTime dataAlteraPedido, Cliente cliente,
+	public Pedido(LocalDateTime dataAlteraPedido, Cliente cliente,
 			Integer anoRef, Date dataCadastro, Double valorPedido, AdUser user, Endereco endereco) {
  
-		this.setDataPedido(dataPedido);
 		this.setDataAlteraPedido(dataAlteraPedido);
 		this.setCliente(cliente);
 		this.setAnoRef(anoRef);
@@ -107,9 +101,6 @@ public class Pedido implements Serializable {
 	public void setPedidoId(Long pedidoId) {
 		this.pedidoId = pedidoId;
 	}
-	public LocalDateTime getDataPedido() {
-		return dataPedido;
-	}
 	public LocalDateTime getDataAlteraPedido() {
 		return dataAlteraPedido;
 	}
@@ -121,9 +112,6 @@ public class Pedido implements Serializable {
 	}
 	public void setAnoRef(Integer anoRef) {
 		this.anoRef = anoRef;
-	}
-	public void setDataPedido(LocalDateTime dataPedido) {
-		this.dataPedido = dataPedido;
 	}
 	public String getObservacaoPedido() {
 		return observacaoPedido;
@@ -173,11 +161,11 @@ public class Pedido implements Serializable {
 	public void setDescontoPedido(Double descontoPedido) {
 		this.descontoPedido = descontoPedido;
 	}
-	public BandeiraCartao getEnumcartao() {
-		return enumcartao;
+	public BandeiraCartao getEnumCartao() {
+		return enumCartao;
 	}
-	public void setEnumcartao(BandeiraCartao enumcartao) {
-		this.enumcartao = enumcartao;
+	public void setEnumCartao(BandeiraCartao enumCartao) {
+		this.enumCartao = enumCartao;
 	}
 	public Date getDataCadastro() {
 		return dataCadastro;
@@ -193,16 +181,16 @@ public class Pedido implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Pedido [pedidoId=" + pedidoId + ", dataPedido=" + dataPedido + ", dataAlteraPedido=" + dataAlteraPedido
+		return "Pedido [pedidoId=" + ", dataAlteraPedido=" + dataAlteraPedido
 				+ ", anoRef=" + anoRef + ", valorPedido=" + valorPedido + ", descontoPedido="
 				+ descontoPedido + ", observacaoPedido=" + observacaoPedido + ", dataCadastro=" + dataCadastro
-				+ ", enumStatus=" + enumStatus + ", enumPagamento=" + enumPagamento + ", enumcartao=" + enumcartao
+				+ ", enumStatus=" + enumStatus + ", enumPagamento=" + enumPagamento + ", enumCartao=" + enumCartao
 				+ ", itens=" + itens + ", endereco=" + endereco + ", cliente=" + cliente + ", user=" + user + "]";
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, cliente, dataAlteraPedido, dataCadastro, dataPedido, descontoPedido, endereco,
-				enumPagamento, enumStatus, enumcartao, itens, observacaoPedido, pedidoId, user, valorPedido);
+		return Objects.hash(anoRef, cliente, dataAlteraPedido, dataCadastro, descontoPedido, endereco,
+				enumPagamento, enumStatus, enumCartao, itens, observacaoPedido, pedidoId, user, valorPedido);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -215,10 +203,10 @@ public class Pedido implements Serializable {
 		Pedido other = (Pedido) obj;
 		return Objects.equals(anoRef, other.anoRef) && Objects.equals(cliente, other.cliente)
 				&& Objects.equals(dataAlteraPedido, other.dataAlteraPedido)
-				&& Objects.equals(dataCadastro, other.dataCadastro) && Objects.equals(dataPedido, other.dataPedido)
+				&& Objects.equals(dataCadastro, other.dataCadastro)
 				&& Objects.equals(descontoPedido, other.descontoPedido) && Objects.equals(endereco, other.endereco)
 				&& enumPagamento == other.enumPagamento && enumStatus == other.enumStatus
-				&& enumcartao == other.enumcartao && Objects.equals(itens, other.itens)
+				&& enumCartao == other.enumCartao && Objects.equals(itens, other.itens)
 				&& Objects.equals(observacaoPedido, other.observacaoPedido) && Objects.equals(pedidoId, other.pedidoId)
 				&& Objects.equals(user, other.user)
 				&& Objects.equals(valorPedido, other.valorPedido);

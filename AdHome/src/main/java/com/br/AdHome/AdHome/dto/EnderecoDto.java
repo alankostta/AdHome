@@ -48,19 +48,15 @@ public class EnderecoDto {
 	public BigInteger getEnderecoId() {
 		return enderecoId;
 	}
-
 	public void setEnderecoId(BigInteger enderecoId) {
 		this.enderecoId = enderecoId;
 	}
-
 	public String getUf() {
 		return uf;
 	}
-
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-
 	public String getLocalidade() {
 		return localidade;
 	}
@@ -114,6 +110,7 @@ public class EnderecoDto {
 
 	public Endereco toEndereco() {// Passsando os Obj para classe endereço sem parametros no metodo
 		Endereco endereco = new Endereco();
+		endereco.setEnderecoId(getEnderecoId().longValue());
 		endereco.setUf(this.uf);
 		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
@@ -125,6 +122,7 @@ public class EnderecoDto {
 	}
 
 	public Endereco toEndereco(Endereco endereco) { // Passsando os Obj para classe endereço com parametros no metodo
+		endereco.setEnderecoId(getEnderecoId().longValue());
 		endereco.setUf(this.uf);
 		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
@@ -136,7 +134,8 @@ public class EnderecoDto {
 	}
 
 	public void fromEndereco(Endereco endereco) { // Pegando da classe Endereco seus atributos.
-		this.uf = endereco.getUf();
+		this.enderecoId = BigInteger.valueOf(endereco.getEnderecoId());
+		this.uf = endereco.getUf(); 
 		this.localidade = endereco.getLocalidade();
 		this.bairro = endereco.getBairro();
 		this.cep = endereco.getCep();

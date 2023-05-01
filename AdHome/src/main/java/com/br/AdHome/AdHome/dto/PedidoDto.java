@@ -1,6 +1,10 @@
 package com.br.AdHome.AdHome.dto;
 
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.br.AdHome.AdHome.models.BandeiraCartao;
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
@@ -21,7 +25,18 @@ public class PedidoDto {
 	
 	private PedidoEnumTipoPagamento enumPagamento;
 	
+	private BandeiraCartao enumCartao;
+	
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataCadastro;
+	
+	public BandeiraCartao getEnumCartao() {
+		return enumCartao;
+	}
+	
+	public void setEnumCartao(BandeiraCartao enumcartao) {
+		this.enumCartao = enumcartao;
+	}
 	
 	public Date getDataCadastro() {
 		return dataCadastro;
@@ -61,24 +76,27 @@ public class PedidoDto {
 	}
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
-		pedido.setEnumStatus(enumStatus);
-		pedido.setEnumPagamento(enumPagamento);
-		pedido.setDataCadastro(dataCadastro);
-		pedido.setValorPedido(valorPedido);
-		pedido.setObservacaoPedido(observacaoPedido);
+		pedido.setEnumStatus(this.enumStatus);
+		pedido.setEnumPagamento(this.enumPagamento);
+		pedido.setEnumCartao(this.enumCartao);
+		pedido.setDataCadastro(this.dataCadastro);
+		pedido.setValorPedido(this.valorPedido);
+		pedido.setObservacaoPedido(this.observacaoPedido);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
-		pedido.setEnumStatus(enumStatus);
-		pedido.setEnumPagamento(enumPagamento);
-		pedido.setDataCadastro(dataCadastro);
-		pedido.setObservacaoPedido(observacaoPedido);
-		pedido.setValorPedido(valorPedido);
+		pedido.setEnumStatus(this.enumStatus);
+		pedido.setEnumPagamento(this.enumPagamento);
+		pedido.setEnumCartao(this.enumCartao);
+		pedido.setDataCadastro(this.dataCadastro);
+		pedido.setObservacaoPedido(this.observacaoPedido);
+		pedido.setValorPedido(this.valorPedido);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {
 		this.enumPagamento = pedido.getEnumPagamento();
 		this.enumStatus = pedido.getEnumStatus();
+		this.enumCartao = pedido.getEnumCartao();
 		this.dataCadastro = pedido.getDataCadastro();
 		this.valorPedido = pedido.getValorPedido();
 		this.descontoPedido = pedido.getDescontoPedido();

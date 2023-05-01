@@ -1,6 +1,8 @@
 package com.br.AdHome.AdHome.dto;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.br.AdHome.AdHome.models.AdUser;
 
@@ -57,6 +59,7 @@ public class AduserDto {
 	}
 	public AdUser toAdUser() {
 		AdUser user = new AdUser();
+		user.setUserId(this.userId.longValue());
 		user.setNome(this.nome);
 		user.setNomeUser(this.nomeUser);
 		user.setEmailUser(this.emailUser);
@@ -64,6 +67,7 @@ public class AduserDto {
 		return user;
 	}
 	public AdUser toAdUser(AdUser user) {
+		user.setUserId(this.userId.longValue());
 		user.setNome(this.nome);
 		user.setNomeUser(this.nomeUser);
 		user.setEmailUser(this.emailUser);
@@ -71,9 +75,19 @@ public class AduserDto {
 		return user;
 	}
 	public void fromAdUser(AdUser user) {
+		this.userId = BigInteger.valueOf(user.getUserId());
 		this.nome = user.getNome();
 		this.nomeUser = user.getNomeUser();
 		this.emailUser = user.getEmailUser();
 		this.password = user.getPassword();
+	}
+	public List<AduserDto> listUser(List<AdUser> user){
+		List<AduserDto> adUserDtoList = new ArrayList<>();
+	    for (AdUser adUser : user) {
+	        AduserDto dto = new AduserDto();
+	        dto.fromAdUser(adUser);
+	        adUserDtoList.add(dto);
+	    }
+	    return adUserDtoList;
 	}
 }
