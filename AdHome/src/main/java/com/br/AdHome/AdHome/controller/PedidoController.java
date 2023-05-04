@@ -114,7 +114,7 @@ public class PedidoController {
 			pedido.setDataAlteraPedido(LocalDateTime.now());
 			pedido.setItens(pedido.getItens());
 			Set<ItemPedido> produtos = new HashSet<>();
-
+			
 			pedido.setItens(produtos);
 			pedidoService.savePedido(pedido);
 			pedido.setCliente(cliente);
