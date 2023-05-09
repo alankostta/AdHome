@@ -84,7 +84,6 @@ public class Cliente implements Serializable {
 
 	public Cliente(String nome, String sexo, Date dataNasci, LocalDateTime dataCadastro, LocalDateTime dataAltera,
 			Integer anoRef) {
-		super();
 		this.setNome(nome);
 		this.setSexo(sexo);
 		this.setDataNasci(dataNasci);

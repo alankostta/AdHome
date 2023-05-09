@@ -7,11 +7,26 @@ public class ItemPedidoDto {
 	
 	private Integer quantidade;
 	
+<<<<<<< Updated upstream
 	private Produto produto;
+=======
+	private Double subTotal;
+	
+	private List<Produto> produto;
+>>>>>>> Stashed changes
 
 	public Integer getQuantidade() {
 		return quantidade;
 	}
+	
+	public Double getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(Double subTotal) {
+		this.subTotal = subTotal;
+	}
+
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}

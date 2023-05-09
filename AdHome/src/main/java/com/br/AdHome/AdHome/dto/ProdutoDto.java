@@ -1,5 +1,7 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.math.BigInteger;
+
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
@@ -15,6 +17,8 @@ import com.br.AdHome.AdHome.models.Produto;
  */
 
 public class ProdutoDto {
+	
+	private BigInteger produtoId;
 	@NotBlank
 	@Size(max = 255)
 	private String descricao;
@@ -37,6 +41,12 @@ public class ProdutoDto {
 	@DecimalMax(value = "1000000", inclusive = false)
 	private Double preco;
 	
+	public BigInteger getProdutoId() {
+		return produtoId;
+	}
+	public void setProdutoId(BigInteger produtoId) {
+		this.produtoId = produtoId;
+	}
 	public String getDescricao() {
 		return descricao;
 	}
