@@ -17,10 +17,9 @@ import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
  */
 public class PedidoDto {
 	
-	final ItemPedidoDto itemPedidoDto;
-	final ClienteDto clienteDto;
-	final EnderecoDto enderecoDto;
-	
+	private ItemPedidoDto itemPedidoDto;
+	private ClienteDto clienteDto;
+	private EnderecoDto enderecoDto;
 	private Double valorPedido;
 	private Double descontoPedido;
 	private String observacaoPedido;
@@ -33,8 +32,11 @@ public class PedidoDto {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataCadastro;
 	
-	public PedidoDto(ItemPedidoDto itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto) {
+	public PedidoDto(ItemPedidoDto itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto, 
+			Double valorPedido, Double descontoPedido, String observacaoPedido) {
 		this.itemPedidoDto = itemPedidoDto;
+		this.clienteDto = clienteDto;
+		this.enderecoDto = enderecoDto;
 		this.clienteDto = clienteDto;
 		this.enderecoDto = enderecoDto;
 	}
@@ -92,6 +94,30 @@ public class PedidoDto {
 		this.observacaoPedido = observacaoPedido;
 	}
 	
+	public ItemPedidoDto getItemPedidoDto() {
+		return itemPedidoDto;
+	}
+
+	public void setItemPedidoDto(ItemPedidoDto itemPedidoDto) {
+		this.itemPedidoDto = itemPedidoDto;
+	}
+
+	public ClienteDto getClienteDto() {
+		return clienteDto;
+	}
+
+	public void setClienteDto(ClienteDto clienteDto) {
+		this.clienteDto = clienteDto;
+	}
+
+	public EnderecoDto getEnderecoDto() {
+		return enderecoDto;
+	}
+
+	public void setEnderecoDto(EnderecoDto enderecoDto) {
+		this.enderecoDto = enderecoDto;
+	}
+
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
 		pedido.setEnumStatus(this.enumStatus);

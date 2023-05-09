@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody id="tbody">
-            <tr th:each="itemPedidoDto, itemStat : *{pedidoDto.itensPedido}">
+            <tr th:each="itemPedidoDto, itemStat : *{pedidoDto.itensPedidoDto}">
                 <td th:text="${itemStat.index + 1}"></td>
                 <td th:text="${itemPedidoDto.produtoDto.descricao}"></td>
                 <td th:text="${itemPedidoDto.produtoDto.marca}"></td>

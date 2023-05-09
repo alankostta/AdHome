@@ -6,14 +6,8 @@ import com.br.AdHome.AdHome.models.Produto;
 public class ItemPedidoDto {
 	
 	private Integer quantidade;
-	
-<<<<<<< Updated upstream
 	private Produto produto;
-=======
-	private Double subTotal;
-	
-	private List<Produto> produto;
->>>>>>> Stashed changes
+	private Double subTotal;	
 
 	public Integer getQuantidade() {
 		return quantidade;

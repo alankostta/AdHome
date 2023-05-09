@@ -96,7 +96,8 @@ public class PedidoController {
 			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
 			@Valid ProdutoDto produtoDto,BindingResult resultProduto, 
 			@Valid EnderecoDto enderecoDto, BindingResult resultEnderecoDto,
-			@Valid AduserDto aduserDto, BindingResult resultAduserDto) {
+			@Valid AduserDto aduserDto, BindingResult resultAduserDto,
+			@Valid ItemPedidoDto itemPedidoDto, BindingResult resultItemPedidoDto) {
 
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 
@@ -109,13 +110,12 @@ public class PedidoController {
 			Pedido pedido = pedidoDto.toPedido();
 			Produto produto = produtoDto.toProduto();
 			Cliente cliente = clienteDto.toCliente();
+			ItemPedido itens = itemPedidoDto.toItens();
+			itens.setProduto(produto);
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(LocalDateTime.now());
 			pedido.setItens(pedido.getItens());
-			Set<ItemPedido> produtos = new HashSet<>();
-			
-			pedido.setItens(produtos);
 			pedidoService.savePedido(pedido);
 			pedido.setCliente(cliente);
 			pedidoService.savePedido(pedido);
