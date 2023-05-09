@@ -132,6 +132,7 @@ function carregarCliente(clienteId) {
 		alert("Erro ao buscar fornecedor: " + xhr.responseText);
 	});
 }
+/*
 function carregarProduto(produtoId) {
 
 	$.ajax({
@@ -168,6 +169,7 @@ function carregarProduto(produtoId) {
 		}
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
 }
+*/
 function calcularTotal() {
 	var total = 0.0;
 	$('#listaPedido > tbody > tr').each(function() {
@@ -261,5 +263,68 @@ function calcularDescontoPedido() {
 		var novoTotal = total - (total * (desconto / 100));
 		$("#total").val(novoTotal);
 
+}
+function carregarProduto(produtoId) {
+    $.ajax({
+        method: "GET",
+        url: "pedido/buscarProdutoId/",
+        data: "produtoId=" + produtoId,
+        success: function(response) {
+            for (var i = 0; i < response.length; i++) {
+                var produto = response[i];
+                var descricao = produto.descricao;
+                var marca = produto.marca;
+                var preco = produto.preco;
+                var row = $("<tr></tr>");
+                row.append($("<td>" + produto.produtoId + "</td>"));
+                row.append($("<td>" + descricao + "</td>"));
+                row.append($("<td>" + marca + "</td>"));
+                row.append($("<td>" + preco + "</td>"));
+                var qtdInput = $("<input>", {
+                    type: "number",
+                    min: "0",
+                    class: "form-control qtd",
+                });
+                row.append($("<td></td>").append(qtdInput));
+                var subTotalInput = $("<input>", {
+                    type: "number",
+                    min: "0",
+                    class: "form-control",
+                    style: "background-color: #DCDCDC",
+                    readonly: "readonly",
+                });
+                row.append($("<td></td>").append(subTotalInput));
+                var removeButton = $("<button>", {
+                    class: "btn btn-danger remove-btn",
+                    text: "Remover",
+                });
+                row.append($("<td></td>").append(removeButton));
+                $("#listaPedido tbody").append(row);
+            }
+
+            $(document).on("click", ".remove-btn", function() {
+                $(this).closest("tr").remove();
+                calcularTotal();
+            });
+
+            $(document).on("change", ".qtd", function() {
+                var qtd = $(this).val();
+                var preco = $(this)
+                    .closest("tr")
+                    .find("td:nth-child(4)")
+                    .text();
+                var subTotal = qtd * preco;
+                $(this)
+                    .closest("tr")
+                    .find("td:nth-child(6) input")
+                    .val(subTotal);
+                calcularTotal();
+            });
+            $("#pesquisarProdutoModal").modal("hide");
+        },
+        error: function(xhr, status, error) {
+            alert("Erro ao buscar produto: " + xhr.responseText);
+        }
+    });
 }
 

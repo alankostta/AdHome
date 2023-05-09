@@ -15,20 +15,25 @@ import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
  */
 public class PedidoDto {
 	
+	final ItemPedidoDto itemPedidoDto;
+	final ClienteDto clienteDto;
+	final EnderecoDto enderecoDto;
+	
 	private Double valorPedido;
-
 	private Double descontoPedido;
-	
 	private String observacaoPedido;
-	
 	private PedidoEnumStatus enumStatus;
-	
 	private PedidoEnumTipoPagamento enumPagamento;
-	
 	private BandeiraCartao enumCartao;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataCadastro;
+	
+	public PedidoDto(ItemPedidoDto itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto) {
+		this.itemPedidoDto = itemPedidoDto;
+		this.clienteDto = clienteDto;
+		this.enderecoDto = enderecoDto;
+	}
 	
 	public BandeiraCartao getEnumCartao() {
 		return enumCartao;
@@ -74,6 +79,7 @@ public class PedidoDto {
 	public void setObservacaoPedido(String observacaoPedido) {
 		this.observacaoPedido = observacaoPedido;
 	}
+	
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
 		pedido.setEnumStatus(this.enumStatus);
