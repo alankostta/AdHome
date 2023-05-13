@@ -2,9 +2,10 @@ package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
 import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,8 +28,11 @@ public class Contato implements Serializable {
 	@Column(name = "tele_contato", nullable = false, length = 30)
 	private String telefone;
 	
-	@Column(name = "email_contato", nullable = true, length = 150)
+	@Column(name = "email_contato", nullable = true, length = 150, unique = true)
 	private String email;
+	
+	@Enumerated(EnumType.STRING)
+	private ContatoEnum contatoEnum;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -43,12 +47,14 @@ public class Contato implements Serializable {
 	public Contato() {
 		
 	}
-	public Contato(String telefone, String email, Cliente cliente, Fornecedor fornecedor) {
-		super();
+	public Contato(String telefone, String email, Cliente cliente, 
+			Fornecedor fornecedor, ContatoEnum contatoEnum) {
+	
 		this.setTelefone(telefone);
 		this.setEmail(email);
 		this.setCliente(cliente);
 		this.setFornecedor(fornecedor);
+		this.setContatoEnum(contatoEnum);
 	}
 	public String getTelefone() {
 		return telefone;
@@ -80,26 +86,10 @@ public class Contato implements Serializable {
 	public void setFornecedor(Fornecedor fornecedor) {
 		this.fornecedor = fornecedor;
 	}
-	@Override
-	public String toString() {
-		return "Contato [contatoId=" + contatoId + ", telefone=" + telefone + ", email=" + email + ", cliente="
-				+ cliente + ", fornecedor=" + fornecedor + "]";
+	public ContatoEnum getContatoEnum() {
+		return contatoEnum;
 	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(cliente, contatoId, email, fornecedor, telefone);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Contato other = (Contato) obj;
-		return Objects.equals(cliente, other.cliente) && Objects.equals(contatoId, other.contatoId)
-				&& Objects.equals(email, other.email) && Objects.equals(fornecedor, other.fornecedor)
-				&& Objects.equals(telefone, other.telefone);
+	public void setContatoEnum(ContatoEnum contatoEnum) {
+		this.contatoEnum = contatoEnum;
 	}
 }

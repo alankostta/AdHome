@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.br.AdHome.AdHome.models.Contato;
+import com.br.AdHome.AdHome.models.ContatoEnum;
 
 /*Classe responsável por validações de campos que 
  * receberão os dados de entrada
@@ -16,11 +17,12 @@ public class ContatoDto {
 	@NotBlank
 	@Size(max = 30)
 	private String telefone;
-
 	@Size(max = 150)
 	@Email
 	private String email;
+	private ContatoEnum contatoEnum;
 	
+
 	public String getTelefone() {
 		return telefone;
 	}
@@ -37,16 +39,19 @@ public class ContatoDto {
 		Contato contato = new Contato();
 		contato.setEmail(this.email);
 		contato.setTelefone(this.telefone);
+		contato.setContatoEnum(contatoEnum);
 		return contato;
 	}
 	public Contato toContato(Contato contato) {
 		contato = new Contato();
 		contato.setEmail(this.email);
 		contato.setTelefone(this.telefone);
+		contato.setContatoEnum(contatoEnum);
 		return contato;
 	}
 	public void fromContato(Contato contato) {
 		this.email = contato.getEmail();
-		this.telefone = contato.getTelefone();	
+		this.telefone = contato.getTelefone();
+		this.contatoEnum = contato.getContatoEnum();
 	}
 }

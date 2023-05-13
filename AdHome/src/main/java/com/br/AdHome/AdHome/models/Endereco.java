@@ -3,9 +3,10 @@ package com.br.AdHome.AdHome.models;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -45,6 +45,10 @@ public class Endereco implements Serializable{
 	
 	@Column(name = "numero", nullable = true, length = 10)
 	private String numero;
+	
+	@Enumerated(EnumType.STRING)
+	private EnderecoEnum enderecoEnum;
+	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "endereco")
 	private Set<Cliente> cliente;
@@ -61,9 +65,11 @@ public class Endereco implements Serializable{
 		
 	}
 
-	public Endereco(String uf, String localidade, String bairro, String cep, String logradouro, String complemento,
-			String numero, Set<Cliente> cliente, Set<Fornecedor> fornecedor) {
-		super();
+	public Endereco(String uf, String localidade, String bairro, 
+			String cep, String logradouro, String complemento,
+			String numero, Set<Cliente> cliente, Set<Fornecedor> fornecedor,
+			Pedido pedido, EnderecoEnum enderecoEnum, ContatoEnum contatoEnum) {
+		
 		this.setUf(uf);
 		this.setLocalidade(localidade);
 		this.setBairro(bairro);
@@ -73,24 +79,11 @@ public class Endereco implements Serializable{
 		this.setNumero(numero);
 		this.setCliente(cliente);
 		this.setFornecedor(fornecedor);
+		this.setPedido(pedido);
+		this.setEnderecoEnum(enderecoEnum);
 	
 	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(enderecoId);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Endereco other = (Endereco) obj;
-		return Objects.equals(enderecoId, other.enderecoId);
-				
-	}
+
 	public String getUf() {
 		return uf;
 	}
@@ -151,16 +144,27 @@ public class Endereco implements Serializable{
 	public void setFornecedor(Set<Fornecedor> fornecedor) {
 		this.fornecedor = fornecedor;
 	}
+	
+	public EnderecoEnum getEnderecoEnum() {
+		return enderecoEnum;
+	}
+
+	public void setEnderecoEnum(EnderecoEnum enderecoEnum) {
+		this.enderecoEnum = enderecoEnum;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
 	@PreUpdate
 	public void atualizaInsertEndereco() {
 		for(Fornecedor forne : this.getFornecedor()) {
 			forne.setEndereco(null);
 		}
 	}
-	@Override
-	public String toString() {
-		return "Endereco [enderecoId=" + enderecoId + ", uf=" + uf + ", localidade=" + localidade + ", bairro=" + bairro
-				+ ", cep=" + cep + ", logradouro=" + logradouro + ", complemento=" + complemento + ", numero=" + numero
-				+ ", cliente=" + cliente + ", fornecedor=" + fornecedor + "]";
-	}	
 }

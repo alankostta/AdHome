@@ -68,7 +68,7 @@ public class Pedido implements Serializable {
 	
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval =  true)
-	@JoinColumn(name = "endereco_id")
+	@JoinColumn(name = "endereco_id", unique = true)
 	private Endereco endereco;
 	
 	@JsonIgnore

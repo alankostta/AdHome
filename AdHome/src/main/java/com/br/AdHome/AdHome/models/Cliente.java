@@ -56,13 +56,13 @@ public class Cliente implements Serializable {
 	@Column(name = "data_Altera", length = 30, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
-
+/*
 	@Enumerated(EnumType.STRING)
 	private EnderecoEnum enderecoEnum;
 
 	@Enumerated(EnumType.STRING)
 	private ContatoEnum contatoEnum;
-	
+*/	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
 	private Set<Contato> contato = new HashSet<>();
@@ -93,8 +93,8 @@ public class Cliente implements Serializable {
 		this.setPedido(getPedido());
 		this.setDataAltera(dataAltera);
 		this.setAnoRef(anoRef);
-		this.setEnderecoEnum(getEnderecoEnum());
-		this.setContatoEnum(getContatoEnum());
+//		this.setEnderecoEnum(getEnderecoEnum());
+//		this.setContatoEnum(getContatoEnum());
 
 	}
 
@@ -169,7 +169,7 @@ public class Cliente implements Serializable {
 	public void setPedido(Set<Pedido> pedido) {
 		this.pedido = pedido;
 	}
-
+/*
 	public EnderecoEnum getEnderecoEnum() {
 		return enderecoEnum;
 	}
@@ -185,7 +185,7 @@ public class Cliente implements Serializable {
 	public void setContatoEnum(ContatoEnum contatoEnum) {
 		this.contatoEnum = contatoEnum;
 	}
-
+*/
 	public Integer getAnoRef() {
 		return anoRef;
 	}
@@ -193,18 +193,18 @@ public class Cliente implements Serializable {
 	public void setAnoRef(Integer anoRef) {
 		this.anoRef = anoRef;
 	}
+
 	@Override
 	public String toString() {
 		return "Cliente [clienteId=" + clienteId + ", nome=" + nome + ", sexo=" + sexo + ", dataNasci=" + dataNasci
-				+ ", anoRef=" + anoRef + ", dataCadastro=" + dataCadastro + ", dataAltera=" + dataAltera
-				+ ", enderecoEnum=" + enderecoEnum + ", contatoEnum=" + contatoEnum + ", contato=" + contato
-				+ ", endereco=" + endereco + ", pedido=" + pedido + "]";
+				+ ", anoRef=" + anoRef + ", dataCadastro=" + dataCadastro + ", dataAltera=" + dataAltera + ", contato="
+				+ contato + ", endereco=" + endereco + ", pedido=" + pedido + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, clienteId, contato, contatoEnum, dataAltera, dataCadastro, dataNasci, endereco,
-				enderecoEnum, nome, pedido, sexo);
+		return Objects.hash(anoRef, clienteId, contato, dataAltera, dataCadastro, dataNasci, endereco, nome, pedido,
+				sexo);
 	}
 
 	@Override
@@ -217,10 +217,10 @@ public class Cliente implements Serializable {
 			return false;
 		Cliente other = (Cliente) obj;
 		return Objects.equals(anoRef, other.anoRef) && Objects.equals(clienteId, other.clienteId)
-				&& Objects.equals(contato, other.contato) && contatoEnum == other.contatoEnum
-				&& Objects.equals(dataAltera, other.dataAltera) && Objects.equals(dataCadastro, other.dataCadastro)
-				&& Objects.equals(dataNasci, other.dataNasci) && Objects.equals(endereco, other.endereco)
-				&& enderecoEnum == other.enderecoEnum && Objects.equals(nome, other.nome)
+				&& Objects.equals(contato, other.contato) && Objects.equals(dataAltera, other.dataAltera)
+				&& Objects.equals(dataCadastro, other.dataCadastro) && Objects.equals(dataNasci, other.dataNasci)
+				&& Objects.equals(endereco, other.endereco) && Objects.equals(nome, other.nome)
 				&& Objects.equals(pedido, other.pedido) && Objects.equals(sexo, other.sexo);
 	}
+	
 }

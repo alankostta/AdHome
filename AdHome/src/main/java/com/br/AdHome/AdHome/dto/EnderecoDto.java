@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.br.AdHome.AdHome.models.Endereco;
+import com.br.AdHome.AdHome.models.EnderecoEnum;
 
 /*Classe responsável por validações de campos que 
  * receberão os dados de entrada
@@ -22,28 +23,23 @@ public class EnderecoDto {
 	@NotBlank
 	@Size(max = 2)
 	private String uf;
-
 	@NotBlank
 	@Size(max = 255)
 	private String localidade;
-
 	@NotBlank
 	@Size(max = 255)
 	private String bairro;
-
 	@NotBlank(message = "cep é obrigatório")
 	@Pattern(regexp = "\\d{8}", message = "cep deve ter 8 dígitos numéricos")
 	private String cep;
-
 	@NotBlank
 	@Size(max = 255)
 	private String logradouro;
-
 	@Size(max = 255)
 	private String complemento;
-
 	@Size(max = 10)
 	private String numero;
+	private EnderecoEnum enderecoEnum;
 
 	public BigInteger getEnderecoId() {
 		return enderecoId;
@@ -107,7 +103,12 @@ public class EnderecoDto {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-
+	public EnderecoEnum getEnderecoEnum() {
+		return enderecoEnum;
+	}
+	public void setEnderecoEnum(EnderecoEnum enderecoEnum) {
+		this.enderecoEnum = enderecoEnum;
+	}
 	public Endereco toEndereco() {// Passsando os Obj para classe endereço sem parametros no metodo
 		Endereco endereco = new Endereco();
 		endereco.setEnderecoId(getEnderecoId().longValue());
@@ -118,6 +119,7 @@ public class EnderecoDto {
 		endereco.setLogradouro(this.logradouro);
 		endereco.setComplemento(this.complemento);
 		endereco.setNumero(this.numero);
+		endereco.setEnderecoEnum(enderecoEnum);
 		return endereco;
 	}
 
@@ -130,6 +132,7 @@ public class EnderecoDto {
 		endereco.setLogradouro(this.logradouro);
 		endereco.setComplemento(this.complemento);
 		endereco.setNumero(this.numero);
+		endereco.setEnderecoEnum(enderecoEnum);
 		return endereco;
 	}
 
@@ -142,5 +145,6 @@ public class EnderecoDto {
 		this.logradouro = endereco.getLogradouro();
 		this.complemento = endereco.getComplemento();
 		this.numero = endereco.getNumero();
+		this.enderecoEnum = endereco.getEnderecoEnum();
 	}
 }

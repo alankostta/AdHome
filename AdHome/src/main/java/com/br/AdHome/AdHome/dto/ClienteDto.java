@@ -30,8 +30,8 @@ public class ClienteDto{
 	//@NotNull
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataNasci;
-	private EnderecoEnum enderecoEnum;
-	private ContatoEnum contatoEnum;
+	//private EnderecoEnum enderecoEnum;
+//	private ContatoEnum contatoEnum;
 	private Set<Endereco> endereco;
 	private Set<Contato> contato;
 	
@@ -71,6 +71,7 @@ public class ClienteDto{
 	public void setDataNasci(Date dataNasci) {
 		this.dataNasci = dataNasci;
 	}
+	/*
 	public EnderecoEnum getEnderecoEnum() {
 		return enderecoEnum;
 	}
@@ -83,6 +84,7 @@ public class ClienteDto{
 	public void setContatoEnum(ContatoEnum contatoEnum) {
 		this.contatoEnum = contatoEnum;
 	}
+	*/
 	public Cliente toCliente() {
 		
 		Cliente cliente = new Cliente();
@@ -91,8 +93,8 @@ public class ClienteDto{
 		cliente.setDataNasci(this.dataNasci);
 		cliente.setEndereco(this.endereco);
 		cliente.setContato(this.contato);
-		cliente.setContatoEnum(this.contatoEnum);
-		cliente.setEnderecoEnum(this.enderecoEnum);
+//		cliente.setContatoEnum(this.contatoEnum);
+//		cliente.setEnderecoEnum(this.enderecoEnum);
 		return cliente;
 	}
 	public Cliente toCliente(Cliente cliente) {
@@ -102,8 +104,8 @@ public class ClienteDto{
 		cliente.setDataNasci(this.dataNasci);
 		cliente.setEndereco(this.endereco);
 		cliente.setContato(this.contato);
-		cliente.setContatoEnum(this.contatoEnum);
-		cliente.setEnderecoEnum(this.enderecoEnum);
+//		cliente.setContatoEnum(this.contatoEnum);
+//		cliente.setEnderecoEnum(this.enderecoEnum);
 		return cliente;
 	}
 	public void fromCliente(Cliente cliente) {
@@ -112,7 +114,7 @@ public class ClienteDto{
 		this.dataNasci = cliente.getDataNasci();
 		this.endereco = cliente.getEndereco();
 		this.contato = cliente.getContato(); 
-		this.contatoEnum = cliente.getContatoEnum();
-		this.enderecoEnum = cliente.getEnderecoEnum();
+//		this.contatoEnum = cliente.getContatoEnum();
+//		this.enderecoEnum = cliente.getEnderecoEnum();
 	}
 }
