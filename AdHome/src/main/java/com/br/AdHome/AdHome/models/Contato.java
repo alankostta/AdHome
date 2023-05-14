@@ -1,7 +1,6 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,11 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_contato")
@@ -34,26 +29,13 @@ public class Contato implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ContatoEnum contatoEnum;
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
-	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "fornecedor_id")
-	private Fornecedor fornecedor;
-	
 	public Contato() {
 		
 	}
-	public Contato(String telefone, String email, Cliente cliente, 
-			Fornecedor fornecedor, ContatoEnum contatoEnum) {
-	
+	public Contato(String telefone, String email, 
+			ContatoEnum contatoEnum) {
 		this.setTelefone(telefone);
 		this.setEmail(email);
-		this.setCliente(cliente);
-		this.setFornecedor(fornecedor);
 		this.setContatoEnum(contatoEnum);
 	}
 	public String getTelefone() {
@@ -74,18 +56,7 @@ public class Contato implements Serializable {
 	public void setContatoId(Long contatoId) {
 		this.contatoId = contatoId;
 	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
+
 	public ContatoEnum getContatoEnum() {
 		return contatoEnum;
 	}

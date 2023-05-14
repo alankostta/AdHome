@@ -15,8 +15,6 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "tb_produto")
 public class Produto implements Serializable {
@@ -57,16 +55,6 @@ public class Produto implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "fornecedor_id")
-	private Fornecedor fornecedor;
-	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "categoria_id")
-	private Categoria categorias;
-	
 	@ManyToOne
 	@JoinColumn(name = "itens_id")
 	private ItemPedido itens;
@@ -74,9 +62,10 @@ public class Produto implements Serializable {
 	public Produto() {
 		
 	}
-	public Produto(String descricao, Double valorEntrada, Double valorSaida, Integer estoqueQtd, Double preco,
-			LocalDateTime dataCadastro,LocalDateTime dataAltera, Fornecedor fornecedor, Integer anoRef, 
-			Categoria categorias, ItemPedido itens) {
+	public Produto(String descricao, Double valorEntrada, 
+			Double valorSaida, Integer estoqueQtd, Double preco,
+			LocalDateTime dataCadastro,LocalDateTime dataAltera, 
+			Integer anoRef, ItemPedido itens) {
 	
 		this.setDescricao(descricao);
 		this.setValorEntrada(valorEntrada);
@@ -84,9 +73,7 @@ public class Produto implements Serializable {
 		this.setEstoqueQtd(estoqueQtd);
 		this.setDataCadastro(dataCadastro);
 		this.setDataAltera(dataAltera);
-		this.setFornecedor(fornecedor);
 		this.setPreco(preco);
-		this.setCategorias(categorias);
 		this.setItens(itens);
 	}
 	
@@ -126,13 +113,6 @@ public class Produto implements Serializable {
 	public void setEstoqueQtd(Integer estoqueQtd) {
 		this.estoqueQtd = estoqueQtd;
 	}
-	
-	public Categoria getCategorias() {
-		return categorias;
-	}
-	public void setCategorias(Categoria categorias) {
-		this.categorias = categorias;
-	}
 	public ItemPedido getItens() {
 		return itens;
 	}
@@ -163,22 +143,16 @@ public class Produto implements Serializable {
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
 	@Override
 	public String toString() {
 		return "Produto [produtoId=" + produtoId + ", descricao=" + descricao + ", marca=" + marca + ", valorEntrada="
 				+ valorEntrada + ", valorSaida=" + valorSaida + ", estoqueQtd=" + estoqueQtd + ", preco=" + preco
 				+ ", dataCadastro=" + dataCadastro + ", anoRef=" + anoRef + ", dataAltera=" + dataAltera
-				+ ", fornecedor=" + fornecedor + ", categorias=" + categorias + ", itens=" + itens + "]";
+				+ ", itens=" + itens + "]";
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, categorias, dataAltera, dataCadastro, descricao, estoqueQtd, fornecedor, itens,
+		return Objects.hash(anoRef, dataAltera, dataCadastro, descricao, estoqueQtd, itens,
 				marca, preco, produtoId, valorEntrada, valorSaida);
 	}
 	@Override
@@ -190,10 +164,10 @@ public class Produto implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Produto other = (Produto) obj;
-		return Objects.equals(anoRef, other.anoRef) && Objects.equals(categorias, other.categorias)
+		return Objects.equals(anoRef, other.anoRef)
 				&& Objects.equals(dataAltera, other.dataAltera) && Objects.equals(dataCadastro, other.dataCadastro)
 				&& Objects.equals(descricao, other.descricao) && Objects.equals(estoqueQtd, other.estoqueQtd)
-				&& Objects.equals(fornecedor, other.fornecedor) && Objects.equals(itens, other.itens)
+				&& Objects.equals(itens, other.itens)
 				&& Objects.equals(marca, other.marca) && Objects.equals(preco, other.preco)
 				&& Objects.equals(produtoId, other.produtoId) && Objects.equals(valorEntrada, other.valorEntrada)
 				&& Objects.equals(valorSaida, other.valorSaida);

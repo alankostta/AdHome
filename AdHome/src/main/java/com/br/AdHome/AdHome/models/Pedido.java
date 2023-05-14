@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +16,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -66,19 +67,12 @@ public class Pedido implements Serializable {
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ItemPedido> itens =  new HashSet<>();
 	
-	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval =  true)
+	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval =  true)
 	@JoinColumn(name = "endereco_id", unique = true)
 	private Endereco endereco;
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
-	
-	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name = "user_id")
+	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval =  true)
+	@JoinColumn(name = "user_id", unique = true)
 	private AdUser user;
 	
 	public Pedido() {
@@ -88,7 +82,6 @@ public class Pedido implements Serializable {
 			Integer anoRef, Date dataCadastro, Double valorPedido, AdUser user, Endereco endereco) {
  
 		this.setDataAlteraPedido(dataAlteraPedido);
-		this.setCliente(cliente);
 		this.setAnoRef(anoRef);
 		this.setDataCadastro(dataCadastro);
 		this.setValorPedido(valorPedido);
@@ -119,12 +112,7 @@ public class Pedido implements Serializable {
 	public void setObservacaoPedido(String observacaoPedido) {
 		this.observacaoPedido = observacaoPedido;
 	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+
 	public Set<ItemPedido> getItens() {
 		return itens;
 	}
@@ -185,11 +173,11 @@ public class Pedido implements Serializable {
 				+ ", anoRef=" + anoRef + ", valorPedido=" + valorPedido + ", descontoPedido="
 				+ descontoPedido + ", observacaoPedido=" + observacaoPedido + ", dataCadastro=" + dataCadastro
 				+ ", enumStatus=" + enumStatus + ", enumPagamento=" + enumPagamento + ", enumCartao=" + enumCartao
-				+ ", itens=" + itens + ", endereco=" + endereco + ", cliente=" + cliente + ", user=" + user + "]";
+				+ ", itens=" + itens + ", endereco=" + endereco + ", user=" + user + "]";
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, cliente, dataAlteraPedido, dataCadastro, descontoPedido, endereco,
+		return Objects.hash(anoRef, dataAlteraPedido, dataCadastro, descontoPedido, endereco,
 				enumPagamento, enumStatus, enumCartao, itens, observacaoPedido, pedidoId, user, valorPedido);
 	}
 	@Override
@@ -201,7 +189,7 @@ public class Pedido implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Pedido other = (Pedido) obj;
-		return Objects.equals(anoRef, other.anoRef) && Objects.equals(cliente, other.cliente)
+		return Objects.equals(anoRef, other.anoRef)
 				&& Objects.equals(dataAlteraPedido, other.dataAlteraPedido)
 				&& Objects.equals(dataCadastro, other.dataCadastro)
 				&& Objects.equals(descontoPedido, other.descontoPedido) && Objects.equals(endereco, other.endereco)

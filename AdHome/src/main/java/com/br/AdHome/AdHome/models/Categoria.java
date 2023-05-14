@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
@@ -31,7 +32,8 @@ public class Categoria implements Serializable {
 	@Column(name="descri_cate", nullable = false, length = 150)
 	private String descricaoCategoria;
 	
-	@OneToMany(mappedBy = "categorias", cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "produto_id")
 	private List<Produto> produtos;
 	
 	public Categoria() {

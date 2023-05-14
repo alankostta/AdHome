@@ -110,11 +110,9 @@ public class ClienteController {
 			endereco.setCliente(clientes);
 
 			enderecoService.saveEndereco(endereco);
-			clienteService.saveCliente(cliente);
-
-			contato.setCliente(cliente); // Associa o cliente ao contato
 			contatoService.saveContato(contato); // Salva o contato no banco de dados
-
+			clienteService.saveCliente(cliente);
+			
 			return new ModelAndView("redirect:/cliente/listar");
 		}
 		// método BeanUtils está sendo usado para realizar um cast de clienteDto para

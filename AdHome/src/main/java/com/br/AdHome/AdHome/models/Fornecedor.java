@@ -5,12 +5,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -51,16 +47,8 @@ public class Fornecedor implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "data_altera", nullable = false, length = 60)
 	private LocalDateTime dataAlteraForne;
-	
-	@Column(name = "endereco_enum", nullable = false, length = 60)
-	@Enumerated(EnumType.STRING)
-	private EnderecoEnum enderecoEnum;
-	
-	@Column(name = "contato_enum", nullable = false, length = 60)
-	@Enumerated(EnumType.STRING)
-	private ContatoEnum contatoEnum;
 
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "Fornecedor_Endereco", 
 		joinColumns = @JoinColumn(name = "fornecedor_fk"), 
 		inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
@@ -70,12 +58,13 @@ public class Fornecedor implements Serializable {
 	 * um grupo único de objetos evitando ser criado várias instancias do mesmo
 	 * objeto
 	 */
-	@JsonIgnore
-	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@Column(name="contato_id")
 	private Set<Contato> contatos = new HashSet<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@Column(name="produto_id")
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Fornecedor() {
@@ -166,39 +155,18 @@ public class Fornecedor implements Serializable {
 	public void setProdutos(Set<Produto> produtos) {
 		this.produtos = produtos;
 	}
-
-	public EnderecoEnum getEnderecoEnum() {
-		return enderecoEnum;
+	@Override
+	public String toString() {
+		return "Fornecedor [fornecedorId=" + fornecedorId + ", nome=" + nome + ", nomeEmpresa=" + nomeEmpresa
+				+ ", dataCadastroForne=" + dataCadastroForne + ", anoRef=" + anoRef + ", dataAlteraForne="
+				+ dataAlteraForne + ", endereco=" + endereco + ", contatos=" + contatos + ", produtos=" + produtos
+				+ "]";
 	}
 
-	public void setEnderecoEnum(EnderecoEnum enderecoEnum) {
-		this.enderecoEnum = enderecoEnum;
-	}
-
-	public ContatoEnum getContatoEnum() {
-		return contatoEnum;
-	}
-
-	public void setContatoEnum(ContatoEnum contatoEnum) {
-		this.contatoEnum = contatoEnum;
-	}
-
-	@PreRemove
-	private void removeAssociations() {
-		for (Contato c : contatos) {
-			c.setFornecedor(null);
-		}
-		contatos.clear();
-
-		for (Endereco e : endereco) {
-			e.getFornecedor().remove(this);
-		}
-		endereco.clear();
-	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(contatoEnum, contatos, dataAlteraForne, dataCadastroForne, endereco, enderecoEnum,
-				fornecedorId, nome, produtos, nomeEmpresa, anoRef);
+		return Objects.hash(anoRef, contatos, dataAlteraForne, dataCadastroForne, endereco, fornecedorId, nome,
+				nomeEmpresa, produtos);
 	}
 
 	@Override
@@ -210,20 +178,12 @@ public class Fornecedor implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Fornecedor other = (Fornecedor) obj;
-		return contatoEnum == other.contatoEnum && Objects.equals(contatos, other.contatos)
+		return Objects.equals(anoRef, other.anoRef) && Objects.equals(contatos, other.contatos)
 				&& Objects.equals(dataAlteraForne, other.dataAlteraForne)
 				&& Objects.equals(dataCadastroForne, other.dataCadastroForne)
-				&& Objects.equals(endereco, other.endereco) && enderecoEnum == other.enderecoEnum
-				&& Objects.equals(fornecedorId, other.fornecedorId) && Objects.equals(nome, other.nome)
-				&& Objects.equals(produtos, other.produtos) && Objects.equals(nomeEmpresa, other.nomeEmpresa)
-				&& Objects.equals(anoRef, other.anoRef);
+				&& Objects.equals(endereco, other.endereco) && Objects.equals(fornecedorId, other.fornecedorId)
+				&& Objects.equals(nome, other.nome) && Objects.equals(nomeEmpresa, other.nomeEmpresa)
+				&& Objects.equals(produtos, other.produtos);
 	}
-
-	@Override
-	public String toString() {
-		return "Fornecedor [fornecedorId=" + fornecedorId + ", nome=" + nome + ", nomeEmpresa=" + nomeEmpresa
-				+ ", dataCadastroForne=" + dataCadastroForne + ", dataAlteraForne=" + dataAlteraForne + "anoRef="
-				+ anoRef + ", enderecoEnum=" + enderecoEnum + ", contatoEnum=" + contatoEnum + ", endereco=" + endereco
-				+ ", contatos=" + contatos + ", produtos=" + produtos + "]";
-	}
+	
 }

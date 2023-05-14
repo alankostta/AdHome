@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -45,9 +44,6 @@ public class AdUser implements UserDetails, Serializable{
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private List<RoleModel> roles;
-	
-	@OneToOne(mappedBy = "user", cascade = CascadeType.PERSIST)
-	private Pedido pedidos;
 	
 	public AdUser() {
 		
@@ -83,12 +79,6 @@ public class AdUser implements UserDetails, Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Pedido getPedidos() {
-		return pedidos;
-	}
-	public void setPedidos(Pedido pedidos) {
-		this.pedidos = pedidos;
-	}
 	public String getNome() {
 		return nome;
 	}
@@ -103,7 +93,7 @@ public class AdUser implements UserDetails, Serializable{
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(nome, emailUser, nomeUser, password, userId, pedidos);
+		return Objects.hash(nome, emailUser, nomeUser, password, userId);
 	}
 	
 	@Override
@@ -117,12 +107,12 @@ public class AdUser implements UserDetails, Serializable{
 		AdUser other = (AdUser) obj;
 		return Objects.equals(emailUser, other.emailUser) && Objects.equals(nomeUser, other.nomeUser)
 				&& Objects.equals(password, other.password) && Objects.equals(userId, other.userId)
-				&& Objects.equals(nome, other.nome) && Objects.equals(roles, other.roles) && Objects.equals(pedidos, other.pedidos);
+				&& Objects.equals(nome, other.nome) && Objects.equals(roles, other.roles);
 	}
 	@Override
 	public String toString() {
 		return "User [userId=" + userId +", nome=" + nome + ", nomeUser=" + nomeUser + 
-				", emailUser=" + emailUser + ", password="+ password + ", pedidos="+ pedidos +"]";
+				", emailUser=" + emailUser + ", password="+ password + "]";
 	}
  
 	@Override

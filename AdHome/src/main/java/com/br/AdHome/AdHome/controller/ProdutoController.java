@@ -87,9 +87,8 @@ public class ProdutoController {
 			Calendar cal = Calendar.getInstance();
 			produto.setAnoRef(cal.get(Calendar.YEAR));
 			
-			produto.setFornecedor(fornecedor);
-			produto.setCategorias(categoria);
 			categoriaService.saveCategoria(categoria);
+			fornecedorService.saveFornecedor(fornecedor);
 
 			if (produto.getValorSaida() == null) {
 				produto.setValorSaida(0.0);

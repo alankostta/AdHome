@@ -95,8 +95,6 @@ public Fornecedor toFornecedor() {
 		fornecedor.setNomeEmpresa(nomeEmpresa);
 		fornecedor.setEndereco(this.endereco);
 		fornecedor.setContatos(this.contato);
-	    fornecedor.setContatoEnum(this.contatoEnum);
-		fornecedor.setEnderecoEnum(this.enderecoEnum);
 		return fornecedor;
 	}
 	public Fornecedor toFornecedor(Fornecedor fornecedor) {
@@ -105,8 +103,6 @@ public Fornecedor toFornecedor() {
 		fornecedor.setNomeEmpresa(nomeEmpresa);
 		fornecedor.setEndereco(this.endereco);
 		fornecedor.setContatos(this.contato);
-	    fornecedor.setContatoEnum(this.contatoEnum);
-		fornecedor.setEnderecoEnum(this.enderecoEnum);
 		return fornecedor;
 		
 	}
@@ -119,7 +115,5 @@ public Fornecedor toFornecedor() {
 		this.nomeEmpresa = fornecedor.getNomeEmpresa();
 		this.endereco = fornecedor.getEndereco();
 		this.contato = fornecedor.getContatos(); 
-		this.contatoEnum = fornecedor.getContatoEnum();
-		this.enderecoEnum = fornecedor.getEnderecoEnum();
 	}
 }

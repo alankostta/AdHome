@@ -10,8 +10,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,8 +22,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_cliente")
@@ -56,34 +52,28 @@ public class Cliente implements Serializable {
 	@Column(name = "data_Altera", length = 30, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
-/*
-	@Enumerated(EnumType.STRING)
-	private EnderecoEnum enderecoEnum;
 
-	@Enumerated(EnumType.STRING)
-	private ContatoEnum contatoEnum;
-*/	
-	@JsonIgnore
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@JoinColumn(name="contato_id")
 	private Set<Contato> contato = new HashSet<>();
 	
-	@JsonIgnore
-	@ManyToMany(cascade = CascadeType.PERSIST)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "cliente_endereco", 
 	joinColumns = @JoinColumn(name = "cliente_fk"), 
 	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private Set<Endereco> endereco = new HashSet<>();
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@Column(name="pedido_id")
 	private Set<Pedido> pedido = new HashSet<>();
 
 	public Cliente() {
 
 	}
 
-	public Cliente(String nome, String sexo, Date dataNasci, LocalDateTime dataCadastro, LocalDateTime dataAltera,
-			Integer anoRef) {
+	public Cliente(String nome, String sexo, 
+			Date dataNasci, LocalDateTime dataCadastro, 
+			LocalDateTime dataAltera, Integer anoRef) {
 		this.setNome(nome);
 		this.setSexo(sexo);
 		this.setDataNasci(dataNasci);
@@ -93,9 +83,6 @@ public class Cliente implements Serializable {
 		this.setPedido(getPedido());
 		this.setDataAltera(dataAltera);
 		this.setAnoRef(anoRef);
-//		this.setEnderecoEnum(getEnderecoEnum());
-//		this.setContatoEnum(getContatoEnum());
-
 	}
 
 	public LocalDateTime getDataAltera() {
@@ -169,23 +156,7 @@ public class Cliente implements Serializable {
 	public void setPedido(Set<Pedido> pedido) {
 		this.pedido = pedido;
 	}
-/*
-	public EnderecoEnum getEnderecoEnum() {
-		return enderecoEnum;
-	}
 
-	public void setEnderecoEnum(EnderecoEnum enderecoEnum) {
-		this.enderecoEnum = enderecoEnum;
-	}
-
-	public ContatoEnum getContatoEnum() {
-		return contatoEnum;
-	}
-
-	public void setContatoEnum(ContatoEnum contatoEnum) {
-		this.contatoEnum = contatoEnum;
-	}
-*/
 	public Integer getAnoRef() {
 		return anoRef;
 	}
@@ -222,5 +193,4 @@ public class Cliente implements Serializable {
 				&& Objects.equals(endereco, other.endereco) && Objects.equals(nome, other.nome)
 				&& Objects.equals(pedido, other.pedido) && Objects.equals(sexo, other.sexo);
 	}
-	
 }

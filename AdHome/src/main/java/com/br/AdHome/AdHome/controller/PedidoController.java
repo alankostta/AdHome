@@ -3,11 +3,11 @@ package com.br.AdHome.AdHome.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.br.AdHome.AdHome.configs.UserDetailsServiceImpl;
 import com.br.AdHome.AdHome.dto.AduserDto;
 import com.br.AdHome.AdHome.dto.ClienteDto;
@@ -38,8 +39,6 @@ import com.br.AdHome.AdHome.services.EnderecoService;
 import com.br.AdHome.AdHome.services.ItemPedidoService;
 import com.br.AdHome.AdHome.services.PedidoService;
 import com.br.AdHome.AdHome.services.ProdutoService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /*
  * Controlador: responder interações do usuśrio
@@ -116,8 +115,6 @@ public class PedidoController {
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(LocalDateTime.now());
 			pedido.setItens(pedido.getItens());
-			pedidoService.savePedido(pedido);
-			pedido.setCliente(cliente);
 			pedidoService.savePedido(pedido);
 
 			return new ModelAndView("redirect:/pedido");

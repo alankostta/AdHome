@@ -23,9 +23,10 @@ public class ItemPedido implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="item_pedido_id")
     private Long itemPedidoId;
-    
     @Column(name="qtd_itens")
     private Integer quantidade;
+    @Column(name="preco_iten")
+    private Double precoIten;
     
     @JsonIgnore
     @ManyToOne
@@ -39,8 +40,9 @@ public class ItemPedido implements Serializable{
     public ItemPedido() {
         
     }
-    public ItemPedido(Integer quantidade, Pedido Pedido, Produto produto) {
+    public ItemPedido(Integer quantidade,Double precoIten,  Pedido Pedido, Produto produto) {
         this.setQuantidade(quantidade);
+        this.setPrecoIten(precoIten);
         this.setPedido(Pedido);
         this.setProduto(produto);
     }
@@ -56,7 +58,17 @@ public class ItemPedido implements Serializable{
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
-    public Pedido getPedido() {
+    public Double getPrecoIten() {
+		return precoIten;
+	}
+	public void setPrecoIten(Double precoIten) {
+		this.precoIten = precoIten;
+		
+		if(produto == null && this.precoIten == null) {
+			this.setPrecoIten(produto.getPreco());
+		}
+	}
+	public Pedido getPedido() {
         return pedido;
     }
     public void setPedido(Pedido pedido) {
@@ -68,25 +80,26 @@ public class ItemPedido implements Serializable{
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
-    @Override
-    public String toString() {
-        return "ItemPedido [itemPedidoId=" + itemPedidoId + ", quantidade=" + quantidade + ", pedido=" + pedido
-                + ", produto=" + produto + "]";
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(itemPedidoId, pedido, produto, quantidade);
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        ItemPedido other = (ItemPedido) obj;
-        return Objects.equals(itemPedidoId, other.itemPedidoId) && Objects.equals(pedido, other.pedido)
-                && Objects.equals(produto, other.produto) && Objects.equals(quantidade, other.quantidade);
-    }
+	@Override
+	public String toString() {
+		return "ItemPedido [itemPedidoId=" + itemPedidoId + ", quantidade=" + quantidade + ", precoIten=" + precoIten
+				+ ", pedido=" + pedido + ", produto=" + produto + "]";
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(itemPedidoId, pedido, precoIten, produto, quantidade);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ItemPedido other = (ItemPedido) obj;
+		return Objects.equals(itemPedidoId, other.itemPedidoId) && Objects.equals(pedido, other.pedido)
+				&& Objects.equals(precoIten, other.precoIten) && Objects.equals(produto, other.produto)
+				&& Objects.equals(quantidade, other.quantidade);
+	}
 }
