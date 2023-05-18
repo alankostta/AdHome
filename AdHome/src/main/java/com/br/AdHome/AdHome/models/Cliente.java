@@ -61,7 +61,7 @@ public class Cliente implements Serializable {
 	@JoinTable(name = "cliente_endereco", 
 	joinColumns = @JoinColumn(name = "cliente_fk"), 
 	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
-	private Set<Endereco> endereco = new HashSet<>();
+	private Set<Endereco> endereco;
 	
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@Column(name="pedido_id")
@@ -142,6 +142,9 @@ public class Cliente implements Serializable {
 	}
 
 	public Set<Endereco> getEndereco() {
+		if(endereco == null) {
+			endereco = new HashSet<>();
+		}
 		return endereco;
 	}
 
@@ -164,7 +167,14 @@ public class Cliente implements Serializable {
 	public void setAnoRef(Integer anoRef) {
 		this.anoRef = anoRef;
 	}
-
+	public void addEndereco(Endereco endereco) {
+		if(endereco != null && getEndereco().contains(endereco)) {
+			getEndereco().add(endereco);
+		}
+		if(!endereco.getCliente().contains(this)) {
+			endereco.getCliente().add(this);
+		}
+	}
 	@Override
 	public String toString() {
 		return "Cliente [clienteId=" + clienteId + ", nome=" + nome + ", sexo=" + sexo + ", dataNasci=" + dataNasci
