@@ -3,14 +3,15 @@ package com.br.AdHome.AdHome.dto;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
 import com.br.AdHome.AdHome.models.Cliente;
 import com.br.AdHome.AdHome.models.Contato;
-import com.br.AdHome.AdHome.models.ContatoEnum;
 import com.br.AdHome.AdHome.models.Endereco;
-import com.br.AdHome.AdHome.models.EnderecoEnum;
 
 /*Classe responsável por validações de campos que 
  * receberão os dados de entrada
@@ -71,20 +72,7 @@ public class ClienteDto{
 	public void setDataNasci(Date dataNasci) {
 		this.dataNasci = dataNasci;
 	}
-	/*
-	public EnderecoEnum getEnderecoEnum() {
-		return enderecoEnum;
-	}
-	public void setEnderecoEnum(EnderecoEnum enderecoEnum) {
-		this.enderecoEnum = enderecoEnum;
-	}
-	public ContatoEnum getContatoEnum() {
-		return contatoEnum;
-	}
-	public void setContatoEnum(ContatoEnum contatoEnum) {
-		this.contatoEnum = contatoEnum;
-	}
-	*/
+
 	public Cliente toCliente() {
 		
 		Cliente cliente = new Cliente();
@@ -93,8 +81,7 @@ public class ClienteDto{
 		cliente.setDataNasci(this.dataNasci);
 		cliente.setEndereco(this.endereco);
 		cliente.setContato(this.contato);
-//		cliente.setContatoEnum(this.contatoEnum);
-//		cliente.setEnderecoEnum(this.enderecoEnum);
+
 		return cliente;
 	}
 	public Cliente toCliente(Cliente cliente) {
@@ -104,8 +91,7 @@ public class ClienteDto{
 		cliente.setDataNasci(this.dataNasci);
 		cliente.setEndereco(this.endereco);
 		cliente.setContato(this.contato);
-//		cliente.setContatoEnum(this.contatoEnum);
-//		cliente.setEnderecoEnum(this.enderecoEnum);
+
 		return cliente;
 	}
 	public void fromCliente(Cliente cliente) {
@@ -114,7 +100,6 @@ public class ClienteDto{
 		this.dataNasci = cliente.getDataNasci();
 		this.endereco = cliente.getEndereco();
 		this.contato = cliente.getContato(); 
-//		this.contatoEnum = cliente.getContatoEnum();
-//		this.enderecoEnum = cliente.getEnderecoEnum();
+
 	}
 }

@@ -6,7 +6,9 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.br.AdHome.AdHome.dto.ContatoDto;
 import com.br.AdHome.AdHome.dto.EnderecoDto;
 import com.br.AdHome.AdHome.dto.FornecedorDto;
 import com.br.AdHome.AdHome.models.Contato;
-import com.br.AdHome.AdHome.models.ContatoEnum;
 import com.br.AdHome.AdHome.models.Endereco;
 import com.br.AdHome.AdHome.models.EnderecoEnum;
 import com.br.AdHome.AdHome.models.Fornecedor;
+import com.br.AdHome.AdHome.models.TipoFoneEnum;
 import com.br.AdHome.AdHome.services.ContatoService;
 import com.br.AdHome.AdHome.services.EnderecoService;
 import com.br.AdHome.AdHome.services.FornecedorService;
@@ -53,7 +56,7 @@ public class FornecedorController{
 	public ModelAndView exibirFornecedor(FornecedorDto fornecedorDto, ContatoDto contatoDto,
 			EnderecoDto enderecoDto) {
 		ModelAndView mv = new ModelAndView("fornecedor/fornecedor");
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		return mv;
 	}
@@ -64,11 +67,11 @@ public class FornecedorController{
 			BindingResult resultEndereco) {
 
 		ModelAndView mv = new ModelAndView("fornecedor/fornecedor");
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
 		if (resultFornecedor.hasErrors() && resultContato.hasErrors() && resultEndereco.hasErrors()) {
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroFornecedor("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
@@ -104,7 +107,7 @@ public class FornecedorController{
 		var mv = new ModelAndView("cliente/listar");
 		Iterable<Fornecedor> fornecedor = fornecedorService.findAll();
 		mv.addObject("fornecedor", fornecedor);
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
 		return mv;
@@ -121,7 +124,7 @@ public class FornecedorController{
 		} else {
 			Fornecedor fornecedor = fornecedorOptional.get();
 			mv.addObject("fornecedor", fornecedor);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			mv.addObject("mensagem", "CLIENTE COM INSCRIÇÃO" + id + " ENCONTRADO COM SUCESSO!");
 			mv.addObject("erro", false);
@@ -134,7 +137,7 @@ public class FornecedorController{
 			ContatoDto contatoDto, EnderecoDto enderecoDto) {
 
 		ModelAndView mv = new ModelAndView("fornecedor/editar");
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
 		Optional<Fornecedor> fornecedorOptional = this.fornecedorService.findById(id);
@@ -150,7 +153,7 @@ public class FornecedorController{
 			enderecoDto.fromEndereco(endereco);
 
 			mv.addObject("fornecedorId", fornecedor.getFornecedorId());
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			mv.addObject("mensagem", "CLIENTE ISCRIÇÃO COM " + id + " encontrado!");
 			mv.addObject("erro", false);
@@ -168,19 +171,19 @@ public class FornecedorController{
 
 		if (resultFornecedor.hasErrors()) {
 			mv.addObject("fornecedorId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroFornecedor("ERRO AO SALVAR!!! PREENCHA OS CAMPOS NOME, SEXO, DATA DE NASCIMENTO!");
 			return mv;
 		} else if (resultContato.hasErrors()) {
 			mv.addObject("fornecedorId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroFornecedor("ERRO AO SALVAR!! PREENCHA OS CAMPOS TELEFONE E EMAIL");
 			return mv;
 		} else if (resultEndereco.hasErrors()) {
 			mv.addObject("fornecedorId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroFornecedor("ERRO AO SALVAR!! PREENCHA OS CAMPOS UF, CIDADE, BAIRRO, CEP, LOGRADOURO");
 			return mv;

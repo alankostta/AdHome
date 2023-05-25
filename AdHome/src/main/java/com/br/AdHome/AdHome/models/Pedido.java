@@ -22,8 +22,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "tb_pedido")
 public class Pedido implements Serializable {
@@ -63,16 +61,16 @@ public class Pedido implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private BandeiraCartao enumCartao;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ItemPedido> itens =  new HashSet<>();
 	
 	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval =  true)
-	@JoinColumn(name = "endereco_id", unique = true)
 	private Endereco endereco;
 	
 	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval =  true)
-	@JoinColumn(name = "user_id", unique = true)
 	private AdUser user;
 	
 	public Pedido() {

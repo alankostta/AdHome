@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,9 +24,9 @@ import com.br.AdHome.AdHome.dto.ContatoDto;
 import com.br.AdHome.AdHome.dto.EnderecoDto;
 import com.br.AdHome.AdHome.models.Cliente;
 import com.br.AdHome.AdHome.models.Contato;
-import com.br.AdHome.AdHome.models.ContatoEnum;
 import com.br.AdHome.AdHome.models.Endereco;
 import com.br.AdHome.AdHome.models.EnderecoEnum;
+import com.br.AdHome.AdHome.models.TipoFoneEnum;
 import com.br.AdHome.AdHome.services.ClienteService;
 import com.br.AdHome.AdHome.services.ContatoService;
 import com.br.AdHome.AdHome.services.EnderecoService;
@@ -62,7 +64,7 @@ public class ClienteController {
 	public ModelAndView exibirCliente(ClienteDto clienDto, ContatoDto contatoDto, EnderecoDto enderecoDto) {
 
 		var mv = new ModelAndView("cliente/cliente");
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		return mv;
 	}
@@ -76,11 +78,11 @@ public class ClienteController {
 			BindingResult resultEndereco) {
 
 		ModelAndView mv = new ModelAndView("cliente/cliente");
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
 		if (resultCliente.hasErrors() && resultContato.hasErrors() && resultEndereco.hasErrors()) {
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroCliente("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
@@ -126,7 +128,7 @@ public class ClienteController {
 		var mv = new ModelAndView("cliente/listar");
 		Iterable<Cliente> cliente = clienteService.findAll();
 		mv.addObject("cliente", cliente);
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
 		return mv;
@@ -145,7 +147,7 @@ public class ClienteController {
 		} else {
 			Cliente cliente = clienteOptional.get();
 			mv.addObject("cliente", cliente);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			mv.addObject("mensagem", "CLIENTE COM INSCRIÇÃO" + id + " ENCONTRADO COM SUCESSO!");
 			mv.addObject("erro", false);
@@ -200,7 +202,7 @@ public class ClienteController {
 			ContatoDto contatoDto, EnderecoDto enderecoDto) {
 
 		ModelAndView mv = new ModelAndView("cliente/editar");
-		mv.addObject("listaContato", ContatoEnum.values());
+		mv.addObject("listaContato", TipoFoneEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
 		Optional<Cliente> clienteOptional = this.clienteService.findById(id);
@@ -216,7 +218,7 @@ public class ClienteController {
 			enderecoDto.fromEndereco(endereco);
 
 			mv.addObject("clienteId", cliente.getClienteId());
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			mv.addObject("mensagem", "CLIENTE ISCRIÇÃO COM " + id + " encontrado!");
 			mv.addObject("erro", false);
@@ -236,19 +238,19 @@ public class ClienteController {
 
 		if (resultCliente.hasErrors()) {
 			mv.addObject("clienteId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroCliente("ERRO AO SALVAR!!! PREENCHA OS CAMPOS NOME, SEXO, DATA DE NASCIMENTO!");
 			return mv;
 		} else if (resultContato.hasErrors()) {
 			mv.addObject("clienteId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroCliente("ERRO AO SALVAR!! PREENCHA OS CAMPOS TELEFONE E EMAIL");
 			return mv;
 		} else if (resultEndereco.hasErrors()) {
 			mv.addObject("clienteId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaContato", TipoFoneEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroCliente("ERRO AO SALVAR!! PREENCHA OS CAMPOS UF, CIDADE, BAIRRO, CEP, LOGRADOURO");
 			return mv;

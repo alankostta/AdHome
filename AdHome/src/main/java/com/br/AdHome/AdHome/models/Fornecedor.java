@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,8 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_fornecedor")
@@ -59,12 +58,9 @@ public class Fornecedor implements Serializable {
 	 * objeto
 	 */
 	@OneToMany(cascade = CascadeType.PERSIST)
-	@Column(name="contato_id")
 	private Set<Contato> contatos = new HashSet<>();
 
-	@JsonIgnore
 	@OneToMany(cascade = CascadeType.PERSIST)
-	@Column(name="produto_id")
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Fornecedor() {

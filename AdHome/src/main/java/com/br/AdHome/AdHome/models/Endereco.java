@@ -2,6 +2,7 @@ package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,11 +10,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_endereco")
@@ -47,17 +48,15 @@ public class Endereco implements Serializable{
 	
 	@Enumerated(EnumType.STRING)
 	private EnderecoEnum enderecoEnum;
-	
-	@JsonIgnore
-	@ManyToMany(mappedBy = "endereco")
+
+	@ManyToMany
 	private Set<Cliente> cliente;
 		
-	@JsonIgnore
-	@ManyToMany(mappedBy = "endereco")
+	@ManyToMany
 	private Set<Fornecedor> fornecedor;
 	
-	@JsonIgnore
-	@OneToOne(mappedBy = "endereco")
+	@OneToOne
+	@JoinColumn(name = "pedido_id",unique = true)
 	private Pedido pedido;
 	
 	public Endereco() {
@@ -67,7 +66,7 @@ public class Endereco implements Serializable{
 	public Endereco(String uf, String localidade, String bairro, 
 			String cep, String logradouro, String complemento,
 			String numero, Set<Cliente> cliente, Set<Fornecedor> fornecedor,
-			Pedido pedido, EnderecoEnum enderecoEnum, ContatoEnum contatoEnum) {
+			Pedido pedido, EnderecoEnum enderecoEnum) {
 		
 		this.setUf(uf);
 		this.setLocalidade(localidade);

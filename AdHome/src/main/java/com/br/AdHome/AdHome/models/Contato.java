@@ -1,6 +1,7 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -27,16 +29,23 @@ public class Contato implements Serializable {
 	private String email;
 	
 	@Enumerated(EnumType.STRING)
-	private ContatoEnum contatoEnum;
+	private TipoFoneEnum tipoFone;
+	
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
+	
+	@JoinColumn(name = "fornecedor_id")
+	private Fornecedor fornecedor;
 	
 	public Contato() {
 		
 	}
 	public Contato(String telefone, String email, 
-			ContatoEnum contatoEnum) {
+			TipoFoneEnum tipoFone) {
 		this.setTelefone(telefone);
 		this.setEmail(email);
-		this.setContatoEnum(contatoEnum);
+		this.setTipoFone(tipoFone);
+
 	}
 	public String getTelefone() {
 		return telefone;
@@ -56,11 +65,11 @@ public class Contato implements Serializable {
 	public void setContatoId(Long contatoId) {
 		this.contatoId = contatoId;
 	}
+	public TipoFoneEnum getTipoFone() {
+		return tipoFone;
+	}
+	public void setTipoFone(TipoFoneEnum tipoFone) {
+		this.tipoFone = tipoFone;
+	}
 
-	public ContatoEnum getContatoEnum() {
-		return contatoEnum;
-	}
-	public void setContatoEnum(ContatoEnum contatoEnum) {
-		this.contatoEnum = contatoEnum;
-	}
 }

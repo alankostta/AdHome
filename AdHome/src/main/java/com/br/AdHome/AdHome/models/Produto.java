@@ -55,6 +55,13 @@ public class Produto implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 	
+	@JoinColumn(name = "categoria_id")
+	private Categoria  categoria;
+	
+	@ManyToOne
+	@JoinColumn(name = "fornecedor_id")
+	private Fornecedor fornecedor;
+	
 	@ManyToOne
 	@JoinColumn(name = "itens_id")
 	private ItemPedido itens;

@@ -11,7 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -44,6 +46,10 @@ public class AdUser implements UserDetails, Serializable{
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
 	private List<RoleModel> roles;
+	
+	@OneToOne
+	@JoinColumn(name = "pedido_id",unique = true)
+	private Pedido pedido;
 	
 	public AdUser() {
 		

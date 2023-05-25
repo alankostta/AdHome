@@ -1,18 +1,14 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
@@ -29,23 +25,18 @@ public class Categoria implements Serializable {
 	@Column(name="nome_cate", nullable = false, length = 50)
 	private String nomeCategoria;
 	
-	@Column(name="descri_cate", nullable = false, length = 150)
-	private String descricaoCategoria;
-	
 	@OneToMany(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "produto_id")
 	private List<Produto> produtos;
 	
 	public Categoria() {
 		
 	}
 
-	public Categoria(Long categoriaId, String nomeCategoria, String descricaoCategoria, Date dataCadasto,
-			LocalDateTime dataAlte, Integer ano_ref) {
+	public Categoria(Long categoriaId, String nomeCategoria) {
 
 		this.categoriaId = categoriaId;
 		this.nomeCategoria = nomeCategoria;
-		this.descricaoCategoria = descricaoCategoria;
+		
 	
 		this.setProdutos(produtos);
 	}
@@ -65,14 +56,6 @@ public class Categoria implements Serializable {
 	public void setNomeCategoria(String nomeCategoria) {
 		this.nomeCategoria = nomeCategoria;
 	}
-
-	public String getDescricaoCategoria() {
-		return descricaoCategoria;
-	}
-
-	public void setDescricaoCategoria(String descricaoCategoria) {
-		this.descricaoCategoria = descricaoCategoria;
-	}
 	
 	public List<Produto> getProdutos() {
 		return produtos;
@@ -84,13 +67,12 @@ public class Categoria implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Categoria [categoriaId=" + categoriaId + ", nomeCategoria=" + nomeCategoria + ", descricaoCategoria="
-				+ descricaoCategoria + ", produtos=" + produtos + "]";
+		return "Categoria [categoriaId=" + categoriaId + ", nomeCategoria=" + nomeCategoria + ", produtos=" + produtos + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(categoriaId, descricaoCategoria, nomeCategoria, produtos);
+		return Objects.hash(categoriaId, nomeCategoria, produtos);
 	}
 
 	@Override
@@ -102,8 +84,9 @@ public class Categoria implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Categoria other = (Categoria) obj;
-		return Objects.equals(categoriaId, other.categoriaId)
-				&& Objects.equals(descricaoCategoria, other.descricaoCategoria)
-				&& Objects.equals(nomeCategoria, other.nomeCategoria) && Objects.equals(produtos, other.produtos);
+		return Objects.equals(
+				categoriaId, other.categoriaId)
+				&& Objects.equals(nomeCategoria, other.nomeCategoria)
+				&& Objects.equals(produtos, other.produtos);
 	}
 }

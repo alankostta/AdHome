@@ -54,7 +54,6 @@ public class Cliente implements Serializable {
 	private LocalDateTime dataAltera;
 
 	@OneToMany(cascade = CascadeType.PERSIST)
-	@JoinColumn(name="contato_id")
 	private Set<Contato> contato = new HashSet<>();
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -64,7 +63,6 @@ public class Cliente implements Serializable {
 	private Set<Endereco> endereco;
 	
 	@OneToMany(cascade = CascadeType.PERSIST)
-	@Column(name="pedido_id")
 	private Set<Pedido> pedido = new HashSet<>();
 
 	public Cliente() {
