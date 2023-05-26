@@ -16,8 +16,17 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 
 	List<Cliente> findByNomeContaining(String name);
 
-	@Query(value = "SELECT c.clienteId, c.nome, " + "e.bairro, e.uf, e.localidade, e.enderecoId,"
-			+ " e.complemento, e.numero, e.cep, e.logradouro " + "FROM Cliente c JOIN c.endereco e "
+	@Query(value = 
+			"SELECT c.clienteId, c.nome, " 
+			+ "e.bairro, e.uf, e.localidade, e.enderecoId,"
+			+ " e.complemento, e.numero, e.cep, e.logradouro " 
+			+ "FROM Cliente c JOIN c.endereco e "
 			+ "WHERE c.clienteId = :id")
 	List<Object[]> findClienteEnderecoById(Long id);
+	
+	@Query(value = 
+	"SELECT cl, co, en FROM Cliente cl "
+			+ "JOIN cl.contato co "
+			+ "JOIN cl.endereco en")
+	List<Object[]> findClienteContatoEnderecoAll();
 }

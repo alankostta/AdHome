@@ -110,7 +110,7 @@ public class PedidoController {
 			Produto produto = produtoDto.toProduto();
 			Cliente cliente = clienteDto.toCliente();
 			ItemPedido itens = itemPedidoDto.toItens();
-			itens.setProduto(produto);
+			//itens.setProduto(produto);
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(LocalDateTime.now());
@@ -133,9 +133,7 @@ public class PedidoController {
 	public ResponseEntity<List<Cliente>> buscarPorNomecliente(@RequestParam(name = "name") String name) {
 		// List<Fornecedor> fornecedor =
 		// fornecedorService.findByName(name.trim().toLowerCase());
-		List<Cliente> cliente = clienteService.findByNameContaining(name);// Execeuta a consulta no banco de dados ao
-																			// qual está sendo por nome
-
+		List<Cliente> cliente = clienteService.findByNameContaining(name);// Execeuta a consulta no banco de dados ao qual está sendo por nome
 		return new ResponseEntity<List<Cliente>>(cliente, HttpStatus.OK);// Retorna uma lista de nomes em formato JSON
 	}
 

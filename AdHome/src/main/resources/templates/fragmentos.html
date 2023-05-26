@@ -72,24 +72,17 @@
 				<div class="col-sm-4">
 					<div class="form-check form-check-inline">
 						<input type="radio" class="form-check-input"
-							th:field="*{clienteDto.sexo}" value="Feminino"> <label
+							th:field="*{clienteDto.sexo}" value="F"> <label
 							for="Feminino" class="form-check-label col-sm-offset-1">Feminino</label>
 					</div>
 					<div class="form-check form-check-inline">
 						<input type="radio" class="form-check-input"
-							th:field="*{clienteDto.sexo}" value="Masculino"> <label
+							th:field="*{clienteDto.sexo}" value="M"> <label
 							for="Masculino" class="form-check-label col-sm-offset-1">Masculino</label>
 					</div>
 				</div>
 			</div>
-			<label class="col-sm-3 form-select-label">Escolha o Tipo de
-				Contato</label>
-			<div class="mb-3 ">
-				<select class="form-select" th:field="*{clienteDto.contatoEnum}">
-					<option th:each="contato : ${listaContato}" th:value="${contato}"
-						th:text="${contato}"></option>
-				</select>
-			</div>
+			
 			<div class="row mb-3 align-items-center">
 				<label for="telefone" class="col-sm-2 form-label">Telefone
 					de Contato</label>
@@ -98,7 +91,13 @@
 						th:field="*{contatoDto.telefone}" type="text"
 						placeholder="Digite seu Telefone" />
 				</div>
-				<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>
+				<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>		
+				<div class="form-select-sm col-sm-3" style="width: 10%;">
+					<select class="form-select" th:field="*{contatoDto.tipoFone}">
+						<option th:each="contato : ${listaContato}" th:value="${contato}"
+							th:text="${contato}"></option>
+					</select>
+				</div>
 				<label for="email" class="col-sm-1 form-label">E-mail</label>
 				<div class="col-sm-3">
 					<input class="form-control" th:errorclass="is-invalid" type="text"
@@ -108,8 +107,8 @@
 			</div>
 			<div class="mb-3">
 				<label for="endereco" class="form-label">Escolha o tipo de
-					Endereço</label> <select class="form-select"
-					th:field="*{clienteDto.enderecoEnum}">
+					Endereço</label> 
+					<select class="form-select" style="width: 30%;" th:field="*{enderecoDto.enderecoEnum}">
 					<option th:each="endereco : ${listaEndereco}"
 						th:value="${endereco}" th:text="${endereco}"></option>
 				</select> </br>

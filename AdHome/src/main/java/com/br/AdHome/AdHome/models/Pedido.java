@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -61,16 +62,17 @@ public class Pedido implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private BandeiraCartao enumCartao;
 	
+	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ItemPedido> itens =  new HashSet<>();
 	
-	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval =  true)
+	@OneToOne(mappedBy = "pedido", cascade = CascadeType.PERSIST, orphanRemoval =  true)
 	private Endereco endereco;
 	
-	@OneToOne(cascade = CascadeType.PERSIST, orphanRemoval =  true)
+	@OneToOne(mappedBy = "pedido",cascade = CascadeType.PERSIST, orphanRemoval =  true)
 	private AdUser user;
 	
 	public Pedido() {

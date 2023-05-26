@@ -1,7 +1,10 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tb_item_pedido")
@@ -23,24 +25,24 @@ public class ItemPedido implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="item_pedido_id")
     private Long itemPedidoId;
+    
     @Column(name="qtd_itens")
     private Integer quantidade;
+    
     @Column(name="preco_iten")
     private Double precoIten;
     
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="pedido_id")
     private Pedido pedido;
     
-    @ManyToOne
-    @JoinColumn(name="produto_id")
-    private Produto produto;
+    @OneToMany(mappedBy = "itens", cascade = CascadeType.ALL, orphanRemoval =  true)
+    private List<Produto> produto;
     
     public ItemPedido() {
         
     }
-    public ItemPedido(Integer quantidade,Double precoIten,  Pedido Pedido, Produto produto) {
+    public ItemPedido(Integer quantidade,Double precoIten,  Pedido Pedido, List<Produto> produto) {
         this.setQuantidade(quantidade);
         this.setPrecoIten(precoIten);
         this.setPedido(Pedido);
@@ -65,8 +67,9 @@ public class ItemPedido implements Serializable{
 		this.precoIten = precoIten;
 		
 		if(produto == null && this.precoIten == null) {
-			this.setPrecoIten(produto.getPreco());
+			//this.setPrecoIten(produto.getPreco());
 		}
+	
 	}
 	public Pedido getPedido() {
         return pedido;
@@ -74,10 +77,10 @@ public class ItemPedido implements Serializable{
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
-    public Produto getProduto() {
+    public List<Produto> getProduto() {
         return produto;
     }
-    public void setProduto(Produto produto) {
+    public void setProduto(List<Produto> produto) {
         this.produto = produto;
     }
 	@Override

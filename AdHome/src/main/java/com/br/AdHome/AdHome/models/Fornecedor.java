@@ -57,10 +57,10 @@ public class Fornecedor implements Serializable {
 	 * um grupo único de objetos evitando ser criado várias instancias do mesmo
 	 * objeto
 	 */
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.PERSIST)
 	private Set<Contato> contatos = new HashSet<>();
 
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "fornecedor", cascade = CascadeType.PERSIST)
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Fornecedor() {

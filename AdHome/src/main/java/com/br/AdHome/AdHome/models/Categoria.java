@@ -25,7 +25,7 @@ public class Categoria implements Serializable {
 	@Column(name="nome_cate", nullable = false, length = 50)
 	private String nomeCategoria;
 	
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "categoria", cascade = CascadeType.PERSIST)
 	private List<Produto> produtos;
 	
 	public Categoria() {
@@ -33,11 +33,8 @@ public class Categoria implements Serializable {
 	}
 
 	public Categoria(Long categoriaId, String nomeCategoria) {
-
 		this.categoriaId = categoriaId;
 		this.nomeCategoria = nomeCategoria;
-		
-	
 		this.setProdutos(produtos);
 	}
 

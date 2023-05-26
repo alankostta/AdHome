@@ -1,12 +1,14 @@
 package com.br.AdHome.AdHome.dto;
 
+import java.util.List;
+
 import com.br.AdHome.AdHome.models.ItemPedido;
 import com.br.AdHome.AdHome.models.Produto;
 
 public class ItemPedidoDto {
 	
 	private Integer quantidade;
-	private Produto produto;
+	private List<Produto> produto;
 	private Double subTotal;	
 
 	public Integer getQuantidade() {
@@ -24,10 +26,10 @@ public class ItemPedidoDto {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	public Produto getProduto() {
+	public List<Produto> getProduto() {
 		return produto;
 	}
-	public void setProduto(Produto produto) {
+	public void setProduto(List<Produto> produto) {
 		this.produto = produto;
 	}
 	public ItemPedido toItens() {

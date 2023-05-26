@@ -2,8 +2,10 @@ package com.br.AdHome.AdHome.controller;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.br.AdHome.AdHome.configs.ViacepService;
 import com.br.AdHome.AdHome.dto.ClienteDto;
 import com.br.AdHome.AdHome.dto.ContatoDto;
@@ -94,27 +97,31 @@ public class ClienteController {
 			// int dow = cal.get(Calendar.DAY_OF_WEEK);
 			// int dom = cal.get(Calendar.DAY_OF_MONTH);
 			// int doy = cal.get(Calendar.DAY_OF_YEAR);
+			
 			Cliente cliente = clienDto.toCliente();
 			Contato contato = contatoDto.toContato();
 			Endereco endereco = enderecoDto.toEndereco();
+			
+			Set<Contato> contatos = new HashSet<>();
+			contatos.add(contato);
+			
+			Set<Endereco> enderecos = new HashSet<>();
+			enderecos.add(endereco);
+			
+			Set<Cliente> clientes = new HashSet<>();
+			clientes.add(cliente);
 
 			cliente.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
 			cliente.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
 			cliente.setAnoRef(cal.get(Calendar.YEAR));
 
-			Set<Endereco> enderecos = new HashSet<>();
-			enderecos.add(endereco);
 			cliente.setEndereco(enderecos);
-
-			// Adiciona o cliente ao conjunto de clientes do endereço
-			Set<Cliente> clientes = new HashSet<>();
-			clientes.add(cliente);
+			cliente.setContato(contatos);
 			endereco.setCliente(clientes);
-
-			enderecoService.saveEndereco(endereco);
-			contatoService.saveContato(contato); // Salva o contato no banco de dados
-			clienteService.saveCliente(cliente);
-			
+		
+			contato.setCliente(cliente);
+			cliente.getContato().add(contato);
+			clienteService.saveCliente(cliente);// Salva o contato no banco de dados
 			return new ModelAndView("redirect:/cliente/listar");
 		}
 		// método BeanUtils está sendo usado para realizar um cast de clienteDto para
@@ -124,12 +131,18 @@ public class ClienteController {
 	@GetMapping("cliente/listar")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView listarClientes() {
-
+		
+		List<Object[]> cliente = new ArrayList<>();
+		
 		var mv = new ModelAndView("cliente/listar");
-		Iterable<Cliente> cliente = clienteService.findAll();
+		
+		for (int i = 0; i < cliente.size(); i++) {
+			cliente.addAll(clienteService.findClienteContatoEndereco());
+		}
+		
 		mv.addObject("cliente", cliente);
-		mv.addObject("listaContato", TipoFoneEnum.values());
-		mv.addObject("listaEndereco", EnderecoEnum.values());
+		//mv.addObject("listaContato", TipoFoneEnum.values());
+		//mv.addObject("listaEndereco", EnderecoEnum.values());
 		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
 		return mv;
 	}

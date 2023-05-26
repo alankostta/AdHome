@@ -49,8 +49,8 @@
 							<td th:text="${cliente.sexo}"></td>
 							<td th:text="${cliente.dataNasci}"></td>
 							<td th:text="${cliente.dataCadastro}"></td>
-							<td th:text="${cliente.contatoEnum}"></td>
-							<td th:text="${cliente.enderecoEnum}"></td>
+							<td th:text="${contato.tipoFone}"></td>
+							<td th:text="${endereco.enderecoEnum}"></td>
 							<td><a class="btn btn-outline-info btn-sm" th:href="@{/cliente/{clienteId}(clienteId=${cliente.clienteId})}">Detalhes</a></td>
 							<td><a class="btn btn-outline-primary btn-sm" th:href="@{/cliente/{clienteId}/editar(clienteId=${cliente.clienteId})}">Editar</a></td>
 							<td><a class="btn btn-outline-danger btn-sm" th:href="@{/cliente/{clienteId}/excluir(clienteId=${cliente.clienteId})}">Excluir</a></td>

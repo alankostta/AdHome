@@ -111,7 +111,6 @@ public class EnderecoDto {
 	}
 	public Endereco toEndereco() {// Passsando os Obj para classe endereço sem parametros no metodo
 		Endereco endereco = new Endereco();
-		endereco.setEnderecoId(getEnderecoId().longValue());
 		endereco.setUf(this.uf);
 		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
@@ -124,16 +123,20 @@ public class EnderecoDto {
 	}
 
 	public Endereco toEndereco(Endereco endereco) { // Passsando os Obj para classe endereço com parametros no metodo
-		endereco.setEnderecoId(getEnderecoId().longValue());
-		endereco.setUf(this.uf);
-		endereco.setLocalidade(this.localidade);
-		endereco.setBairro(this.bairro);
-		endereco.setCep(this.cep);
-		endereco.setLogradouro(this.logradouro);
-		endereco.setComplemento(this.complemento);
-		endereco.setNumero(this.numero);
-		endereco.setEnderecoEnum(enderecoEnum);
-		return endereco;
+		if(getEnderecoId() == null) {
+			return toEndereco();
+		}else {
+				endereco.setEnderecoId(getEnderecoId().longValue());
+				endereco.setUf(this.uf);
+				endereco.setLocalidade(this.localidade);
+				endereco.setBairro(this.bairro);
+				endereco.setCep(this.cep);
+				endereco.setLogradouro(this.logradouro);
+				endereco.setComplemento(this.complemento);
+				endereco.setNumero(this.numero);
+				endereco.setEnderecoEnum(enderecoEnum);
+				return endereco;
+		}
 	}
 
 	public void fromEndereco(Endereco endereco) { // Pegando da classe Endereco seus atributos.

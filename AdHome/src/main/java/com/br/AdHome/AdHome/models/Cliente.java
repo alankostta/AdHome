@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,7 +54,7 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Set<Contato> contato = new HashSet<>();
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -62,7 +63,7 @@ public class Cliente implements Serializable {
 	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private Set<Endereco> endereco;
 	
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	private Set<Pedido> pedido = new HashSet<>();
 
 	public Cliente() {

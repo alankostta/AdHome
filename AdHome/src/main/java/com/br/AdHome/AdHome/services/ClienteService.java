@@ -44,5 +44,8 @@ public class ClienteService {
 	public List<Object[]> findClienteEndereco(Long id) {
 		return clienteRepository.findClienteEnderecoById(id);
 	}
+	public List<Object[]> findClienteContatoEndereco(){
+		return clienteRepository.findClienteContatoEnderecoAll();
+	}
 	
 }

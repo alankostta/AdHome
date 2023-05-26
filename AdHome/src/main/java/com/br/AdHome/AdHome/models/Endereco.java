@@ -1,6 +1,7 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -46,6 +47,7 @@ public class Endereco implements Serializable{
 	@Column(name = "numero", nullable = true, length = 10)
 	private String numero;
 	
+	@Column(name = "tipo_endereco")
 	@Enumerated(EnumType.STRING)
 	private EnderecoEnum enderecoEnum;
 
@@ -164,5 +166,5 @@ public class Endereco implements Serializable{
 		for(Fornecedor forne : this.getFornecedor()) {
 			forne.setEndereco(null);
 		}
-	}
+	}	
 }
