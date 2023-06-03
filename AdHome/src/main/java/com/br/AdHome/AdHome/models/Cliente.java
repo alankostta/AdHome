@@ -27,179 +27,197 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "tb_cliente")
 public class Cliente implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cliente_id", nullable = false, length = 10, unique = true)
-	private Long clienteId;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name = "nome_clie", nullable = false, length = 70)
-	private String nome;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cliente_id", nullable = false, length = 10, unique = true)
+    private Long clienteId;
 
-	@Column(name = "sexo_clie", nullable = false, length = 30)
-	private String sexo;
+    @Column(name = "nome_clie", nullable = false, length = 70)
+    private String nome;
 
-	@Column(name = "dataNasci_clie", nullable = false, length = 30)
-	@Temporal(TemporalType.DATE)
-	private Date dataNasci;
+    @Column(name = "sexo_clie", nullable = false, length = 30)
+    private String sexo;
 
-	@Column(name = "ano_ref", nullable = false)
-	private Integer anoRef;
+    @Column(name = "dataNasci_clie", nullable = false, length = 30)
+    @Temporal(TemporalType.DATE)
+    private Date dataNasci;
 
-	@Column(name = "data_Cadastro", nullable = false, length = 30)
-	private LocalDateTime dataCadastro;
+    @Column(name = "ano_ref", nullable = false)
+    private Integer anoRef;
 
-	@Column(name = "data_Altera", length = 30, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDateTime dataAltera;
+    @Column(name = "data_Cadastro", nullable = false, length = 30)
+    private LocalDateTime dataCadastro;
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	private Set<Contato> contato = new HashSet<>();
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "cliente_endereco", 
-	joinColumns = @JoinColumn(name = "cliente_fk"), 
-	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
-	private Set<Endereco> endereco;
-	
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	private Set<Pedido> pedido = new HashSet<>();
+    @Column(name = "data_Altera", length = 30, nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime dataAltera;
 
-	public Cliente() {
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Contato> contato = new HashSet<>();
 
-	}
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "cliente_endereco", joinColumns = @JoinColumn(name = "cliente_fk"), inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
+    private Set<Endereco> endereco;
 
-	public Cliente(String nome, String sexo, 
-			Date dataNasci, LocalDateTime dataCadastro, 
-			LocalDateTime dataAltera, Integer anoRef) {
-		this.setNome(nome);
-		this.setSexo(sexo);
-		this.setDataNasci(dataNasci);
-		this.setDataCadastro(dataCadastro);
-		this.setContato(getContato());
-		this.setEndereco(getEndereco());
-		this.setPedido(getPedido());
-		this.setDataAltera(dataAltera);
-		this.setAnoRef(anoRef);
-	}
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Set<Pedido> pedido = new HashSet<>();
 
-	public LocalDateTime getDataAltera() {
-		return dataAltera;
-	}
+    public Cliente() {
 
-	public void setDataAltera(LocalDateTime dataAltera) {
-		this.dataAltera = dataAltera;
-	}
+    }
 
-	public LocalDateTime getDataCadastro() {
-		return dataCadastro;
-	}
+    public Cliente(String nome, String sexo, Date dataNasci, LocalDateTime dataCadastro, LocalDateTime dataAltera,
+            Integer anoRef) {
+        this.setNome(nome);
+        this.setSexo(sexo);
+        this.setDataNasci(dataNasci);
+        this.setDataCadastro(dataCadastro);
+        this.setContato(getContato());
+        this.setEndereco(getEndereco());
+        this.setPedido(getPedido());
+        this.setDataAltera(dataAltera);
+        this.setAnoRef(anoRef);
+    }
 
-	public void setDataCadastro(LocalDateTime dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}
+    public LocalDateTime getDataAltera() {
+        return dataAltera;
+    }
 
-	public Long getClienteId() {
-		return clienteId;
-	}
+    public void setDataAltera(LocalDateTime dataAltera) {
+        this.dataAltera = dataAltera;
+    }
 
-	public void setClienteId(Long clienteId) {
-		this.clienteId = clienteId;
-	}
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public Long getClienteId() {
+        return clienteId;
+    }
 
-	public String getSexo() {
-		return sexo;
-	}
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
 
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public Date getDataNasci() {
-		return dataNasci;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setDataNasci(Date dataNasci) {
-		this.dataNasci = dataNasci;
-	}
+    public String getSexo() {
+        return sexo;
+    }
 
-	public Set<Contato> getContato() {
-		return contato;
-	}
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
 
-	public void setContato(Set<Contato> contato) {
-		this.contato = contato;
-	}
+    public Date getDataNasci() {
+        return dataNasci;
+    }
 
-	public Set<Endereco> getEndereco() {
-		if(endereco == null) {
-			endereco = new HashSet<>();
-		}
-		return endereco;
-	}
+    public void setDataNasci(Date dataNasci) {
+        this.dataNasci = dataNasci;
+    }
 
-	public void setEndereco(Set<Endereco> endereco) {
-		this.endereco = endereco;
-	}
+    public Set<Contato> getContato() {
+        return contato;
+    }
 
-	public Set<Pedido> getPedido() {
-		return pedido;
-	}
+    public void setContato(Set<Contato> contato) {
+        this.contato = contato;
+    }
 
-	public void setPedido(Set<Pedido> pedido) {
-		this.pedido = pedido;
-	}
+    public Set<Endereco> getEndereco() {
+        if (endereco == null) {
+            endereco = new HashSet<>();
+        }
+        return endereco;
+    }
 
-	public Integer getAnoRef() {
-		return anoRef;
-	}
+    public void setEndereco(Set<Endereco> endereco) {
+        this.endereco = endereco;
+    }
 
-	public void setAnoRef(Integer anoRef) {
-		this.anoRef = anoRef;
-	}
-	public void addEndereco(Endereco endereco) {
-		if(endereco != null && getEndereco().contains(endereco)) {
-			getEndereco().add(endereco);
-		}
-		if(!endereco.getCliente().contains(this)) {
-			endereco.getCliente().add(this);
-		}
-	}
-	@Override
-	public String toString() {
-		return "Cliente [clienteId=" + clienteId + ", nome=" + nome + ", sexo=" + sexo + ", dataNasci=" + dataNasci
-				+ ", anoRef=" + anoRef + ", dataCadastro=" + dataCadastro + ", dataAltera=" + dataAltera + ", contato="
-				+ contato + ", endereco=" + endereco + ", pedido=" + pedido + "]";
-	}
+    public Set<Pedido> getPedido() {
+        return pedido;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(anoRef, clienteId, contato, dataAltera, dataCadastro, dataNasci, endereco, nome, pedido,
-				sexo);
-	}
+    public void setPedido(Set<Pedido> pedido) {
+        this.pedido = pedido;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		return Objects.equals(anoRef, other.anoRef) && Objects.equals(clienteId, other.clienteId)
-				&& Objects.equals(contato, other.contato) && Objects.equals(dataAltera, other.dataAltera)
-				&& Objects.equals(dataCadastro, other.dataCadastro) && Objects.equals(dataNasci, other.dataNasci)
-				&& Objects.equals(endereco, other.endereco) && Objects.equals(nome, other.nome)
-				&& Objects.equals(pedido, other.pedido) && Objects.equals(sexo, other.sexo);
-	}
+    public Integer getAnoRef() {
+        return anoRef;
+    }
+
+    public void setAnoRef(Integer anoRef) {
+        this.anoRef = anoRef;
+    }
+
+    public void addEndereco(Endereco endereco) {
+        if (endereco != null) {
+            getEndereco().add(endereco);
+            endereco.getCliente().add(this);
+        }
+    }
+
+    public void addContato(Contato contato) {
+        if (contato != null) {
+            contato.setCliente(this);
+            getContato().add(contato);
+        }
+    }
+
+    public void removeContato(Contato contato) {
+        if (contato != null) {
+            contato.setCliente(null);
+            getContato().remove(contato);
+        }
+    }
+
+    public void removeEndereco(Endereco endereco) {
+        if (endereco != null) {
+            endereco.setCliente(null);
+            getEndereco().remove(endereco);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente [clienteId=" + clienteId + ", nome=" + nome + ", sexo=" + sexo + ", dataNasci=" + dataNasci
+                + ", anoRef=" + anoRef + ", dataCadastro=" + dataCadastro + ", dataAltera=" + dataAltera + ", contato="
+                + contato + ", endereco=" + endereco + ", pedido=" + pedido + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(anoRef, clienteId, contato, dataAltera, dataCadastro, dataNasci, endereco, nome, pedido,
+                sexo);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Cliente other = (Cliente) obj;
+        return Objects.equals(anoRef, other.anoRef) && Objects.equals(clienteId, other.clienteId)
+                && Objects.equals(contato, other.contato) && Objects.equals(dataAltera, other.dataAltera)
+                && Objects.equals(dataCadastro, other.dataCadastro) && Objects.equals(dataNasci, other.dataNasci)
+                && Objects.equals(endereco, other.endereco) && Objects.equals(nome, other.nome)
+                && Objects.equals(pedido, other.pedido) && Objects.equals(sexo, other.sexo);
+    }
 }

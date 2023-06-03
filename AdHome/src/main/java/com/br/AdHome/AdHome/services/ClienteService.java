@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.br.AdHome.AdHome.models.Cliente;
@@ -20,7 +21,8 @@ import com.br.AdHome.AdHome.repositories.ClienteRepository;
 @Transactional
 public class ClienteService {
 	
-	final ClienteRepository clienteRepository;
+	@Autowired
+	ClienteRepository clienteRepository;
 
 	public ClienteService(ClienteRepository clienteRepository) {
 		this.clienteRepository = clienteRepository;
@@ -44,8 +46,8 @@ public class ClienteService {
 	public List<Object[]> findClienteEndereco(Long id) {
 		return clienteRepository.findClienteEnderecoById(id);
 	}
-	public List<Object[]> findClienteContatoEndereco(){
-		return clienteRepository.findClienteContatoEnderecoAll();
+	public List<Cliente> clienteProjecao(){
+		List<Cliente> cliente = clienteRepository.projecaoCliente();
+		return cliente;
 	}
-	
 }

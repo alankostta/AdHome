@@ -2,25 +2,24 @@ package com.br.AdHome.AdHome.controller;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.br.AdHome.AdHome.configs.ViacepService;
 import com.br.AdHome.AdHome.dto.ClienteDto;
 import com.br.AdHome.AdHome.dto.ContatoDto;
@@ -46,21 +45,13 @@ import com.br.AdHome.AdHome.services.EnderecoService;
 @RestController("/cliente")
 @Transactional
 public class ClienteController {
+	
 	// insere a classe e ápos isso cria o metodo construtor
-	final ClienteService clienteService;
-	final EnderecoService enderecoService;
-	final ContatoService contatoService;
-	final ViacepService viacepService;
-
-	// Metodo construtor da classe Cliente Controller
-	public ClienteController(ClienteService clienteSerice, EnderecoService enderecoService,
-			ContatoService contatoService, ViacepService viacepService) {
-
-		this.clienteService = clienteSerice;
-		this.enderecoService = enderecoService;
-		this.contatoService = contatoService;
-		this.viacepService = viacepService;
-	}
+	@Autowired
+	ClienteService clienteService;
+	EnderecoService enderecoService;
+	ContatoService contatoService;
+	ViacepService viacepService;
 
 	@GetMapping("/cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
@@ -124,27 +115,16 @@ public class ClienteController {
 			clienteService.saveCliente(cliente);// Salva o contato no banco de dados
 			return new ModelAndView("redirect:/cliente/listar");
 		}
-		// método BeanUtils está sendo usado para realizar um cast de clienteDto para
-		// cliente
 	}
 
 	@GetMapping("cliente/listar")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView listarClientes() {
-		
-		List<Object[]> cliente = new ArrayList<>();
-		
-		var mv = new ModelAndView("cliente/listar");
-		
-		for (int i = 0; i < cliente.size(); i++) {
-			cliente.addAll(clienteService.findClienteContatoEndereco());
-		}
-		
-		mv.addObject("cliente", cliente);
-		//mv.addObject("listaContato", TipoFoneEnum.values());
-		//mv.addObject("listaEndereco", EnderecoEnum.values());
-		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
-		return mv;
+	    ModelAndView mv = new ModelAndView("cliente/listar");
+	    Iterable<Cliente> clientes = clienteService.clienteProjecao();
+	    mv.addObject("cliente", clientes);
+	    mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
+	    return mv;
 	}
 
 	@GetMapping("cliente/{clienteId}")

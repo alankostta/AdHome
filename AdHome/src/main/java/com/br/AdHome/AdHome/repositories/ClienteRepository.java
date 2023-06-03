@@ -1,9 +1,11 @@
 package com.br.AdHome.AdHome.repositories;
 
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 import com.br.AdHome.AdHome.models.Cliente;
 
 /*
@@ -24,9 +26,8 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 			+ "WHERE c.clienteId = :id")
 	List<Object[]> findClienteEnderecoById(Long id);
 	
-	@Query(value = 
-	"SELECT cl, co, en FROM Cliente cl "
-			+ "JOIN cl.contato co "
-			+ "JOIN cl.endereco en")
-	List<Object[]> findClienteContatoEnderecoAll();
+    @Query("SELECT cl FROM Cliente cl"
+    		+ " JOIN FETCH cl.contato co "
+    		+ "JOIN FETCH cl.endereco en")
+    List<Cliente> projecaoCliente();
 }

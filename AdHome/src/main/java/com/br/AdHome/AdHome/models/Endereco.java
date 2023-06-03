@@ -1,7 +1,6 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -166,5 +165,14 @@ public class Endereco implements Serializable{
 		for(Fornecedor forne : this.getFornecedor()) {
 			forne.setEndereco(null);
 		}
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Endereco [enderecoId=" + enderecoId + ", uf=" + uf + ", localidade=" + localidade + ", bairro=" + bairro
+				+ ", cep=" + cep + ", logradouro=" + logradouro + ", complemento=" + complemento + ", numero=" + numero
+				+ ", enderecoEnum=" + enderecoEnum + ", cliente=" + cliente + ", fornecedor=" + fornecedor + ", pedido="
+				+ pedido + "]";
+	}
+
 }
