@@ -21,7 +21,7 @@
 			</div>
 			<div class="mb-3">
 				<label class="form-label">Escolha o Tipo de Contato</label> <select
-					class="form-select" th:field="*{fornecedorDto.contatoEnum}">
+					class="form-select" th:field="*{contatoDto.tipoFone}">
 					<option th:each="contato : ${listaContato}" th:value="${contato}"
 						th:text="${contato}"></option>
 				</select>

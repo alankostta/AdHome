@@ -1,5 +1,4 @@
 <div th:fragment="tabelaItens">
-<<<<<<< Updated upstream
     <input type="hidden" name="listaProdutos" id="listaProdutos">
     <table id="listaPedido" class="table table-striped">
         <thead>
@@ -14,20 +13,20 @@
             </tr>
         </thead>
         <tbody id="tbody">
-            <tr th:each="itemPedidoDto, itemStat : *{pedidoDto.itensPedidoDto}">
-                <td th:text="${itemStat.index + 1}"></td>
-                <td th:text="${itemPedidoDto.produtoDto.descricao}"></td>
-                <td th:text="${itemPedidoDto.produtoDto.marca}"></td>
-                <td th:text="${itemPedidoDto.produtoDto.valorSaida}"></td>
-                <td>
-                    <input type="number" class="form-control"
-                        th:name="'pedidoDto.itensPedido[' + ${itemStat.index} + '].quantidade'"
-                        th:value="${itemPedidoDto.quantidade}" />
-                </td>
-                <td th:text="${itemPedidoDto.subTotal}"></td>
-                <td>
-                    <button type="button" class="btn btn-sm btn-danger"
-                        th:attr="data-index=${itemStat.index}">Remover</button>
+<!--            <tr th:each="itemPedidoDto, itemStat : *{pedidoDto.itensPedidoDto}">-->
+<!--                <td th:text="${itemStat.index + 1}"></td>-->
+<!--                <td th:text="${itemPedidoDto.produtoDto.descricao}"></td>-->
+<!--                <td th:text="${itemPedidoDto.produtoDto.marca}"></td>-->
+<!--                <td th:text="${itemPedidoDto.produtoDto.valorSaida}"></td>-->
+<!--                <td>-->
+<!--                    <input type="number" class="form-control"-->
+<!--                        th:name="'pedidoDto.itensPedido[' + ${itemStat.index} + '].quantidade'"-->
+<!--                        th:value="${itemPedidoDto.quantidade}" />-->
+<!--                </td>-->
+<!--                <td th:text="${itemPedidoDto.subTotal}"></td>-->
+<!--                <td>-->
+<!--                    <button type="button" class="btn btn-sm btn-danger"-->
+<!--                        th:attr="data-index=${itemStat.index}">Remover</button>-->
                 </td>
             </tr>
         </tbody>
@@ -42,7 +41,6 @@
             </tr>
         </tfoot>
     </table>
-=======
 <input type="hidden" name="listaProdutos" id="listaProdutos">
 <table id="listaPedido" class="table table-striped">
 	<thead>
@@ -57,10 +55,10 @@
 		</tr>
 	</thead>
 	<tbody id="tbody">
-		<tr th:each="item : ${pedidoDto.itens}">
-            <td><input type="text" th:field="*{itens[__${itemStat.index}__].produto.produtoId}" /></td>
-            <td><input type="text" th:field="*{itens[__${itemStat.index}__].produto.descricao}" /></td>
-        </tr>
+<!--		<tr th:each="item : ${pedidoDto.itens}">-->
+<!--            <td><input type="text" th:field="*{itens[__${itemStat.index}__].produto.produtoId}" /></td>-->
+<!--            <td><input type="text" th:field="*{itens[__${itemStat.index}__].produto.descricao}" /></td>-->
+<!--        </tr>-->
 	</tbody>
 	<tfoot>
 		<tr>
@@ -73,7 +71,6 @@
 		</tr>
 	</tfoot>
 </table>
->>>>>>> Stashed changes
 </div>
 
 

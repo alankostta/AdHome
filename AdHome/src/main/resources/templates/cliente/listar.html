@@ -59,6 +59,7 @@
 									<!-- Iterar sobre a lista de contatos do cliente -->
 									<ul th:each="contato : ${cliente.contato}">
 										<li th:text="${contato.tipoFone}"></li>
+										<li th:text="${contato.telefone}"></li>
 									</ul>
 								</td>
 								<td>

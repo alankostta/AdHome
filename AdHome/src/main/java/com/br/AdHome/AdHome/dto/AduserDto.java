@@ -59,7 +59,6 @@ public class AduserDto {
 	}
 	public AdUser toAdUser() {
 		AdUser user = new AdUser();
-		user.setUserId(this.userId.longValue());
 		user.setNome(this.nome);
 		user.setNomeUser(this.nomeUser);
 		user.setEmailUser(this.emailUser);
@@ -67,12 +66,16 @@ public class AduserDto {
 		return user;
 	}
 	public AdUser toAdUser(AdUser user) {
+		if(getUserId()== null) {
+			return toAdUser();
+		}else {
 		user.setUserId(this.userId.longValue());
 		user.setNome(this.nome);
 		user.setNomeUser(this.nomeUser);
 		user.setEmailUser(this.emailUser);
 		user.setPassword(this.password);
 		return user;
+		}
 	}
 	public void fromAdUser(AdUser user) {
 		this.userId = BigInteger.valueOf(user.getUserId());
