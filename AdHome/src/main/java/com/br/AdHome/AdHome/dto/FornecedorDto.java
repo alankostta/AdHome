@@ -27,11 +27,11 @@ public class FornecedorDto implements Serializable {
 
 	private BigInteger fornecedorId;
 	@NotBlank
-	@NotNull
+	//@NotNull
 	@Size(max = 60)
 	private String nome;
 	@NotBlank
-	@NotNull
+	//@NotNull
 	@Size(max = 80)
 	private String nomeEmpresa;
 	private EnderecoEnum enderecoEnum;

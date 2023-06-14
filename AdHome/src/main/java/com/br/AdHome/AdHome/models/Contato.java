@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_contato")
 public class Contato implements Serializable {
@@ -33,9 +35,11 @@ public class Contato implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TipoFoneEnum tipoFone;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "fornecedor_id")

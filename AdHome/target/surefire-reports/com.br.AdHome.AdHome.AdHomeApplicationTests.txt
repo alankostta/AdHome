@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.br.AdHome.AdHome.AdHomeApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.094 s - in com.br.AdHome.AdHome.AdHomeApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.113 s - in com.br.AdHome.AdHome.AdHomeApplicationTests

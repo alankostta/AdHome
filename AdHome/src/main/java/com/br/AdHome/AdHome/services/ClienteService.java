@@ -41,7 +41,7 @@ public class ClienteService {
 		clienteRepository.delete(cliente);
 	}
 	public List<Cliente>  findByNameContaining(String nome){
-		return clienteRepository.findByNomeContaining(nome);
+		return clienteRepository.findByNomeContainingIgnoreCase(nome);
 	}
 	public List<Object[]> findClienteEndereco(Long id) {
 		return clienteRepository.findClienteEnderecoById(id);

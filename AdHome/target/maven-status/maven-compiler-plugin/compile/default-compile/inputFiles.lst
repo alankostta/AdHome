@@ -4,10 +4,10 @@ C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\dto\FornecedorDto.
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\dto\ItemPedidoDto.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\services\ClienteService.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\models\Categoria.java
-C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\models\ContatoEnum.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\services\ContatoService.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\dto\PedidoDto.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\models\Pedido.java
+C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\models\TipoFoneEnum.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\services\CategoriaService.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\configs\ViacepService.java
 C:\Workspace\AdHome\AdHome\src\main\java\com\br\AdHome\AdHome\dto\ClienteDto.java

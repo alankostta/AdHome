@@ -2,6 +2,7 @@
 Sempre 	que for usar Ajax importar o jquery no html
 append('<tr><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+')" class="btn btn-outline-dark">Selecionar</button></td></tr>');
 */
+
 function pesquisarFornecedor() {
 	var nome = $('#nameBuscar').val();
 	if (nome != null && nome.trim() != '') {
@@ -170,15 +171,7 @@ function carregarProduto(produtoId) {
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
 }
 */
-function calcularTotal() {
-	var total = 0.0;
-	$('#listaPedido > tbody > tr').each(function() {
-		var subTotal = parseFloat($(this).find('#subTotal').val());
-		total += subTotal;
-	});
 
-	$("#total").val(total);
-}
 function buscarCep() {
 	var cep = $('#cep').val();
 	if (cep != null && cep.trim() != '') {
@@ -287,6 +280,7 @@ function carregarProduto(produtoId) {
                 });
                 row.append($("<td></td>").append(qtdInput));
                 var subTotalInput = $("<input>", {
+					id: "subTotal",
                     type: "number",
                     min: "0",
                     class: "form-control",
@@ -308,12 +302,12 @@ function carregarProduto(produtoId) {
             });
 
             $(document).on("change", ".qtd", function() {
-                var qtd = $(this).val();
-                var preco = $(this)
+               let qtd = $(this).val();
+               let preco = $(this)
                     .closest("tr")
                     .find("td:nth-child(4)")
                     .text();
-                var subTotal = qtd * preco;
+               let subTotal = qtd * preco;
                 $(this)
                     .closest("tr")
                     .find("td:nth-child(6) input")
@@ -326,5 +320,14 @@ function carregarProduto(produtoId) {
             alert("Erro ao buscar produto: " + xhr.responseText);
         }
     });
+}
+function calcularTotal() {
+	let total = 0.0;
+	$('#listaPedido > tbody > tr').each(function() {
+		let subTotal = parseFloat($(this).find('#subTotal').val());
+		total += subTotal;
+	});
+
+	$("#total").val(total);
 }
 

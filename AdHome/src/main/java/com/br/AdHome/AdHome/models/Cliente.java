@@ -24,6 +24,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_cliente")
 public class Cliente implements Serializable {
@@ -53,15 +55,18 @@ public class Cliente implements Serializable {
     @Column(name = "data_Altera", length = 30, nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime dataAltera;
-
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    
+    
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<Contato> contato = new HashSet<>();
-
+    
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "cliente_endereco", joinColumns = @JoinColumn(name = "cliente_fk"), inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
     private Set<Endereco> endereco;
-
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<Pedido> pedido = new HashSet<>();
 
     public Cliente() {

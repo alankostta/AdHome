@@ -14,9 +14,8 @@ import com.br.AdHome.AdHome.models.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long>{
 	// Pesquisa JPQL que equivale ao like usar Containing
-	// List<Cliente> findByNomeContaining(String name);
 
-	List<Cliente> findByNomeContaining(String name);
+	List<Cliente> findByNomeContainingIgnoreCase(String name);
 
 	@Query(value = 
 			"SELECT c.clienteId, c.nome, " 

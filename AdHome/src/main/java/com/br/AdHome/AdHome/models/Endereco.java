@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_endereco")
 public class Endereco implements Serializable{
@@ -49,12 +51,15 @@ public class Endereco implements Serializable{
 	@Column(name = "tipo_endereco")
 	@Enumerated(EnumType.STRING)
 	private EnderecoEnum enderecoEnum;
-
+	
+	@JsonIgnore
 	@ManyToMany
 	private Set<Cliente> cliente;
-		
+	
+	
 	@ManyToMany
 	private Set<Fornecedor> fornecedor;
+	
 	
 	@OneToOne
 	@JoinColumn(name = "pedido_id",unique = true)
