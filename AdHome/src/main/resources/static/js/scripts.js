@@ -4,7 +4,7 @@ append('<tr><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button 
 */
 
 function pesquisarFornecedor() {
-	var nome = $('#nameBuscar').val();
+	let nome = $('#nameBuscar').val();
 	if (nome != null && nome.trim() != '') {
 		$.ajax({
 			method: "GET",
@@ -25,7 +25,7 @@ function pesquisarFornecedor() {
 	}
 }
 function pesquisarCliente() {
-	var nomeCliente = $('#nomeCliente').val();
+	let nomeCliente = $('#nomeCliente').val();
 	if (nomeCliente != null && nomeCliente.trim() != '') {
 		$.ajax({
 			method: "GET",
@@ -57,7 +57,7 @@ function pesquisarProduto() {
 			data: "descricao=" + descricao,
 			success: function(response) {
 				$('#tabDescricaoProduto > tbody > tr').remove();
-				for (var i = 0; i < response.length; i++) {
+				for (let i = 0; i < response.length; i++) {
 					$('#tabDescricaoProduto > tbody').append('<tr><td>' + response[i]
 						.produtoId + '</td><td>' + response[i]
 							.descricao +
@@ -100,7 +100,7 @@ function carregarCliente(clienteId) {
 		data: "clienteId=" + clienteId,
 		success: function(response) {
 
-			for (var i = 0; i < response.length; i++) {
+			for (let i = 0; i < response.length; i++) {
 				var clienteId = response[i][0];
 				var nome = response[i][1];
 				var bairro = response[i][2];
@@ -173,7 +173,7 @@ function carregarProduto(produtoId) {
 */
 
 function buscarCep() {
-	var cep = $('#cep').val();
+	let cep = $('#cep').val();
 	if (cep != null && cep.trim() != '') {
 		$.ajax({
 			method: "GET",
@@ -251,9 +251,9 @@ function listarUser() {
 }
 */
 function calcularDescontoPedido() {
-		var desconto = parseFloat($('#porcentagem').val());
-		var total = parseFloat($('#total').val());
-		var novoTotal = total - (total * (desconto / 100));
+		let desconto = parseFloat($('#porcentagem').val());
+		let total = parseFloat($('#total').val());
+		let novoTotal = total - (total * (desconto / 100));
 		$("#total").val(novoTotal);
 
 }
@@ -263,23 +263,24 @@ function carregarProduto(produtoId) {
         url: "pedido/buscarProdutoId/",
         data: "produtoId=" + produtoId,
         success: function(response) {
-            for (var i = 0; i < response.length; i++) {
-                var produto = response[i];
-                var descricao = produto.descricao;
-                var marca = produto.marca;
-                var preco = produto.preco;
-                var row = $("<tr></tr>");
+            for (let i = 0; i < response.length; i++) {
+                let produto = response[i];
+                let descricao = produto.descricao;
+                let marca = produto.marca;
+                let preco = produto.preco;
+                let row = $("<tr></tr>");
                 row.append($("<td>" + produto.produtoId + "</td>"));
                 row.append($("<td>" + descricao + "</td>"));
                 row.append($("<td>" + marca + "</td>"));
                 row.append($("<td>" + preco + "</td>"));
-                var qtdInput = $("<input>", {
+                let qtdInput = $("<input>", {
                     type: "number",
                     min: "0",
                     class: "form-control qtd",
+                    id: "quantidade"
                 });
                 row.append($("<td></td>").append(qtdInput));
-                var subTotalInput = $("<input>", {
+                let subTotalInput = $("<input>", {
 					id: "subTotal",
                     type: "number",
                     min: "0",
@@ -288,9 +289,10 @@ function carregarProduto(produtoId) {
                     readonly: "readonly",
                 });
                 row.append($("<td></td>").append(subTotalInput));
-                var removeButton = $("<button>", {
+                let removeButton = $("<button>", {
                     class: "btn btn-danger remove-btn",
                     text: "Remover",
+                    type:"button"
                 });
                 row.append($("<td></td>").append(removeButton));
                 $("#listaPedido tbody").append(row);

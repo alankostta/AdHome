@@ -1,6 +1,7 @@
 package com.br.AdHome.AdHome.dto;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +18,7 @@ import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
  */
 public class PedidoDto {
 	
-	private ItemPedidoDto itemPedidoDto;
+	private List<ItemPedidoDto> itemPedidoDto;
 	private ClienteDto clienteDto;
 	private EnderecoDto enderecoDto;
 	private Double valorPedido;
@@ -32,7 +33,7 @@ public class PedidoDto {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataCadastro;
 	
-	public PedidoDto(ItemPedidoDto itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto, 
+	public PedidoDto(List<ItemPedidoDto> itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto, 
 			Double valorPedido, Double descontoPedido, String observacaoPedido) {
 		this.itemPedidoDto = itemPedidoDto;
 		this.clienteDto = clienteDto;
@@ -94,11 +95,11 @@ public class PedidoDto {
 		this.observacaoPedido = observacaoPedido;
 	}
 	
-	public ItemPedidoDto getItemPedidoDto() {
+	public List<ItemPedidoDto> getItemPedidoDto() {
 		return itemPedidoDto;
 	}
 
-	public void setItemPedidoDto(ItemPedidoDto itemPedidoDto) {
+	public void setItemPedidoDto(List<ItemPedidoDto> itemPedidoDto) {
 		this.itemPedidoDto = itemPedidoDto;
 	}
 

@@ -1,31 +1,47 @@
 <div th:fragment="tabelaItens">
-<!--    <input type="hidden" name="listaProdutos" id="listaProdutos">-->
-    <table id="listaPedido" class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Código.</th>
-                <th scope="col">Nome.</th>
-                <th scope="col">Marca.</th>
-                <th scope="col">Preço.</th>
-                <th scope="col">Qtd.</th>
-                <th scope="col">Sub Total.</th>
-                <th scope="col">Remover</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
-
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="6" scope="col" class="text-right">TOTAL:</th>
-                <th scope="col">
-                    <input id="total" name="monto" th:field="*{pedidoDto.valorPedido}"
-                        class="form-control" readonly="readonly"
-                        style="background-color: #DCDCDC">
-                </th>
-            </tr>
-        </tfoot>
-    </table>
+	<!--    <input type="hidden" name="listaProdutos" id="listaProdutos">-->
+	<table id="listaPedido" class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Código.</th>
+				<th scope="col">Nome.</th>
+				<th scope="col">Marca.</th>
+				<th scope="col">Preço.</th>
+				<th scope="col">Qtd.</th>
+				<th scope="col">Sub Total.</th>
+				<th scope="col">Remover</th>
+			</tr>
+		</thead>
+		<tbody id="tbody">
+			<tr th:each="item : ${itemPedidoDto}">
+				<td><input type="hidden" th:field="*{item.produto.produtoId}" />
+					<span th:text="${item.produto.produtoId}"></span></td>
+				<td><input type="hidden" th:field="*{item.produto.descricao}" />
+					<span th:text="${item.produto.descricao}"></span></td>
+				<td><input type="hidden" th:field="*{item.produto.marca}" /> <span
+					th:text="${item.produto.marca}"></span></td>
+				<td><input type="hidden" th:field="*{item.produto.preco}" /> <span
+					th:text="${item.produto.preco}"></span></td>
+				<td><input type="number" min="0" class="form-control qtd"
+					th:field="*{item.quantidade}" /></td>
+				<td><input type="number" min="0" class="form-control"
+					style="background-color: #DCDCDC" readonly="readonly"
+					th:field="*{item.subTotal}" /></td>
+				<td>
+					<button type="button" th:id="${item.produto.produtoId}"
+						onclick="removeItem(this.id)" class="btn btn-danger remove-btn">Remover</button>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="6" scope="col" class="text-right">TOTAL:</th>
+				<th scope="col"><input id="total" name="monto"
+					th:field="*{pedidoDto.valorPedido}" class="form-control"
+					readonly="readonly" style="background-color: #DCDCDC"></th>
+			</tr>
+		</tfoot>
+	</table>
 </div>
 
 

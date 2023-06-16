@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -78,16 +77,28 @@ public class Pedido implements Serializable {
 	public Pedido() {
 		
 	}
-	public Pedido(LocalDateTime dataAlteraPedido, Cliente cliente,
-			Integer anoRef, Date dataCadastro, Double valorPedido, AdUser user, Endereco endereco) {
- 
-		this.setDataAlteraPedido(dataAlteraPedido);
-		this.setAnoRef(anoRef);
-		this.setDataCadastro(dataCadastro);
-		this.setValorPedido(valorPedido);
-		this.setUser(user);
-		this.setEndereco(endereco);
+	
+	public Pedido(Long pedidoId, LocalDateTime dataAlteraPedido, Integer anoRef, Double valorPedido,
+			Double descontoPedido, String observacaoPedido, Date dataCadastro, PedidoEnumStatus enumStatus,
+			PedidoEnumTipoPagamento enumPagamento, BandeiraCartao enumCartao, Cliente cliente, Set<ItemPedido> itens,
+			Endereco endereco, AdUser user) {
+		super();
+		this.pedidoId = pedidoId;
+		this.dataAlteraPedido = dataAlteraPedido;
+		this.anoRef = anoRef;
+		this.valorPedido = valorPedido;
+		this.descontoPedido = descontoPedido;
+		this.observacaoPedido = observacaoPedido;
+		this.dataCadastro = dataCadastro;
+		this.enumStatus = enumStatus;
+		this.enumPagamento = enumPagamento;
+		this.enumCartao = enumCartao;
+		this.cliente = cliente;
+		this.itens = itens;
+		this.endereco = endereco;
+		this.user = user;
 	}
+
 	public Long getPedidoId() {
 		return pedidoId;
 	}
@@ -112,7 +123,6 @@ public class Pedido implements Serializable {
 	public void setObservacaoPedido(String observacaoPedido) {
 		this.observacaoPedido = observacaoPedido;
 	}
-
 	public Set<ItemPedido> getItens() {
 		return itens;
 	}
@@ -167,36 +177,18 @@ public class Pedido implements Serializable {
 	public void setUser(AdUser user) {
 		this.user = user;
 	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	@Override
 	public String toString() {
-		return "Pedido [pedidoId=" + ", dataAlteraPedido=" + dataAlteraPedido
-				+ ", anoRef=" + anoRef + ", valorPedido=" + valorPedido + ", descontoPedido="
-				+ descontoPedido + ", observacaoPedido=" + observacaoPedido + ", dataCadastro=" + dataCadastro
-				+ ", enumStatus=" + enumStatus + ", enumPagamento=" + enumPagamento + ", enumCartao=" + enumCartao
+		return "Pedido [pedidoId=" + pedidoId + ", dataAlteraPedido=" + dataAlteraPedido + ", anoRef=" + anoRef
+				+ ", valorPedido=" + valorPedido + ", descontoPedido=" + descontoPedido + ", observacaoPedido="
+				+ observacaoPedido + ", dataCadastro=" + dataCadastro + ", enumStatus=" + enumStatus
+				+ ", enumPagamento=" + enumPagamento + ", enumCartao=" + enumCartao + ", cliente=" + cliente
 				+ ", itens=" + itens + ", endereco=" + endereco + ", user=" + user + "]";
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(anoRef, dataAlteraPedido, dataCadastro, descontoPedido, endereco,
-				enumPagamento, enumStatus, enumCartao, itens, observacaoPedido, pedidoId, user, valorPedido);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pedido other = (Pedido) obj;
-		return Objects.equals(anoRef, other.anoRef)
-				&& Objects.equals(dataAlteraPedido, other.dataAlteraPedido)
-				&& Objects.equals(dataCadastro, other.dataCadastro)
-				&& Objects.equals(descontoPedido, other.descontoPedido) && Objects.equals(endereco, other.endereco)
-				&& enumPagamento == other.enumPagamento && enumStatus == other.enumStatus
-				&& enumCartao == other.enumCartao && Objects.equals(itens, other.itens)
-				&& Objects.equals(observacaoPedido, other.observacaoPedido) && Objects.equals(pedidoId, other.pedidoId)
-				&& Objects.equals(user, other.user)
-				&& Objects.equals(valorPedido, other.valorPedido);
 	}
 }

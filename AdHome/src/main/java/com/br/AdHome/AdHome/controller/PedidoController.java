@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-
 import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.br.AdHome.AdHome.configs.UserDetailsServiceImpl;
 import com.br.AdHome.AdHome.dto.AduserDto;
 import com.br.AdHome.AdHome.dto.ClienteDto;
@@ -85,11 +82,14 @@ public class PedidoController {
 		mv.addObject("listaCartao", BandeiraCartao.values());
 		List<AdUser> user = userDetailsServiceImpl.findAllUser();
 		mv.addObject("listaAduserDto",aduserDto.listUser(user));
+		mv.addObject("itemPedidoDto", new ItemPedidoDto());
+		mv.addObject("item", itemPedidoDto);
 		return mv;
 	}
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
-	@PostMapping("")
+	@PostMapping(value = "salvarPedido")
+	@ResponseBody
 	public ModelAndView savePedido(
 			@Valid ClienteDto clienteDto, BindingResult resultCliente,
 			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
@@ -110,7 +110,8 @@ public class PedidoController {
 			Produto produto = produtoDto.toProduto();
 			Cliente cliente = clienteDto.toCliente();
 			ItemPedido itens = itemPedidoDto.toItens();
-			//itens.setProduto(produto);
+			pedido.setCliente(cliente);
+			itens.setProduto(produto);
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(LocalDateTime.now());

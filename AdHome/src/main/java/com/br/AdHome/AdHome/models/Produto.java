@@ -62,17 +62,13 @@ public class Produto implements Serializable {
 	@JoinColumn(name = "fornecedor_id")
 	private Fornecedor fornecedor;
 	
-	@ManyToOne
-	@JoinColumn(name = "itens_id")
-	private ItemPedido itens;
-	
 	public Produto() {
 		
 	}
 	public Produto(String descricao, Double valorEntrada, 
 			Double valorSaida, Integer estoqueQtd, Double preco,
 			LocalDateTime dataCadastro,LocalDateTime dataAltera, 
-			Integer anoRef, ItemPedido itens) {
+			Integer anoRef) {
 	
 		this.setDescricao(descricao);
 		this.setValorEntrada(valorEntrada);
@@ -81,7 +77,7 @@ public class Produto implements Serializable {
 		this.setDataCadastro(dataCadastro);
 		this.setDataAltera(dataAltera);
 		this.setPreco(preco);
-		this.setItens(itens);
+		
 	}
 	
 	public Long getProdutoId() {
@@ -120,12 +116,7 @@ public class Produto implements Serializable {
 	public void setEstoqueQtd(Integer estoqueQtd) {
 		this.estoqueQtd = estoqueQtd;
 	}
-	public ItemPedido getItens() {
-		return itens;
-	}
-	public void setItens(ItemPedido itens) {
-		this.itens = itens;
-	}
+
 	public LocalDateTime getDataCadastro() {
 		return dataCadastro;
 	}
@@ -154,12 +145,11 @@ public class Produto implements Serializable {
 	public String toString() {
 		return "Produto [produtoId=" + produtoId + ", descricao=" + descricao + ", marca=" + marca + ", valorEntrada="
 				+ valorEntrada + ", valorSaida=" + valorSaida + ", estoqueQtd=" + estoqueQtd + ", preco=" + preco
-				+ ", dataCadastro=" + dataCadastro + ", anoRef=" + anoRef + ", dataAltera=" + dataAltera
-				+ ", itens=" + itens + "]";
+				+ ", dataCadastro=" + dataCadastro + ", anoRef=" + anoRef + ", dataAltera=" + dataAltera + "]";
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(anoRef, dataAltera, dataCadastro, descricao, estoqueQtd, itens,
+		return Objects.hash(anoRef, dataAltera, dataCadastro, descricao, estoqueQtd,
 				marca, preco, produtoId, valorEntrada, valorSaida);
 	}
 	@Override
@@ -174,7 +164,6 @@ public class Produto implements Serializable {
 		return Objects.equals(anoRef, other.anoRef)
 				&& Objects.equals(dataAltera, other.dataAltera) && Objects.equals(dataCadastro, other.dataCadastro)
 				&& Objects.equals(descricao, other.descricao) && Objects.equals(estoqueQtd, other.estoqueQtd)
-				&& Objects.equals(itens, other.itens)
 				&& Objects.equals(marca, other.marca) && Objects.equals(preco, other.preco)
 				&& Objects.equals(produtoId, other.produtoId) && Objects.equals(valorEntrada, other.valorEntrada)
 				&& Objects.equals(valorSaida, other.valorSaida);

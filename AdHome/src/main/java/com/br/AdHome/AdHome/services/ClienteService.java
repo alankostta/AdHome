@@ -25,8 +25,7 @@ public class ClienteService {
 	ClienteRepository clienteRepository;
 
 	public ClienteService(ClienteRepository clienteRepository) {
-		this.clienteRepository = clienteRepository;
-		
+		this.clienteRepository = clienteRepository;	
 	}
 	public Cliente saveCliente(Cliente cliente) {
 		return clienteRepository.save(cliente);
@@ -36,6 +35,9 @@ public class ClienteService {
 	}
 	public Optional<Cliente> findById(Long id) {
 		return clienteRepository.findById(id);
+	}
+	public Cliente findClienteFetchPedidos(Long id) {
+		return clienteRepository.findClienteFetchPedidos(id);
 	}
 	public void deleteCliente(Cliente cliente) {
 		clienteRepository.delete(cliente);
