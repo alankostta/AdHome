@@ -1,6 +1,7 @@
 package com.br.AdHome.AdHome.dto;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,9 +19,6 @@ import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
  */
 public class PedidoDto {
 	
-	private List<ItemPedidoDto> itemPedidoDto;
-	private ClienteDto clienteDto;
-	private EnderecoDto enderecoDto;
 	private Double valorPedido;
 	private Double descontoPedido;
 	private String observacaoPedido;
@@ -28,20 +26,18 @@ public class PedidoDto {
 	private PedidoEnumTipoPagamento enumPagamento;
 	private BandeiraCartao enumCartao;
 	
-	private Set<ItemPedido> itens;
+	private Set<ItemPedidoDto> itens = new HashSet<>();
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataCadastro;
 	
-	public PedidoDto(List<ItemPedidoDto> itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto, 
-			Double valorPedido, Double descontoPedido, String observacaoPedido) {
-		this.itemPedidoDto = itemPedidoDto;
-		this.clienteDto = clienteDto;
-		this.enderecoDto = enderecoDto;
-		this.clienteDto = clienteDto;
-		this.enderecoDto = enderecoDto;
+	public PedidoDto() {
+		
 	}
-	
+	public PedidoDto(Set<ItemPedidoDto> itemDto, Double valorPedido, 
+			Double descontoPedido, String observacaoPedido) {
+		this.itens = itemDto;
+	}
 	public BandeiraCartao getEnumCartao() {
 		return enumCartao;
 	}
@@ -50,11 +46,11 @@ public class PedidoDto {
 		this.enumCartao = enumcartao;
 	}
 	
-	public Set<ItemPedido> getItens() {
+	public Set<ItemPedidoDto> getItens() {
 		return itens;
 	}
 
-	public void setItens(Set<ItemPedido> itens) {
+	public void setItens(Set<ItemPedidoDto> itens) {
 		this.itens = itens;
 	}
 
@@ -95,30 +91,6 @@ public class PedidoDto {
 		this.observacaoPedido = observacaoPedido;
 	}
 	
-	public List<ItemPedidoDto> getItemPedidoDto() {
-		return itemPedidoDto;
-	}
-
-	public void setItemPedidoDto(List<ItemPedidoDto> itemPedidoDto) {
-		this.itemPedidoDto = itemPedidoDto;
-	}
-
-	public ClienteDto getClienteDto() {
-		return clienteDto;
-	}
-
-	public void setClienteDto(ClienteDto clienteDto) {
-		this.clienteDto = clienteDto;
-	}
-
-	public EnderecoDto getEnderecoDto() {
-		return enderecoDto;
-	}
-
-	public void setEnderecoDto(EnderecoDto enderecoDto) {
-		this.enderecoDto = enderecoDto;
-	}
-
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
 		pedido.setEnumStatus(this.enumStatus);
@@ -127,6 +99,7 @@ public class PedidoDto {
 		pedido.setDataCadastro(this.dataCadastro);
 		pedido.setValorPedido(this.valorPedido);
 		pedido.setObservacaoPedido(this.observacaoPedido);
+		pedido.setDescontoPedido(this.descontoPedido);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
@@ -136,6 +109,7 @@ public class PedidoDto {
 		pedido.setDataCadastro(this.dataCadastro);
 		pedido.setObservacaoPedido(this.observacaoPedido);
 		pedido.setValorPedido(this.valorPedido);
+		pedido.setDescontoPedido(this.descontoPedido);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {

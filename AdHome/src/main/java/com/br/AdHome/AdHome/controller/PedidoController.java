@@ -3,12 +3,17 @@ package com.br.AdHome.AdHome.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.br.AdHome.AdHome.configs.UserDetailsServiceImpl;
 import com.br.AdHome.AdHome.dto.AduserDto;
 import com.br.AdHome.AdHome.dto.ClienteDto;
@@ -26,7 +32,6 @@ import com.br.AdHome.AdHome.dto.ProdutoDto;
 import com.br.AdHome.AdHome.models.AdUser;
 import com.br.AdHome.AdHome.models.BandeiraCartao;
 import com.br.AdHome.AdHome.models.Cliente;
-import com.br.AdHome.AdHome.models.ItemPedido;
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
@@ -69,26 +74,50 @@ public class PedidoController {
 		this.enderecoService = enderecoService;
 
 	}
-
 	@GetMapping("")
-	public ModelAndView exibirPedido(
-			ProdutoDto produtoDto, PedidoDto pedidoDto, 
-			ClienteDto clienteDto, ItemPedidoDto itemPedidoDto,
-			AduserDto aduserDto, EnderecoDto enderecoDto) {
+	public String exibirPedido(Model mv) {
+		//var mv = new ModelAndView("pedido/pedido");
 		
-		var mv = new ModelAndView("pedido/pedido");
-		mv.addObject("listaStatus", PedidoEnumStatus.values());
-		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
-		mv.addObject("listaCartao", BandeiraCartao.values());
+		ProdutoDto produtoDto = new ProdutoDto();
+		PedidoDto pedidoDto = new PedidoDto();  
+		ClienteDto clienteDto = new ClienteDto();
+		AduserDto aduserDto = new AduserDto();
+		EnderecoDto enderecoDto = new EnderecoDto();
+		
+		Set<ItemPedidoDto> itemPedidoDto = new HashSet<>();
+		
 		List<AdUser> user = userDetailsServiceImpl.findAllUser();
-		mv.addObject("listaAduserDto",aduserDto.listUser(user));
-		mv.addObject("itemPedidoDto", new ItemPedidoDto());
-		mv.addObject("item", itemPedidoDto);
-		return mv;
+		
+		mv.addAttribute("listaStatus", PedidoEnumStatus.values());
+		mv.addAttribute("listaPagamento", PedidoEnumTipoPagamento.values());
+		mv.addAttribute("listaCartao", BandeiraCartao.values());
+		mv.addAttribute("listaAduserDto",aduserDto.listUser(user));
+		mv.addAttribute("item", itemPedidoDto);
+		mv.addAttribute("produtoDto", produtoDto);
+		mv.addAttribute("pedidoDto", pedidoDto);
+		mv.addAttribute("clienteDto", clienteDto);
+		mv.addAttribute("enderecoDto", enderecoDto);
+		mv.addAllAttributes(aduserDto.listUser(user));
+		
+		return "pedido/pedido";
 	}
-	// Criando os metodos getPost onde irá receber as requisições
+//	@GetMapping("")
+//	public ModelAndView exibirPedido(
+//			ProdutoDto produtoDto, PedidoDto pedidoDto, 
+//			ClienteDto clienteDto,AduserDto aduserDto, EnderecoDto enderecoDto) {
+//		List<ItemPedidoDto> itemPedidoDto = new ArrayList<>();
+//		var mv = new ModelAndView("pedido/pedido");
+//		mv.addObject("listaStatus", PedidoEnumStatus.values());
+//		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
+//		mv.addObject("listaCartao", BandeiraCartao.values());
+//		List<AdUser> user = userDetailsServiceImpl.findAllUser();
+//		mv.addObject("listaAduserDto",aduserDto.listUser(user));
+//		mv.addObject("item", itemPedidoDto);
+//		return mv;
+//	}
+//	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
-	@PostMapping(value = "salvarPedido")
+	@PostMapping
 	@ResponseBody
 	public ModelAndView savePedido(
 			@Valid ClienteDto clienteDto, BindingResult resultCliente,
@@ -107,11 +136,20 @@ public class PedidoController {
 			return mv;
 		} else {
 			Pedido pedido = pedidoDto.toPedido();
-			Produto produto = produtoDto.toProduto();
 			Cliente cliente = clienteDto.toCliente();
-			ItemPedido itens = itemPedidoDto.toItens();
+			
+			List<ItemPedidoDto> itens = new ArrayList<>();
+			
+			for (int i = 0; i < itens.size(); i++) {
+				ItemPedidoDto item = new ItemPedidoDto();
+				item.getProduto().getProdutoId();
+				item.getProduto().getDescricao();
+				item.getProduto().getMarca();
+				item.getProduto().getPreco();
+				itens.add(item);
+			}
+
 			pedido.setCliente(cliente);
-			itens.setProduto(produto);
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(LocalDateTime.now());

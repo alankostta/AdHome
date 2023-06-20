@@ -13,7 +13,10 @@ public class ItemPedidoDto {
 	public ItemPedidoDto() {
 		super();
 	}
-
+	public ItemPedidoDto(ProdutoDto produto) {
+		super();
+		this.produto = produto;
+	}
 	public ItemPedidoDto(Integer quantidade, ProdutoDto produto, Double subTotal) {
 		super();
 		this.quantidade = quantidade;
@@ -45,7 +48,6 @@ public class ItemPedidoDto {
 	public ItemPedido toItens() {
 		ItemPedido itens = new ItemPedido();
 		itens.setQuantidade(quantidade);
-	
 		return itens;
 	}
 	public ItemPedido toItens(ItemPedido itens) {

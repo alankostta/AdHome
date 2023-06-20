@@ -257,11 +257,77 @@ function calcularDescontoPedido() {
 		$("#total").val(novoTotal);
 
 }
+//function carregarProduto(produtoId) {
+//    $.ajax({
+//        method: "GET",
+//        url: "pedido/buscarProdutoId/",
+//        data: "produtoId=" + produtoId,
+//        success: function(response) {
+//            for (let i = 0; i < response.length; i++) {
+//                let produto = response[i];
+//                let descricao = produto.descricao;
+//                let marca = produto.marca;
+//                let preco = produto.preco;
+//                let row = $("<tr></tr>");
+//                row.append($("<td>" + produto.produtoId + "</td>"));
+//                row.append($("<td>" + descricao + "</td>"));
+//                row.append($("<td>" + marca + "</td>"));
+//                row.append($("<td>" + preco + "</td>"));
+//                let qtdInput = $("<input>", {
+//                    type: "number",
+//                    min: "0",
+//                    class: "form-control qtd",
+//                    id: "quantidade"
+//                });
+//                row.append($("<td></td>").append(qtdInput));
+//                let subTotalInput = $("<input>", {
+//					id: "subTotal",
+//                    type: "number",
+//                    min: "0",
+//                    class: "form-control",
+//                    style: "background-color: #DCDCDC",
+//                    readonly: "readonly",
+//                });
+//                row.append($("<td></td>").append(subTotalInput));
+//                let removeButton = $("<button>", {
+//                    class: "btn btn-danger remove-btn",
+//                    text: "Remover",
+//                    type:"button"
+//                });
+//                row.append($("<td></td>").append(removeButton));
+//                $("#listaPedido tbody").append(row);
+//            }
+//
+//            $(document).on("click", ".remove-btn", function() {
+//                $(this).closest("tr").remove();
+//                calcularTotal();
+//            });
+//
+//            $(document).on("change", ".qtd", function() {
+//               let qtd = $(this).val();
+//               let preco = $(this)
+//                    .closest("tr")
+//                    .find("td:nth-child(4)")
+//                    .text();
+//               let subTotal = qtd * preco;
+//                $(this)
+//                    .closest("tr")
+//                    .find("td:nth-child(6) input")
+//                    .val(subTotal);
+//                calcularTotal();
+//            });
+//            $("#pesquisarProdutoModal").modal("hide");
+//        },
+//        error: function(xhr, status, error) {
+//            alert("Erro ao buscar produto: " + xhr.responseText);
+//        }
+//    });
+//}
 function carregarProduto(produtoId) {
     $.ajax({
         method: "GET",
         url: "pedido/buscarProdutoId/",
-        data: "produtoId=" + produtoId,
+        data: { produtoId: produtoId },
         success: function(response) {
             for (let i = 0; i < response.length; i++) {
                 let produto = response[i];
@@ -269,30 +335,32 @@ function carregarProduto(produtoId) {
                 let marca = produto.marca;
                 let preco = produto.preco;
                 let row = $("<tr></tr>");
-                row.append($("<td>" + produto.produtoId + "</td>"));
-                row.append($("<td>" + descricao + "</td>"));
-                row.append($("<td>" + marca + "</td>"));
-                row.append($("<td>" + preco + "</td>"));
-                let qtdInput = $("<input>", {
+                row.append($('<td th:field="*{itensPedido[__${i}__].produto.produtoId}" value="' + produto.produtoId + '">' + produto.produtoId + '</td>'));
+                row.append($('<td th:field="*{itensPedido[__${i}__].produto.descricao}" value="' + descricao + '">' + descricao + '</td>'));
+                row.append($('<td th:field="*{itensPedido[__${i}__].produto.marca}" value="' + marca + '">' + marca + '</td>'));
+                row.append($('<td th:field="*{itensPedido[__${i}__].produto.preco}" value="' + preco + '">' + preco + '</td>'));
+                var qtdInput = $("<input>", {
                     type: "number",
                     min: "0",
                     class: "form-control qtd",
                     id: "quantidade"
                 });
-                row.append($("<td></td>").append(qtdInput));
+                row.append($("<td></td>").append(qtdInput.attr("th:field", "*{itensPedido[__${i}__].quantidade}")));
+               
                 let subTotalInput = $("<input>", {
-					id: "subTotal",
+                    id: "subTotal",
                     type: "number",
                     min: "0",
                     class: "form-control",
                     style: "background-color: #DCDCDC",
                     readonly: "readonly",
                 });
-                row.append($("<td></td>").append(subTotalInput));
+                row.append($("<td></td>").append(subTotalInput.attr("th:field", "*{itensPedido[__${i}__].subTotal}")));
+               
                 let removeButton = $("<button>", {
                     class: "btn btn-danger remove-btn",
                     text: "Remover",
-                    type:"button"
+                    type: "button"
                 });
                 row.append($("<td></td>").append(removeButton));
                 $("#listaPedido tbody").append(row);
@@ -304,16 +372,19 @@ function carregarProduto(produtoId) {
             });
 
             $(document).on("change", ".qtd", function() {
-               let qtd = $(this).val();
-               let preco = $(this)
+                let qtd = $(this).val();
+                console.log(qtd)
+                let preco = $(this)
                     .closest("tr")
                     .find("td:nth-child(4)")
                     .text();
-               let subTotal = qtd * preco;
+                let subTotal = qtd * preco;
                 $(this)
                     .closest("tr")
                     .find("td:nth-child(6) input")
                     .val(subTotal);
+                       console.log(subTotal)
+                   
                 calcularTotal();
             });
             $("#pesquisarProdutoModal").modal("hide");
@@ -324,12 +395,26 @@ function carregarProduto(produtoId) {
     });
 }
 function calcularTotal() {
-	let total = 0.0;
-	$('#listaPedido > tbody > tr').each(function() {
-		let subTotal = parseFloat($(this).find('#subTotal').val());
-		total += subTotal;
-	});
-
-	$("#total").val(total);
+    let total = 0;
+    $(".qtd").each(function() {
+        let qtd = $(this).val();
+        let preco = $(this)
+            .closest("tr")
+            .find("td:nth-child(4)")
+            .text();
+        let subTotal = qtd * preco;
+        total += subTotal;
+    });
+    $("#total").val(total);
 }
+
+//function calcularTotal() {
+//	let total = 0.0;
+//	$('#listaPedido > tbody > tr').each(function() {
+//		let subTotal = parseFloat($(this).find('#subTotal').val());
+//		total += subTotal;
+//	});
+//
+//	$("#total").val(total);
+//}
 

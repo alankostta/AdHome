@@ -20,8 +20,8 @@
 				th:classappend="${#httpServletRequest.getRequestURI().equals('/index') ? 'active' : ''}"
 				href="/index">Home</a></li>
 			<li class="nav-item"><a class="nav-link"
-				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/cliente/listar') ? 'active' : ''}"
-				href="/cliente/listar">Clientes</a></li>
+				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/cliente/cliente') ? 'active' : ''}"
+				href="/cliente/cliente">Clientes</a></li>
 			<li class="nav-item"><a class="nav-link"
 				th:classappend="${#httpServletRequest.getRequestURI().startsWith('/fornecedor') ? 'active' : ''}"
 				href="/fornecedor">Fornecedores</a></li>

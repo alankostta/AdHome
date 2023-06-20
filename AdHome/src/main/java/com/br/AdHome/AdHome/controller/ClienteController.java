@@ -53,7 +53,7 @@ public class ClienteController {
 	ContatoService contatoService;
 	ViacepService viacepService;
 
-	@GetMapping("/cliente")
+	@GetMapping("/cliente/cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView exibirCliente(ClienteDto clienDto, ContatoDto contatoDto, EnderecoDto enderecoDto) {
 
@@ -62,9 +62,28 @@ public class ClienteController {
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		return mv;
 	}
-
+	
+	@GetMapping("cliente/listar")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
+	public ModelAndView listarClientes() {
+	    ModelAndView mv = new ModelAndView("cliente/listar");
+	    Iterable<Cliente> clientes = clienteService.clienteProjecao();
+	    mv.addObject("cliente", clientes);
+	    mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
+	    return mv;
+	}
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
+//	@GetMapping("listarCliente")
+//	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
+//	public String exibirClientes(Model mv) {
+//	  
+//	    Iterable<Cliente> clientes = clienteService.clienteProjecao();
+//	    mv.addAttribute("cliente", clientes);
+//	    mv.addAttribute("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
+//	    return "listarCliente";
+//	}
+	
 	@PostMapping("/cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView saveCliente(@Valid ClienteDto clienDto, BindingResult resultCliente,
@@ -116,17 +135,7 @@ public class ClienteController {
 			return new ModelAndView("redirect:/cliente/listar");
 		}
 	}
-
-	@GetMapping("cliente/listar")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
-	public ModelAndView listarClientes() {
-	    ModelAndView mv = new ModelAndView("cliente/listar");
-	    Iterable<Cliente> clientes = clienteService.clienteProjecao();
-	    mv.addObject("cliente", clientes);
-	    mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
-	    return mv;
-	}
-
+	
 	@GetMapping("cliente/{clienteId}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView getOneCliente(@PathVariable(value = "clienteId") Long id) {
