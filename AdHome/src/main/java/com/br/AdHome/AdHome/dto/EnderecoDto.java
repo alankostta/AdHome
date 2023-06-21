@@ -111,31 +111,55 @@ public class EnderecoDto {
 	}
 	public Endereco toEndereco() {// Passsando os Obj para classe endereço sem parametros no metodo
 		Endereco endereco = new Endereco();
-		endereco.setUf(this.uf);
-		endereco.setLocalidade(this.localidade);
-		endereco.setBairro(this.bairro);
-		endereco.setCep(this.cep);
-		endereco.setLogradouro(this.logradouro);
-		endereco.setComplemento(this.complemento);
-		endereco.setNumero(this.numero);
-		endereco.setEnderecoEnum(enderecoEnum);
-		return endereco;
+		
+		if(getEnderecoId() == null) {
+			endereco.setUf(this.uf);
+			endereco.setLocalidade(this.localidade);
+			endereco.setBairro(this.bairro);
+			endereco.setCep(this.cep);
+			endereco.setLogradouro(this.logradouro);
+			endereco.setComplemento(this.complemento);
+			endereco.setNumero(this.numero);
+			endereco.setEnderecoEnum(enderecoEnum);
+			return endereco;
+		}else {
+			endereco.setEnderecoId(getEnderecoId().longValue());
+			endereco.setUf(this.uf);
+			endereco.setLocalidade(this.localidade);
+			endereco.setBairro(this.bairro);
+			endereco.setCep(this.cep);
+			endereco.setLogradouro(this.logradouro);
+			endereco.setComplemento(this.complemento);
+			endereco.setNumero(this.numero);
+			endereco.setEnderecoEnum(enderecoEnum);
+			return endereco;
+		}
 	}
 
 	public Endereco toEndereco(Endereco endereco) { // Passsando os Obj para classe endereço com parametros no metodo
 		if(getEnderecoId() == null) {
-			return toEndereco();
+			endereco.setEnderecoId(getEnderecoId().longValue());
+			endereco.setUf(this.uf);
+			endereco.setLocalidade(this.localidade);
+			endereco.setBairro(this.bairro);
+			endereco.setCep(this.cep);
+			endereco.setLogradouro(this.logradouro);
+			endereco.setComplemento(this.complemento);
+			endereco.setNumero(this.numero);
+			endereco.setEnderecoEnum(enderecoEnum);
+			return endereco;
+		
 		}else {
-				endereco.setEnderecoId(getEnderecoId().longValue());
-				endereco.setUf(this.uf);
-				endereco.setLocalidade(this.localidade);
-				endereco.setBairro(this.bairro);
-				endereco.setCep(this.cep);
-				endereco.setLogradouro(this.logradouro);
-				endereco.setComplemento(this.complemento);
-				endereco.setNumero(this.numero);
-				endereco.setEnderecoEnum(enderecoEnum);
-				return endereco;
+			endereco.setEnderecoId(getEnderecoId().longValue());
+			endereco.setUf(this.uf);
+			endereco.setLocalidade(this.localidade);
+			endereco.setBairro(this.bairro);
+			endereco.setCep(this.cep);
+			endereco.setLogradouro(this.logradouro);
+			endereco.setComplemento(this.complemento);
+			endereco.setNumero(this.numero);
+			endereco.setEnderecoEnum(enderecoEnum);
+			return endereco;
 		}
 	}
 

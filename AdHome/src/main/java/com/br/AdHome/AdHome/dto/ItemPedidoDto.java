@@ -13,10 +13,12 @@ public class ItemPedidoDto {
 	public ItemPedidoDto() {
 		super();
 	}
+	
 	public ItemPedidoDto(ProdutoDto produto) {
 		super();
 		this.produto = produto;
 	}
+	
 	public ItemPedidoDto(Integer quantidade, ProdutoDto produto, Double subTotal) {
 		super();
 		this.quantidade = quantidade;
@@ -28,6 +30,10 @@ public class ItemPedidoDto {
 		return quantidade;
 	}
 	
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+	
 	public Double getSubTotal() {
 		return subTotal;
 	}
@@ -36,27 +42,30 @@ public class ItemPedidoDto {
 		this.subTotal = subTotal;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-	public ProdutoDto getProduto() {
+	public ProdutoDto getProdutoDto() {
 		return produto;
 	}
-	public void setProduto(ProdutoDto produto) {
+
+	public void setProdutoDto(ProdutoDto produto) {
 		this.produto = produto;
 	}
-	public ItemPedido toItens() {
-		ItemPedido itens = new ItemPedido();
-		itens.setQuantidade(quantidade);
-		return itens;
+
+	public ItemPedido toItemPedido() {
+		ItemPedido itemPedido = new ItemPedido();
+		itemPedido.setQuantidade(quantidade);
+		itemPedido.setSubTotal(subTotal);
+		// Configure outras propriedades do objeto ItemPedido, se necessário
+		return itemPedido;
 	}
-	public ItemPedido toItens(ItemPedido itens) {
-		itens.setQuantidade(quantidade);
-		
-		return itens;
+	public ItemPedido toItemPedido(ItemPedido itemPedido) {
+		itemPedido.setQuantidade(quantidade);
+		itemPedido.setSubTotal(subTotal);
+		// Configure outras propriedades do objeto ItemPedido, se necessário
+		return itemPedido;
 	}
-	public void fromItemPedido(ItemPedido itens) {
-		this.quantidade = itens.getQuantidade();
-		
+	public void fromItemPedido(ItemPedido item) {
+		this.quantidade = item.getQuantidade();
+		this.subTotal =  item.getSubTotal();
 	}
 }
+

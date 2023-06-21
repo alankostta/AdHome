@@ -1,8 +1,6 @@
 package com.br.AdHome.AdHome.models;
 
 import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="tb_item_pedido")
 public class ItemPedido implements Serializable{
-
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -26,8 +23,8 @@ public class ItemPedido implements Serializable{
     @Column(name="qtd_itens")
     private Integer quantidade;
     
-    @Column(name="preco_iten")
-    private Double precoIten;
+    @Column(name="sub_total")
+    private Double subTotal;
     
     @ManyToOne
     @JoinColumn(name="pedido_id")
@@ -40,9 +37,9 @@ public class ItemPedido implements Serializable{
     public ItemPedido() {
         
     }
-    public ItemPedido(Integer quantidade,Double precoIten,  Pedido Pedido, Produto produto) {
+    public ItemPedido(Integer quantidade,Double subTotal,  Pedido Pedido, Produto produto) {
         this.setQuantidade(quantidade);
-        this.setPrecoIten(precoIten);
+        this.setSubTotal(subTotal);
         this.setPedido(Pedido);
         this.setProduto(produto);
     }
@@ -58,16 +55,11 @@ public class ItemPedido implements Serializable{
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
-    public Double getPrecoIten() {
-		return precoIten;
+    public Double getSubTotal() {
+		return subTotal;
 	}
-	public void setPrecoIten(Double precoIten) {
-		this.precoIten = precoIten;
-		
-		if(produto == null && this.precoIten == null) {
-			//this.setPrecoIten(produto.getPreco());
-		}
-	
+	public void setSubTotal(Double subTotal) {
+		this.subTotal = subTotal;
 	}
 	public Pedido getPedido() {
         return pedido;
@@ -80,27 +72,5 @@ public class ItemPedido implements Serializable{
     }
     public void setProduto(Produto produto) {
         this.produto = produto;
-    }
-	@Override
-	public String toString() {
-		return "ItemPedido [itemPedidoId=" + itemPedidoId + ", quantidade=" + quantidade + ", precoIten=" + precoIten
-				+ ", pedido=" + pedido + ", produto=" + produto + "]";
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(itemPedidoId, pedido, precoIten, produto, quantidade);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ItemPedido other = (ItemPedido) obj;
-		return Objects.equals(itemPedidoId, other.itemPedidoId) && Objects.equals(pedido, other.pedido)
-				&& Objects.equals(precoIten, other.precoIten) && Objects.equals(produto, other.produto)
-				&& Objects.equals(quantidade, other.quantidade);
-	}
+    }   
 }

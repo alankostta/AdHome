@@ -2,13 +2,11 @@ package com.br.AdHome.AdHome.dto;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.br.AdHome.AdHome.models.BandeiraCartao;
-import com.br.AdHome.AdHome.models.ItemPedido;
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;

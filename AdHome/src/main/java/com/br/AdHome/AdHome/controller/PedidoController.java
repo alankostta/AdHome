@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,13 +33,13 @@ import com.br.AdHome.AdHome.dto.ProdutoDto;
 import com.br.AdHome.AdHome.models.AdUser;
 import com.br.AdHome.AdHome.models.BandeiraCartao;
 import com.br.AdHome.AdHome.models.Cliente;
+import com.br.AdHome.AdHome.models.Endereco;
+import com.br.AdHome.AdHome.models.ItemPedido;
 import com.br.AdHome.AdHome.models.Pedido;
 import com.br.AdHome.AdHome.models.PedidoEnumStatus;
 import com.br.AdHome.AdHome.models.PedidoEnumTipoPagamento;
 import com.br.AdHome.AdHome.models.Produto;
 import com.br.AdHome.AdHome.services.ClienteService;
-import com.br.AdHome.AdHome.services.EnderecoService;
-import com.br.AdHome.AdHome.services.ItemPedidoService;
 import com.br.AdHome.AdHome.services.PedidoService;
 import com.br.AdHome.AdHome.services.ProdutoService;
 
@@ -53,31 +54,17 @@ import com.br.AdHome.AdHome.services.ProdutoService;
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
+	@Autowired
+	private PedidoService pedidoService;
+	@Autowired
+	private ProdutoService produtoService;
+	@Autowired
+	private ClienteService clienteService;
+	@Autowired
+	private UserDetailsServiceImpl userDetailsServiceImpl;
 
-	final PedidoService pedidoService;
-	final ProdutoService produtoService;
-	final ClienteService clienteService;
-	final UserDetailsServiceImpl userDetailsServiceImpl;
-	final ItemPedidoService itemPedidoService;
-	final EnderecoService enderecoService;
-
-	public PedidoController(
-			PedidoService pedidoService, ProdutoService produtoService, 
-			ClienteService clienteService, ItemPedidoService itemPedidoService,
-			UserDetailsServiceImpl userDetailsServiceImpl, EnderecoService enderecoService) {
-		
-		this.pedidoService = pedidoService;
-		this.produtoService = produtoService;
-		this.clienteService = clienteService;
-		this.userDetailsServiceImpl = userDetailsServiceImpl;
-		this.itemPedidoService = itemPedidoService;
-		this.enderecoService = enderecoService;
-
-	}
 	@GetMapping("")
 	public String exibirPedido(Model mv) {
-		//var mv = new ModelAndView("pedido/pedido");
-		
 		ProdutoDto produtoDto = new ProdutoDto();
 		PedidoDto pedidoDto = new PedidoDto();  
 		ClienteDto clienteDto = new ClienteDto();
@@ -117,49 +104,41 @@ public class PedidoController {
 //	}
 //	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
-	@PostMapping
+	@PostMapping("")
 	@ResponseBody
 	public ModelAndView savePedido(
-			@Valid ClienteDto clienteDto, BindingResult resultCliente,
-			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
-			@Valid ProdutoDto produtoDto,BindingResult resultProduto, 
-			@Valid EnderecoDto enderecoDto, BindingResult resultEnderecoDto,
-			@Valid AduserDto aduserDto, BindingResult resultAduserDto,
-			@Valid ItemPedidoDto itemPedidoDto, BindingResult resultItemPedidoDto) {
+	        @Valid ClienteDto clienteDto, BindingResult resultCliente,
+	        @Valid PedidoDto pedidoDto, BindingResult resultPedido,
+	        @Valid ProdutoDto produtoDto, BindingResult resultProduto,
+	        @Valid EnderecoDto enderecoDto, BindingResult resultEnderecoDto,
+	        @Valid AduserDto aduserDto, BindingResult resultAduserDto,
+	        @Valid ItemPedidoDto itemPedidoDto, BindingResult resultItemPedidoDto) {
 
-		ModelAndView mv = new ModelAndView("pedido/pedido");
+	    ModelAndView mv = new ModelAndView("pedido/pedido");
 
-		if (resultCliente.hasErrors() && resultPedido.hasErrors() 
-				&& resultEnderecoDto.hasErrors() && resultProduto.hasErrors()) {
+	    if (resultCliente.hasErrors() && resultPedido.hasErrors() &&
+	            resultEnderecoDto.hasErrors() && resultProduto.hasErrors()) {
 
-			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
-			return mv;
-		} else {
-			Pedido pedido = pedidoDto.toPedido();
-			Cliente cliente = clienteDto.toCliente();
-			
-			List<ItemPedidoDto> itens = new ArrayList<>();
-			
-			for (int i = 0; i < itens.size(); i++) {
-				ItemPedidoDto item = new ItemPedidoDto();
-				item.getProduto().getProdutoId();
-				item.getProduto().getDescricao();
-				item.getProduto().getMarca();
-				item.getProduto().getPreco();
-				itens.add(item);
-			}
+	        this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
+	        return mv;
+	    } else {
+	        Pedido pedido = pedidoDto.toPedido();
+	        Cliente cliente = clienteDto.toCliente();
+	        Endereco endereco = enderecoDto.toEndereco();
+	        ItemPedido item = itemPedidoDto.toItemPedido();
+  
+	        Set<ItemPedido> itens = new HashSet<>();
+	        itens.add(item);
+	        pedido.setCliente(cliente);
+	        pedido.setEndereco(endereco);
+	        pedido.setItens(itens);
+	        pedido.setAnoRef(Calendar.getInstance().get(Calendar.YEAR));
+	        pedido.setDataAlteraPedido(LocalDateTime.now());
+	        pedidoService.savePedido(pedido);
 
-			pedido.setCliente(cliente);
-			Calendar cal = Calendar.getInstance();
-			pedido.setAnoRef(cal.get(Calendar.YEAR));
-			pedido.setDataAlteraPedido(LocalDateTime.now());
-			pedido.setItens(pedido.getItens());
-			pedidoService.savePedido(pedido);
-
-			return new ModelAndView("redirect:/pedido");
-		}
+	        return new ModelAndView("redirect:/pedido");
+	    }
 	}
-
 	public ModelAndView findAllPedidos() {
 		var mv = new ModelAndView("pedido/pedido");
 		List<Pedido> pedidos = pedidoService.findAll();

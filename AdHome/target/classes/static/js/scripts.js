@@ -254,7 +254,7 @@ function calcularDescontoPedido() {
 		let desconto = parseFloat($('#porcentagem').val());
 		let total = parseFloat($('#total').val());
 		let novoTotal = total - (total * (desconto / 100));
-		$("#total").val(novoTotal);
+		$("#total").val(novoTotal.toFixed(2));
 
 }
 //function carregarProduto(produtoId) {
@@ -382,7 +382,7 @@ function carregarProduto(produtoId) {
                 $(this)
                     .closest("tr")
                     .find("td:nth-child(6) input")
-                    .val(subTotal);
+                    .val(subTotal.toFixed(2));
                        console.log(subTotal)
                    
                 calcularTotal();
@@ -405,7 +405,8 @@ function calcularTotal() {
         let subTotal = qtd * preco;
         total += subTotal;
     });
-    $("#total").val(total);
+    $("#total").val(total.toFixed(2));
+
 }
 
 //function calcularTotal() {

@@ -19,95 +19,115 @@ import com.br.AdHome.AdHome.models.Endereco;
  * onde serão introduzidos os dados entre outras anotações como @email @Cpf @NotNull @Empty}
  */
 public class ClienteDto {
-    private BigInteger clienteId;
-    
-    @NotBlank
-    @Size(max = 70)
-    private String nomeClie;
-    
-    @Size(max = 15)
-    private String sexo;
-    
-    @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date dataNasci;
-    
-    private Set<Endereco> listEndereco;
-    
-    private Set<Contato> listContato;
-    
-   
-    public BigInteger getClienteId() {
-        return clienteId;
-    }
-    
-    public void setClienteId(BigInteger clienteId) {
-        this.clienteId = clienteId;
-    }
-    
-    public String getNomeClie() {
-        return nomeClie;
-    }
-    
-    public void setNomeClie(String nomeClie) {
-        this.nomeClie = nomeClie;
-    }
-    
-    public String getSexo() {
-        return sexo;
-    }
-    
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-    
-    public Date getDataNasci() {
-        return dataNasci;
-    }
-    
-    public void setDataNasci(Date dataNasci) {
-        this.dataNasci = dataNasci;
-    }
-    
-    public Set<Endereco> getListEndereco() {
-        return listEndereco;
-    }
-    
-    public void setListEndereco(Set<Endereco> listEndereco) {
-        this.listEndereco = listEndereco;
-    }
-    
-    public Set<Contato> getListContato() {
-        return listContato;
-    }
-    
-    public void setListContato(Set<Contato> listContato) {
-        this.listContato = listContato;
-    }
-     
-    public Cliente toCliente() {
-        Cliente cliente = new Cliente();
-        cliente.setNome(this.nomeClie);
-        cliente.setSexo(this.sexo);
-        cliente.setDataNasci(this.dataNasci);
-        cliente.setEndereco(this.listEndereco);
-        cliente.setContato(this.listContato);
-        return cliente;
-    }
-    
-    public Cliente toCliente(Cliente cliente) {
-        cliente.setNome(this.nomeClie);
-        cliente.setSexo(this.sexo);
-        cliente.setDataNasci(this.dataNasci);
-        cliente.setEndereco(this.listEndereco);
-        cliente.setContato(this.listContato);
-        return cliente;
-    }
-    
-    public void fromCliente(Cliente cliente) {
-        this.nomeClie = cliente.getNome();
-        this.sexo = cliente.getSexo();
-        this.dataNasci = cliente.getDataNasci();
-        this.listEndereco = cliente.getEndereco();
-        this.listContato = cliente.getContato();
-    }
+
+	private BigInteger clienteId;
+
+	@NotBlank
+	@Size(max = 70)
+	private String nomeClie;
+
+	@Size(max = 15)
+	private String sexo;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date dataNasci;
+
+	private Set<Endereco> listEndereco;
+
+	private Set<Contato> listContato;
+
+	public BigInteger getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(BigInteger clienteId) {
+		this.clienteId = clienteId;
+	}
+
+	public String getNomeClie() {
+		return nomeClie;
+	}
+
+	public void setNomeClie(String nomeClie) {
+		this.nomeClie = nomeClie;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public Date getDataNasci() {
+		return dataNasci;
+	}
+
+	public void setDataNasci(Date dataNasci) {
+		this.dataNasci = dataNasci;
+	}
+
+	public Set<Endereco> getListEndereco() {
+		return listEndereco;
+	}
+
+	public void setListEndereco(Set<Endereco> listEndereco) {
+		this.listEndereco = listEndereco;
+	}
+
+	public Set<Contato> getListContato() {
+		return listContato;
+	}
+
+	public void setListContato(Set<Contato> listContato) {
+		this.listContato = listContato;
+	}
+
+	public Cliente toCliente() {
+		Cliente cliente = new Cliente();
+		
+		if (getClienteId() == null) {
+			cliente.setNome(this.nomeClie);
+			cliente.setSexo(this.sexo);
+			cliente.setDataNasci(this.dataNasci);
+			cliente.setEndereco(this.listEndereco);
+			cliente.setContato(this.listContato);
+			return cliente;
+		} else {
+			cliente.setClienteId(getClienteId().longValue());
+			cliente.setNome(this.nomeClie);
+			cliente.setSexo(this.sexo);
+			cliente.setDataNasci(this.dataNasci);
+			cliente.setEndereco(this.listEndereco);
+			cliente.setContato(this.listContato);
+			return cliente;
+		}
+	}
+	public Cliente toCliente(Cliente cliente) {
+		if (getClienteId() == null) {
+			cliente.setNome(this.nomeClie);
+			cliente.setSexo(this.sexo);
+			cliente.setDataNasci(this.dataNasci);
+			cliente.setEndereco(this.listEndereco);
+			cliente.setContato(this.listContato);
+			return cliente;
+		} else {
+			cliente.setClienteId(getClienteId().longValue());
+			cliente.setNome(this.nomeClie);
+			cliente.setSexo(this.sexo);
+			cliente.setDataNasci(this.dataNasci);
+			cliente.setEndereco(this.listEndereco);
+			cliente.setContato(this.listContato);
+			return cliente;
+		}
+	}
+
+	public void fromCliente(Cliente cliente) {
+		this.nomeClie = cliente.getNome();
+		this.sexo = cliente.getSexo();
+		this.dataNasci = cliente.getDataNasci();
+		this.listEndereco = cliente.getEndereco();
+		this.listContato = cliente.getContato();
+	}
 }
