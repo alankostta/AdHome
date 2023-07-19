@@ -1,0 +1,96 @@
+<div class="col-12" th:fragment="cliente">
+	<fieldset class="fieldset text-left mb-6">
+		<legend>Dados Cliente</legend>
+		<form th:action="${action}" th:object="${clienteDto}" method="POST">
+			<div class="text-center">
+				<div class="row">
+					<div class="col">
+						<input class="form-control" type="text" placeholder="Digite seu nome" th:field="*{nomeClie}" />
+					</div>
+					<div class="col">
+						<input type="radio" class="form-check-input" value="Feminino" th:field="*{sexo}" />
+						<label for="Feminino" class="form-check-label col-sm-offset-1">Feminino</label>
+					</div>
+					<div class="col">
+						<input type="radio" class="form-check-input" value="Masculino" th:field="*{sexo}" />
+						<label for="Masculino" class="form-check-label col-sm-offset-1">Masculino</label>
+					</div>
+					<div class="col">
+						<input type="date" class="form-control" th:field="*{dataNasci}" />
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col">
+						<select class="form-select" th:field="*{contato[0].contatoEnum}">
+							<option th:each="contatoEnum : ${listaContato}" th:value="${contatoEnum}"
+								th:text="${contatoEnum}">
+							</option>
+						</select>
+					</div>
+					<div class="col">
+						<input class="form-control" type="text" th:field="*{contato[0].telefone}"
+							placeholder="Digite seu Telefone" />
+					</div>
+					<div class="col">
+						<input class="form-control" type="text" th:field="*{contato[0].email}"
+							placeholder="Digite seu e-mail" />
+					</div>
+				</div>
+			</div>
+			<br>
+				<div class="row">
+					<div class="col">
+						<select class="form-select" th:field="*{endereco[0].enderecoEnum}">
+							<option th:each="enderecoEnum : ${listaEndereco}" th:value="${enderecoEnum}"
+								th:text="${enderecoEnum}"></option>
+						</select>
+					</div>
+					<div class="col">
+						<input id="uf" class="form-control" type="text" th:field="*{endereco[0].uf}"
+							placeholder="Digite seu UF" />
+					</div>
+					<div class="col">
+						<input id="cidade" class="form-control" type="text"
+							th:field="*{endereco[0].localidade}" placeholder="Digite sua Cidade" />
+						<div class="invalid-feedback"></div>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col">
+						<input id="bairro" class="form-control" type="text"
+							th:field="*{endereco[0].bairro}" placeholder="Digite seu Bairro" />
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col">
+						<input id="logradouro" class="form-control" type="text"
+							th:field="*{endereco[0].logradouro}" placeholder="Digite rua, av..." />
+						<div class="invalid-feedback"></div>
+					</div>
+					<div class="col">
+						<input placeholder="Complemento" th:field="*{endereco[0].complemento}"
+							class="form-control" type="text" />
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="input-group">
+							<input id="cep" type="text" th:field="*{endereco[0].cep}"
+								class="form-control" placeholder="Digite seu CEP" />
+							<button class="btn btn-outline-secondary" type="button"
+								onClick="buscarCep()">Pesquisar</button>
+							<div class="invalid-feedback"></div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<input class="form-control" type="text" th:field="*{endereco[0].numero}"
+							placeholder="Informe número da residencia" />
+					</div>
+				</div>
+			<br>
+			<button type="submit" class="btn btn-outline-primary">Enviar</button>
+		</form>
+	</fieldset>
+</div>

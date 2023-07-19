@@ -2,156 +2,92 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec=http://www.thymeleaf.org/extras/spring-security
-    xmlns:shiro=http://www.pollix.at/thymeleaf/shiro> 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" 
-      rel="stylesheet" 
-      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" 
-      crossorigin="anonymous">
+	xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head th:replace="~{fragmentos :: head('Cadastro Pedido')}">
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-		crossorigin="anonymous">
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+	crossorigin="anonymous">
+	
 </script>
-<head th:replace="~{fragmentos :: head('Cadastro Pedido')}"></head>
+</head>
 <body>
-<header th:replace="~{fragmentos :: header('Cadastrar Pedido')}"></header>
-<br>
-<main>
-	<div class="container">
-		<div class="row mt-3">
-			<div class="col">
-				<form  class="formulario" id="#" action="#" method="POST">
-					<div class="form-group row mb-3">
-						<label for="cliente" class="col-12 col-md-2 col-form-label h2">Cliente:</label>
-						<div class="col-12 col-md-10">
-							<input type="text" class="form-control" id="#" placeholder="Pesquisar o cliente" >
-							<br>
-							<button class="btn btn-outline-primary" 
-									data-bs-toggle="modal" data-bs-target="#pesquisarClienteModal">Pesquisar</button>
-						</div>
+	<script src="js/scripts.js"></script>
+	<header th:replace="~{fragmentos :: header('Cadastrar Pedido')}"></header>
+	<br>
+	<main th:replace="~{fragmentos_pedido :: main(pedidoDto, clienteDto, produtoDto, itemPedidoDto, aduserDto, enderecoDto,'../pedido')}"></main>
+	<div class="modal fade" id="pesquisarClienteModal" tabindex="-1"
+		aria-labelledby="clienteModalpesquisa" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="clienteModalpesquisa">Pesquisar
+						Cliente</h5>
+					<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="nameBuscarCliente" class="col-form-label">Informe
+							o nome do cliente:</label> <input type="text" class="form-control"
+							id="nomeCliente">
 					</div>
-					<div class="form-group row mb-3">
-					<label for="email" class="col-12 col-md-2 col-form-label h2">Produto:</label>
-						<div class="col-12 col-md-10">
-							<input type="text" class="form-control" id="#" placeholder="Pesquisar o Produto">
-							<br>
-							<button class="btn btn-outline-primary" 
-									data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar produto</button>
-						</div>
-					</div>
-					<div id="carrinho" class="form-group table-responsive">
-						<table class="table" id="lista-compra">
-							<thead>
-								<tr>
-									<th scope="col">Id-Produto</th>
-									<th scope="col">Nome</th>
-									<th scope="col">Preço</th>
-									<th scope="col">Qtd</th>
-									<th scope="col">Sub Total</th>
-									<th scope="col">Remover</th>
-								</tr>	
-							</thead>
-							<tbody>
-							</tbody>
+					<button type="button" class="btn btn-outline-success btn-sm"
+						onclick="pesquisarCliente()">Buscar</button>
+					<table class="table" id="tabResultadosCliente">
+						<thead>
 							<tr>
-								<th colspan="4" scope="col" class="text-rigth">SUB TOTAL:</th>
-								<th socpe="col">
-									<p id="subtotal"></p>
-								</th>
+								<th scope="col">Id:</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Selecionar</th>
 							</tr>
-							<tr>
-								<th colspan="4" scope="col" class="text-rigth">IVA:</th>
-								<th socpe="col">
-									<p id="iva"></p>
-								</th>
-							</tr>
-							<tr>
-								<th colspan="4" scope="col" class="text-rigth">TOTAL:</th>
-								<th socpe="col">
-									<input id="total" name="monto" class="font-weigth-bold border-0"
-										   readonly style="background-color:#6610f2">	   
-								</th>
-							</tr>
-						</table>
-					</div>
-					<div class="row justify-content-between" id="loaders">
-						<div class="col-md-4 mb-2">
-							<button href="#" class="btn btn-outline-success">Continuar Comprando</button> 
-						</div>
-						<div class="col-xs-12 col-md-4">
-							<button href="#" class="btn btn-outline-danger" id="processar-compra">Cancelar Compra</button>
-						</div>
-					</div >
-				</form>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary"
+						data-bs-dismiss="modal">Fechar</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</main>
-<div class="modal fade" id="pesquisarClienteModal" tabindex="-1" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Pesquisar Cliente</h5>
-				<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
-			</div>
-		<div class="modal-body">
-		<form>
-			<div class="mb-3">
-				<label for="nameBuscarCliente" class="col-form-label">Informe o nome do cliente:</label>
-				<input type="text" class="form-control" id="nameBuscarCliente">
-			</div>
-			<button type="button" class="btn btn-outline-success btn-sm" onclick="pesquisarUser()">Buscar</button>
-		</form>
-		<table class="table" id="tabelaresultados">
-			<thead>
-				<tr>
-					<th scope="col">Id:</th>
-					<th scope="col">Nome</th>
-					<th scope="col">Selecionar</th>
-				</tr>
-			</thead>
-		<tbody>
-		</tbody>
-		</table>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
-			</div>
-		</div>
-	</div>
-	</div>
-	<div class="modal fade" id="pesquisarProdutoModal" tabindex="-1" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-	  <div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Pesquisar Produto</h5>
-				<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
-			</div>
-		<div class="modal-body">
-		<form>
-			<div class="mb-3">
-				<label for="nameBuscarCliente" class="col-form-label">Informe o produto:</label>
-				<input type="text" class="form-control" id="nameBuscarCliente">
-			</div>
-			<button type="button" class="btn btn-outline-success btn-sm" onclick="pesquisarUser()">Buscar</button>
-		</form>
-		<table class="table" id="tabelaresultados">
-			<thead>
-				<tr>
-					<th scope="col">Id:</th>
-					<th scope="col">Nome</th>
-					<th scope="col">Selecionar</th>
-				</tr>
-			</thead>
-		<tbody>
-		</tbody>
-		</table>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+	<div class="modal fade" id="pesquisarProdutoModal" tabindex="-1"
+		aria-labelledby="modalLongTitle" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalLongTitle">Pesquisar Produto</h5>
+					<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label for="nameBuscarCliente" class="col-form-label">Informe
+							o produto:</label> <input type="text" class="form-control"
+							id="descricaoProduto">
+					</div>
+					<button type="button" class="btn btn-outline-success btn-sm"
+						onclick="pesquisarProduto()">Buscar</button>
+					<table class="table" id="tabDescricaoProduto">
+						<thead>
+							<tr>
+								<th scope="col">Id:</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Selecionar</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary"
+						data-bs-dismiss="modal">Fechar</button>
+				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 </body>
 </html>

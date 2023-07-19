@@ -1,0 +1,7 @@
+<div th:fragment="observacao">
+	<div class="form-group">
+		<label for="observacoes">Observações:</label>
+		<textarea class="form-control" id="observacoes" name="observacoes"
+			th:field="*{pedidoDto.observacaoPedido}" rows="3"></textarea>
+	</div>
+</div>

@@ -1,0 +1,151 @@
+<main
+	th:fragment="main(pedidoDto, clienteDto, produtoDto, itemPedidoDto, aduserDto, enderecoDto, action)">
+	<div class="container">
+		<fieldset class="fieldset text-left mb-5">
+			<legend>Menu</legend>
+			<div class="row mt-3">
+				<div class="col">
+					<form class="formulario" th:action="${action}" method="POST">
+						<div class="row justify-content-between" id="loaders">
+							<div class="col-md-2 mb-2">
+								<button type="submit" class="btn btn-outline-success">Salvar
+									Pedido</button>
+							</div>
+							<div class="col-md-2 mb-3">
+								<button type="button" class="btn btn-warning"
+									data-bs-toggle="modal" data-bs-target="#pesquisarProdutoModal">Pesquisar
+									produto</button>
+							</div>
+							<div class="col-md-2 mb-2">
+								<button type="button" class="btn btn-outline-primary">Pesquisar
+									Pedido</button>
+							</div>
+							<div class="col-md-2 mb-2">
+								<button onClick="limparPedido()" class="btn btn-outline-danger">Cancelar
+									Pedido</button>
+							</div>
+						</div>
+						<div class="form-group mb-2 row">
+							<label class="col-2 col-form-label">Status do Pedido</label>
+							<div class="col-4">
+								<select class="form-select form-select"
+									aria-label="Default select example"
+									th:field="*{pedidoDto.enumStatus}">
+									<option th:each="pedido : ${listaStatus}" th:value="${pedido}"
+										th:text="${pedido}"></option>
+								</select>
+							</div>
+							<label class="col-sm-2 col-form-label">Tipo de pagamento</label>
+							<div class="col-sm-4">
+								<select class="form-select form-select"
+									aria-label="Default select example"
+									th:field="*{pedidoDto.enumPagamento}">
+									<option th:each="pedido : ${listaPagamento}"
+										th:value="${pedido}" th:text="${pedido}"></option>
+								</select>
+							</div>
+						</div>
+						<div>
+							<div class="form-group mb-2 row d-flex align-items-center">
+								<label class="col-sm-3 col-form-label">Data de geração
+									do pedido</label>
+								<div class="col-sm-2">
+									<input type="date" class="form-control"
+										th:field="*{pedidoDto.dataCadastro}" />
+
+								</div>
+								<div class="col-5 d-flex align-items-center">
+									<label class="col-sm-5 col-form-label">Bandeira do
+										Cartão</label> <select class="form-select form-select col-sm-3"
+										aria-label="Default select example"
+										th:field="*{pedidoDto.enumCartao}">
+										<option th:each="pedido : ${listaCartao}" th:value="${pedido}"
+											th:text="${pedido}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<span class="input-group-text" id="basic-addon1">Código
+											do cliente:</span>
+									</div>
+									<input type="number" class="form-control form-control"
+										id="idClie" th:field="*{clienteDto.clienteId}"
+										readonly="readonly" style="max-width: 120px;">
+								</div>
+							</div>
+							<div class="col-md-8">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<button class="btn btn-outline-primary btn" type="button"
+											data-bs-toggle="modal"
+											data-bs-target="#pesquisarClienteModal">Pesquisar</button>
+									</div>
+									<input type="text" class="form-control form-control"
+										id="nomeClie" th:field="*{clienteDto.nomeClie}"
+										placeholder="Digite o nome do cliente">
+								</div>
+							</div>
+						</div>
+						<div>
+							<div class="form-group row">
+								<label class="col-md-2 col-form-label">Vendedor:</label>
+								<div class="col-md-4">
+									<select class="form-select form-select"
+										th:field="*{aduserDto.nome}"
+										aria-label="Default select example" id="selectUsuarios">
+										<option value="">Selecione um Vendedor</option>
+										<option th:each="user : ${listaAduserDto}"
+											th:value="${user.userId}" th:text="${user.nome}"></option>
+									</select>
+								</div>
+								<label class="col-md-2 col-form-label">Valor/Desconto:</label>
+								<button type="button" class="col-md-1 btn btn-warning"
+									onClick="calcularDescontoPedido()">Calcular</button>
+								<div class="col-md-3">
+									<div class="input-group">
+										<span class="input-group-text" id="basic-addon1">R$</span> <input
+											id="porcentagem" th:field="*{pedidoDto.descontoPedido}"
+											type="number" class="form-control form-control-sm"
+											aria-describedby="basic-addon1">
+									</div>
+								</div>
+							</div>
+						</div>
+						<br/>
+						<div>
+						<fieldset class="fieldset text-left mb-5">
+						<ul class="nav nav-tabs">
+							<li class="nav-item"><a class="nav-link active"
+								data-bs-toggle="tab" data-bs-target="#itens">Itens</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" data-bs-target="#entrega">Dados da
+									entrega</a></li>
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="tab" data-bs-target="#observacao">Observação
+									do Pedido</a></li>
+						</ul>
+						<div class="tab-content">
+							<div id="itens" class="tab-pane fade show active">
+								<div th:replace="~{pedido/tabela_itens :: tabelaItens}"></div>
+							</div>
+							<div id="entrega" class="tab-pane fade">
+								<div th:replace="~{pedido/form_entrega :: dadosEntrega}"></div>
+							</div>
+							<div id="observacao" class="tab-pane fade">
+								<div th:replace="~{pedido/form_observacao :: observacao}"></div>
+							</div>
+						</div>
+						</fieldset>
+						</div>
+					</form>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</main>
+
+
