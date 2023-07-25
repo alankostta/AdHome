@@ -1,25 +1,13 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec=http://www.thymeleaf.org/extras/spring-security
-	xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-	crossorigin="anonymous">
-	
-</script>
-<head th:replace="~{fragmentos :: head('Dados Registrados')}"></head>
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="~{fragmentos/head :: head('Dados Registrados')}"></head>
 <body>
-	<header
-		th:replace="~{fragmentos :: header('Detalhes do Cliente: ' + ${cliente.clienteId})}"></header>
+		<script src="js/scripts.js"></script>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Detalhes do Cliente: ' + ${cliente.id})}"></header>
 	<main>
-		<div class="container">
+		<div class="col-12">
 			<fieldset class="fieldset text-left mb-5">
 				<legend>Dados Cliente</legend>
 				<form th:action="${action}" method="POST">
@@ -128,11 +116,14 @@
 		<div class="row">
 			<div class="col-12">
 				<a class="btn btn-primary"
-					th:href="@{/cliente/{clienteId}/editar(clienteId = ${cliente.clienteId})}">Editar</a>
-				<a href="../cliente" class="btn btn-primary">Voltar</a>
+					th:href="@{/cliente/{id}/editar(id = ${cliente.id})}">Editar</a>
+				<a href="../cliente/listar" class="btn btn-primary">Voltar</a>
 			</div>
 		</div>
 		</div>
 	</main>
+	<script src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+		</script>
 </body>
 </html>

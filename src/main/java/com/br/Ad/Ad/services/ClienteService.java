@@ -2,9 +2,11 @@ package com.br.Ad.Ad.services;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.br.Ad.Ad.models.Cliente;
 import com.br.Ad.Ad.repositories.ClienteRepository;
+import com.br.Ad.Ad.repositories.ContatoRepository;
 import jakarta.transaction.Transactional;
 
 /* Conhecida como camada Beans
@@ -17,12 +19,10 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ClienteService {
 	
-	final ClienteRepository clienteRepository;
-
-	public ClienteService(ClienteRepository clienteRepository) {
-		this.clienteRepository = clienteRepository;
-		
-	}
+	@Autowired
+	ClienteRepository clienteRepository;
+	
+	ContatoRepository contatoRepository;
 	public Cliente saveCliente(Cliente cliente) {
 		return clienteRepository.save(cliente);
 	}

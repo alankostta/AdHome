@@ -1,14 +1,8 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec=http://www.thymeleaf.org/extras/spring-security xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js">
-</script>
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link rel="stylesheet" href="/css/style.css">
-
 <head th:replace="~{fragmentos/head :: head('Editar Clientes')}"></head>
-
 <body>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Lista de Clientes')}"></header>
@@ -29,8 +23,8 @@
 								class="bi bi-plus-circle-fill"></i> Novo Cliente</a>
 					</div>
 					<br>
-					<table class="table">
-						<thead class="thead-dark">
+					<table class="table table-hover">
+						<thead>
 							<tr>
 								<th class="table-active">Id.</th>
 								<th class="table-active">Nome.</th>
@@ -51,14 +45,17 @@
 								<td th:text="${c.sexo}"></td>
 								<td th:text="${c.dataNasci}" ></td>
 								<td th:text="${#temporals.format(c.dataCadastro, 'dd/MM/yyyy')}"></td>
-								<td>
+								<td th:each="contato : ${c.contato}">
+									<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"							   
+									    th:attr="data-bs-content=${#strings.concat(
+									      contato.email, ' - ',
+									      contato.telefone, ' ',)}">
+									      <span class="bi bi-eye"></span>
+									</button>
 									<span th:each="contato : ${c.contato}" th:text="${contato.contatoEnum}"></span><br>
-									<span th:each="contato : ${c.contato}" th:text="${contato.telefone}"></span><br>
-									<span th:each="contato : ${c.contato}" th:text="${contato.email}"></span><br>
 								</td>
-								<td th:each="end : ${c.endereco}">
-									<span th:text="${end.enderecoEnum}"></span><br>
-									<button type="button" class="btn btn-outline-info" data-bs-toggle="popover"
+								<td th:each="end : ${c.endereco}">								
+									<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
 									    th:each="end : ${c.endereco}" 
 									    th:attr="data-bs-content=${#strings.concat(
 									      end.uf, ' - ',
@@ -70,6 +67,7 @@
 									      end.numero)}">
 									    <span class="bi bi-eye"></span>
 									  </button>
+									  <span th:text="${end.enderecoEnum}"></span>
 									</td>
 								<td><a class="btn btn-outline-info btn-sm"
 										th:href="@{/cliente/{c.id}(c.id=${c.id})}">Detalhes</a></td>
@@ -89,5 +87,4 @@
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 </script>
-
 </html>

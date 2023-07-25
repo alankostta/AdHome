@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,11 +24,11 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "tb_fornecedor")
 public class Fornecedor implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -47,8 +48,9 @@ public class Fornecedor implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "data_altera", nullable = false, length = 60)
 	private LocalDateTime dataAlteraForne;
-
-	@ManyToMany(cascade = CascadeType.ALL)
+	
+	@JsonIgnore
+	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name = "fornecedor_endereco", 
 		joinColumns = @JoinColumn(name = "fornecedor_fk"), 
 		inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
@@ -58,30 +60,30 @@ public class Fornecedor implements Serializable {
 	 * um grupo único de objetos evitando ser criado várias instancias do mesmo
 	 * objeto
 	 */
-	@OneToMany(mappedBy="fornecedor", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(mappedBy="fornecedor", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<Contato> contatos = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="produto_id")
+	@OneToMany(mappedBy="fornecedor", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Fornecedor() {
-
+		super();
 	}
 
-	public Fornecedor(Long id, String nome, String nomeEmpresa, LocalDateTime dataCadastroForne, LocalDateTime dataAlteraForne,
-			List<Endereco> endereco, List<Contato> contato, Set<Produto> produto, Integer anoRef) {
+	public Fornecedor(Long id, String nome, String nomeEmpresa, LocalDateTime dataCadastroForne, Integer anoRef,
+			LocalDateTime dataAlteraForne, List<Endereco> endereco, List<Contato> contatos, Set<Produto> produtos) {
 		super();
-		this.setId(id);
-		this.setNome(nome);
-		this.setNomeEmpresa(nomeEmpresa);
-		this.setEndereco(endereco);
-		this.setContatos(contato);
-		this.setProdutos(produto);
-		this.setDataAlteraForne(dataAlteraForne);
-		this.setDataCadastroForne(dataCadastroForne);
-		this.setAnoRef(anoRef);
+		this.id = id;
+		this.nome = nome;
+		this.nomeEmpresa = nomeEmpresa;
+		this.dataCadastroForne = dataCadastroForne;
+		this.anoRef = anoRef;
+		this.dataAlteraForne = dataAlteraForne;
+		this.endereco = endereco;
+		this.contatos = contatos;
+		this.produtos = produtos;
 	}
 
 	public Long getId() {
@@ -100,14 +102,6 @@ public class Fornecedor implements Serializable {
 		this.nome = nome;
 	}
 
-	public Integer getAnoRef() {
-		return anoRef;
-	}
-
-	public void setAnoRef(Integer anoRef) {
-		this.anoRef = anoRef;
-	}
-
 	public String getNomeEmpresa() {
 		return nomeEmpresa;
 	}
@@ -122,6 +116,14 @@ public class Fornecedor implements Serializable {
 
 	public void setDataCadastroForne(LocalDateTime dataCadastroForne) {
 		this.dataCadastroForne = dataCadastroForne;
+	}
+
+	public Integer getAnoRef() {
+		return anoRef;
+	}
+
+	public void setAnoRef(Integer anoRef) {
+		this.anoRef = anoRef;
 	}
 
 	public LocalDateTime getDataAlteraForne() {

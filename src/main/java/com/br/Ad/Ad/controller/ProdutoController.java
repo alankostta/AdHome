@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,6 @@ import jakarta.validation.Valid;
  */
 @Controller
 @RequestMapping("/produto")
-//@CrossOrigin(origins = "*", maxAge = 3600)
 public class ProdutoController {
 	@Autowired
 	ProdutoService produtoService;
@@ -64,29 +64,21 @@ public class ProdutoController {
 	}
 	@PostMapping("")
 	public ModelAndView saveProdutos(
-			@Valid ProdutoDto produtoDto, BindingResult resultProduto,
-			@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor, 
-			@Valid CategoriaDto categoriaDto, BindingResult resultCategoria) {
+			@Valid ProdutoDto produtoDto, BindingResult resultProduto) {
 
 		ModelAndView mv = new ModelAndView("produto/produto");
 
-		if (resultFornecedor.hasErrors() && resultProduto.hasErrors()&& resultCategoria.hasErrors()) {
+		if (resultProduto.hasErrors()) {
 			this.retornaErroProduto("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
 			
-			Fornecedor fornecedor = fornecedorDto.toFornecedor();
-			Categoria categoria = categoriaDto.toCategoria();
 			Produto produto = produtoDto.toProduto();
-			fornecedor.setId(fornecedorDto.getId().longValue());
 			produto.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
 			produto.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
 			Calendar cal = Calendar.getInstance();
 			produto.setAnoRef(cal.get(Calendar.YEAR));
-			
-			categoriaService.saveCategoria(categoria);
-			fornecedorService.saveFornecedor(fornecedor);
-
+		
 			if (produto.getValorSaida() == null) {
 				produto.setValorSaida(0.0);
 				produtoService.salvarProduto(produto);
@@ -95,15 +87,19 @@ public class ProdutoController {
 				produtoService.salvarProduto(produto);
 				
 			}
-			return new ModelAndView("redirect:/produto");
+			return new ModelAndView("redirect:/produto/listarPro");
 		}
 	}
-	@GetMapping("produto/listar")
+	@ModelAttribute("categorias")
+	public List<Categoria> listaDepartamentos() {
+		return categoriaService.findAll();
+	}
+	@GetMapping("/listarPro")
 	public ModelAndView listarProdutos() {
 
-		var mv = new ModelAndView("produto/listar");
-		Iterable<Produto> produto = produtoService.findAll();
-		mv.addObject("produto", produto);
+		var mv = new ModelAndView("produto/listarPro");
+		Iterable<Produto> produtos = produtoService.findAll();
+		mv.addObject("produtos", produtos);
 		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
 		return mv;
 	}
@@ -213,7 +209,7 @@ public class ProdutoController {
 	//criar um and point para pesquisar o fornecedor por Id
 	@GetMapping(value="buscarPorIdFornecedor")
 	@ResponseBody
-	public ResponseEntity<Fornecedor> buscarPorId(@RequestParam(name="fornecedorId") Long fornecedorId){//Recebe os dados para consultar
+	public ResponseEntity<Fornecedor> buscarPorIdFornecedor(@RequestParam(name="id") Long fornecedorId){//Recebe os dados para consultar
 		Optional<Fornecedor> fornecedorOptional = fornecedorService.findById(fornecedorId);
 		if(fornecedorOptional.isPresent()) {
 			Fornecedor fornecedor = fornecedorOptional.get();

@@ -1,9 +1,6 @@
 package com.br.Ad.Ad.models;
 
 import java.io.Serializable;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,15 +8,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "tb_contato")
 public class Contato implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,25 +25,22 @@ public class Contato implements Serializable {
 	@Column(name = "email_contato", nullable = true, length = 150, unique = true)
 	private String email;
 	
-	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
 	
 	@ManyToOne
-	@JoinColumn(name="fornecedor_id")
 	private Fornecedor fornecedor;
 	
 	@Enumerated(EnumType.STRING)
 	private ContatoEnum contatoEnum;
-	
-	public Contato() {
-		
-	}
 
-	public Contato(Long id, String telefone, String email, Cliente cliente, Fornecedor fornecedor, ContatoEnum contatoEnum) {
+	public Contato() {
 		super();
-		this.setId(id);
+	}
+	public Contato(Long id, String telefone, String email, Cliente cliente, Fornecedor fornecedor,
+			ContatoEnum contatoEnum) {
+		super();
+		this.id = id;
 		this.telefone = telefone;
 		this.email = email;
 		this.cliente = cliente;
@@ -101,5 +94,5 @@ public class Contato implements Serializable {
 
 	public void setContatoEnum(ContatoEnum contatoEnum) {
 		this.contatoEnum = contatoEnum;
-	}
+	}	
 }

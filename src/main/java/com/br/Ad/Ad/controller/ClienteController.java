@@ -68,8 +68,8 @@ public class ClienteController {
 		clienteDto.setContato(new ArrayList<>());
 		clienteDto.setEndereco(new ArrayList<>());
 		
-		clienteDto.getContato().add(new Contato());
-		clienteDto.getEndereco().add(new Endereco());
+		clienteDto.getContato().add(new ContatoDto());
+		clienteDto.getEndereco().add(new EnderecoDto());
 		
 		var mv = new ModelAndView("cliente/cliente");
 		
@@ -83,15 +83,13 @@ public class ClienteController {
 	// que serão persistidas no banco
 	@PostMapping("/cliente")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ModelAndView saveCliente(@Valid ClienteDto clienDto, BindingResult resultCliente,
-			@Valid ContatoDto contatoDto, BindingResult resultContato, @Valid EnderecoDto enderecoDto,
-			BindingResult resultEndereco) {
+	public ModelAndView saveCliente(@Valid ClienteDto clienDto, BindingResult resultCliente) {
 
 		ModelAndView mv = new ModelAndView("cliente/cliente");
 		mv.addObject("listaContato", ContatoEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
-		if (resultCliente.hasErrors() && resultContato.hasErrors() && resultEndereco.hasErrors()) {
+		if (resultCliente.hasErrors()) {
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroCliente("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
@@ -200,12 +198,7 @@ public class ClienteController {
 
 		if (clienteOptional.isPresent() && contatoOptional.isPresent() && enderecoOptional.isPresent()) {
 			Cliente cliente = clienteOptional.get();
-			Contato contato = contatoOptional.get();
-			Endereco endereco = enderecoOptional.get();
-			clienteDto.fromCliente(cliente);
-			contatoDto.fromContato(contato);
-			enderecoDto.fromEndereco(endereco);
-
+			
 			mv.addObject("clienteId", cliente.getId());
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
@@ -245,18 +238,15 @@ public class ClienteController {
 			return mv;
 		} else {
 			Optional<Cliente> clienteOptional = this.clienteService.findById(id);
-			Optional<Contato> contatoOptional = this.contatoService.findById(id);
-			Optional<Endereco> enderecoOptional = this.enderecoService.findByIdEndereco(id);
+			
 
-			if (clienteOptional.isPresent() && contatoOptional.isPresent() && enderecoOptional.isPresent()) {
+			if (clienteOptional.isPresent()) {
 				Cliente cliente = clienteDto.toCliente(clienteOptional.get());
-				Contato contato = contatoDto.toContato(contatoOptional.get());
-				Endereco endereco = enderecoDto.toEndereco(enderecoOptional.get());
+			
 
 				cliente.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
 
-				this.contatoService.saveContato(contato);
-				this.enderecoService.saveEndereco(endereco);
+			
 				this.clienteService.saveCliente(cliente);
 				mv.addObject("mensagem", "Cliente com inscrição " + id + " editado com sucesso!");
 				mv.addObject("erro", false);

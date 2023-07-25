@@ -31,6 +31,9 @@ public class FornecedorService {
 	public List<Fornecedor> findAll(){
 		return fornecedorRepository.findAll();
 	}
+	public List<Fornecedor> projecaoFornecedor(){
+		return fornecedorRepository.projecaoFornecedor();
+	}
 	public Optional<Fornecedor> findById(Long id){
 		return fornecedorRepository.findById(id);
 	}

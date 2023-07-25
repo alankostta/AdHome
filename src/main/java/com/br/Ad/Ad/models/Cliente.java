@@ -2,9 +2,7 @@ package com.br.Ad.Ad.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,11 +23,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-@SuppressWarnings("serial")
+
 @Entity
 @Table(name = "tb_cliente")
 public class Cliente implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -53,7 +52,8 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@JoinColumn(name="cliente_id")
 	private List<Contato> contato;
 	
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
@@ -62,17 +62,18 @@ public class Cliente implements Serializable {
 	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private List<Endereco> endereco;
 	
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "cliente_id")
 	private Set<Pedido> pedido;
 
 	public Cliente() {
-
+		super();
 	}
 
 	public Cliente(Long id, String nome, String sexo, Date dataNasci, Integer anoRef, LocalDateTime dataCadastro,
 			LocalDateTime dataAltera, List<Contato> contato, List<Endereco> endereco, Set<Pedido> pedido) {
 		super();
-		this.id = id; 
+		this.id = id;
 		this.nome = nome;
 		this.sexo = sexo;
 		this.dataNasci = dataNasci;
@@ -90,22 +91,6 @@ public class Cliente implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public LocalDateTime getDataAltera() {
-		return dataAltera;
-	}
-
-	public void setDataAltera(LocalDateTime dataAltera) {
-		this.dataAltera = dataAltera;
-	}
-
-	public LocalDateTime getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(LocalDateTime dataCadastro) {
-		this.dataCadastro = dataCadastro;
 	}
 
 	public String getNome() {
@@ -132,10 +117,31 @@ public class Cliente implements Serializable {
 		this.dataNasci = dataNasci;
 	}
 
+	public Integer getAnoRef() {
+		return anoRef;
+	}
+
+	public void setAnoRef(Integer anoRef) {
+		this.anoRef = anoRef;
+	}
+
+	public LocalDateTime getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDateTime dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public LocalDateTime getDataAltera() {
+		return dataAltera;
+	}
+
+	public void setDataAltera(LocalDateTime dataAltera) {
+		this.dataAltera = dataAltera;
+	}
+
 	public List<Contato> getContato() {
-		if(contato == null) {
-			contato = new ArrayList<>();
-		}
 		return contato;
 	}
 
@@ -144,9 +150,6 @@ public class Cliente implements Serializable {
 	}
 
 	public List<Endereco> getEndereco() {
-		if(endereco == null) {
-			endereco = new ArrayList<>();
-		}
 		return endereco;
 	}
 
@@ -155,35 +158,10 @@ public class Cliente implements Serializable {
 	}
 
 	public Set<Pedido> getPedido() {
-		if(pedido == null) {
-			pedido = new HashSet<>();
-		}
 		return pedido;
 	}
 
 	public void setPedido(Set<Pedido> pedido) {
-			this.pedido = pedido;	
-	}
-
-	public Integer getAnoRef() {
-		return anoRef;
-	}
-
-	public void setAnoRef(Integer anoRef) {
-		this.anoRef = anoRef;
-	}
-	public void addEndereco(Endereco endereco) {
-		if(endereco != null && getEndereco().contains(endereco)) {
-			getEndereco().add(endereco);
-		}
-		if(!endereco.getCliente().contains(this)) {
-			endereco.getCliente().add(this);
-		}
-	}
-	public void addContato(Contato contato) {
-		if (this.contato == null && getContato().contains(contato)) {
-			this.contato = new ArrayList<>();
-		}
-		this.contato.add(contato);
+		this.pedido = pedido;
 	}
 }

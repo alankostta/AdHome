@@ -12,51 +12,53 @@ import jakarta.validation.constraints.Size;
  * onde serão introduzidos os dados entre outras anotações como @email @Cpf @NotNull @Empty}
  */
 public class ContatoDto {
-	
-	@NotBlank
-	@Size(max = 30)
-	private String telefone;
-	@Size(max = 150)
-	@Email
-	private String email;
-	private ContatoEnum contatoEnum;
-	
+    @NotBlank
+    @Size(max = 30)
+    private String telefone;
 
-	public ContatoEnum getContatoEnum() {
-		return contatoEnum;
-	}
-	public void setContatoEnum(ContatoEnum contatoEnum) {
-		this.contatoEnum = contatoEnum;
-	}
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public Contato toContato() {
-		Contato contato = new Contato();
-		contato.setEmail(this.email);
-		contato.setTelefone(this.telefone);
-		contato.setContatoEnum(contatoEnum);
-		return contato;
-	}
-	public Contato toContato(Contato contato) {
-		contato = new Contato();
-		contato.setEmail(this.email);
-		contato.setTelefone(this.telefone);
-		contato.setContatoEnum(contatoEnum);
-		return contato;
-	}
-	public void fromContato(Contato contato) {
-		this.email = contato.getEmail();
-		this.telefone = contato.getTelefone();
-		this.contatoEnum = contato.getContatoEnum();
-	}
+    @Size(max = 150)
+    @Email
+    private String email;
+
+    private ContatoEnum contatoEnum;
+
+    public ContatoEnum getContatoEnum() {
+        return contatoEnum;
+    }
+
+    public void setContatoEnum(ContatoEnum contatoEnum) {
+        this.contatoEnum = contatoEnum;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Contato toContato() {
+        Contato contato = new Contato();
+        contato.setEmail(this.email);
+        contato.setTelefone(this.telefone);
+        contato.setContatoEnum(contatoEnum);
+        return contato;
+    }
+
+    public static ContatoDto fromContato(Contato contato) {
+        ContatoDto contatoDto = new ContatoDto();
+        contatoDto.setEmail(contato.getEmail());
+        contatoDto.setTelefone(contato.getTelefone());
+        contatoDto.setContatoEnum(contato.getContatoEnum());
+        return contatoDto;
+    }
 }

@@ -3,20 +3,21 @@ Sempre 	que for usar Ajax importar o jquery no html
 append('<tr><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+')" class="btn btn-outline-dark">Selecionar</button></td></tr>');
 */
 function pesquisarFornecedor() {
-	var nome = $('#nameBuscar').val();
+	let nome = $('#nameBuscar').val();
 	if (nome != null && nome.trim() != '') {
 		$.ajax({
 			method: "GET",
-			url: "produto/buscarPorNomeFornecedor/",
+			url: "produto/buscarPorNomeFornecedor",
 			data: "name=" + nome,
 			success: function(response) {
 				$('#tabelaresultados > tbody > tr').remove();
-				for (var i = 0; i < response.length; i++) {
-					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].fornecedorId + '</td><td>' + response[i].nome + '</td><td><button type="button" onClick="carregarFornecedor(' + response[i].fornecedorId + ')" class="btn btn-primary">Selecionar</button></td></tr>');
+				for (let i = 0; i < response.length; i++) {
+					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
 				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao buscar fornecedor: " + xhr.responseText);
+			console.log(status, errorThrown)
+			alert("Erro ao buscar fornecedor: " + xhr.responseText, status, errorThrown);
 		});
 	}
 	else {
@@ -28,19 +29,19 @@ function pesquisarCliente() {
 	if (nomeCliente != null && nomeCliente.trim() != '') {
 		$.ajax({
 			method: "GET",
-			url: "pedido/buscarPorNomeCliente/",
+			url: "pedido/buscarPorNomeCliente",
 			data: "name=" + nomeCliente,
 			success: function(response) {
 				$('#tabResultadosCliente > tbody > tr').remove();
 				for (var i = 0; i < response.length; i++) {
 					$('#tabResultadosCliente > tbody')
-						.append('<tr><td>' + response[i].clienteId + '</td><td>' + response[i].nome
+						.append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome
 							+ '</td><td><button type="button" onClick="carregarCliente('
-							+ response[i].clienteId + ')" class="btn btn-primary">Selecionar</button></td></tr>');
+							+ response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
 				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao buscar cliente: " + xhr.responseText);
+			alert("Erro ao buscar cliente: " + xhr.responseText,status, errorThrown);
 		});
 	}
 	else {
@@ -52,21 +53,21 @@ function pesquisarProduto() {
 	if (descricao != null && descricao.trim() != '') {
 		$.ajax({
 			method: "GET",
-			url: "pedido/buscarProduto/",
+			url: "pedido/buscarProduto",
 			data: "descricao=" + descricao,
 			success: function(response) {
 				$('#tabDescricaoProduto > tbody > tr').remove();
 				for (var i = 0; i < response.length; i++) {
 					$('#tabDescricaoProduto > tbody').append('<tr><td>' + response[i]
-						.produtoId + '</td><td>' + response[i]
+						.id + '</td><td>' + response[i]
 							.descricao +
-						'</td><td><button type="button" onClick="carregarProduto(' + response[i].produtoId + ')" class="btn btn-primary">Selecionar</button></td></tr>'
+						'</td><td><button type="button" onClick="carregarProduto(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>'
 						//'</td><td><button type="button" onClick="psq()" class="btn btn-primary">Selecionar</button></td></tr>'
 					);
 				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
-			alert("Erro ao buscar o produto1!!!: " + xhr.responseText);
+			alert("Erro ao buscar o produto1!!!: " + xhr.responseText, status, errorThrown);
 		});
 	}
 	else {
@@ -74,13 +75,13 @@ function pesquisarProduto() {
 	}
 }
 
-function carregarFornecedor(fornecedorId) {
+function carregarFornecedor(id) {
 	$.ajax({
 		method: "GET",
-		url: "produto/buscarPorIdFornecedor/",
-		data: "fornecedorId=" + fornecedorId,
+		url: "produto/buscarPorIdFornecedor",
+		data: "id=" + id,
 		success: function(response) {
-			$("#idFor").val(response.fornecedorId);
+			$("#idFor").val(response.id);
 			$("#nomeFor").val(response.nome);
 
 			$("#pesquisarModal").modal('hide');
@@ -89,13 +90,13 @@ function carregarFornecedor(fornecedorId) {
 
 		}
 	}).fail(function(xhr, status, errorThrow) {
-		alert("Erro ao buscar fornecedor: " + xhr.responseText);
+		alert("Erro ao buscar fornecedor: " + xhr.responseText, status,  errorThrow);
 	});
 }
 function carregarCliente(clienteId) {
 	$.ajax({
 		method: "GET",
-		url: "pedido/buscarPorIdCliente/",
+		url: "pedido/buscarPorIdCliente",
 		data: "clienteId=" + clienteId,
 		success: function(response) {
 
@@ -129,7 +130,7 @@ function carregarCliente(clienteId) {
 
 		}
 	}).fail(function(xhr, status, errorThrow) {
-		alert("Erro ao buscar fornecedor: " + xhr.responseText);
+		alert("Erro ao buscar fornecedor: " + xhr.responseText, status, errorThrow);
 	});
 }
 /*
@@ -194,7 +195,7 @@ function buscarCep() {
 				$("#logradouro").val(response.logradouro);
 			}
 		}).fail(function(xhr, status, errorThrow) {
-			alert("Erro ao buscar cep informado!: " + xhr.responseText);
+			alert("Erro ao buscar cep informado!: " + xhr.responseText, status, errorThrow);
 		});
 	}
 	else {

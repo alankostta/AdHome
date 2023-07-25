@@ -1,8 +1,6 @@
 package com.br.Ad.Ad.models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -11,14 +9,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-@SuppressWarnings("serial")
+
 @Entity
 @Table(name = "tb_categoria")
 public class Categoria implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -26,18 +24,17 @@ public class Categoria implements Serializable {
 	private String nomeCategoria;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "produto_id")
 	private List<Produto> produtos;
-	
+
 	public Categoria() {
-		
+		super();
 	}
 
-	public Categoria(Long id, String nomeCategoria, String descricaoCategoria, Date dataCadasto,
-			LocalDateTime dataAlte, Integer ano_ref) {
-		
+	public Categoria(Long id, String nomeCategoria, List<Produto> produtos) {
+		super();
+		this.id = id;
 		this.nomeCategoria = nomeCategoria;
-		this.setProdutos(produtos);
+		this.produtos = produtos;
 	}
 
 	public Long getId() {

@@ -1,11 +1,11 @@
-<div class="col-12" th:fragment="cliente">
+<div class="col-12" th:fragment="cliente()">
 	<fieldset class="fieldset text-left mb-6">
 		<legend>Dados Cliente</legend>
 		<form th:action="${action}" th:object="${clienteDto}" method="POST">
 			<div class="text-center">
 				<div class="row">
 					<div class="col">
-						<input class="form-control" type="text" placeholder="Digite seu nome" th:field="*{nomeClie}" />
+						<input class="form-control" type="text" placeholder="Digite seu nome" th:field="*{nome}" />
 					</div>
 					<div class="col">
 						<input type="radio" class="form-check-input" value="Feminino" th:field="*{sexo}" />
@@ -90,7 +90,7 @@
 					</div>
 				</div>
 			<br>
-			<button type="submit" class="btn btn-outline-primary">Enviar</button>
+			<button type="submit" class="btn btn-outline-primary">Salvar</button>
 		</form>
 	</fieldset>
 </div>

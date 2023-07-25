@@ -60,15 +60,13 @@ public class FornecedorController{
 	}
 	
 	@PostMapping(value="/fornecedor")
-	public ModelAndView saveFornecedor(@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor,
-			@Valid ContatoDto contatoDto, BindingResult resultContato, @Valid EnderecoDto enderecoDto,
-			BindingResult resultEndereco) {
+	public ModelAndView saveFornecedor(@Valid FornecedorDto fornecedorDto, BindingResult resultFornecedor) {
 
 		ModelAndView mv = new ModelAndView("fornecedor/fornecedor");
 		mv.addObject("listaContato", ContatoEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
-		if (resultFornecedor.hasErrors() && resultContato.hasErrors() && resultEndereco.hasErrors()) {
+		if (resultFornecedor.hasErrors()) {
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroFornecedor("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
@@ -83,22 +81,23 @@ public class FornecedorController{
 		
 			fornecedorService.saveFornecedor(fornecedo);
 
-			return new ModelAndView("redirect:/fornecedor");
+			return new ModelAndView("redirect:/fornecedor/listarFor");
 		}
 		// método BeanUtils está sendo usado para realizar um cast de clienteDto para
 		// cliente
 	}
-	@GetMapping("fornecedor/listar")
+	@GetMapping("fornecedor/listarFor")
 	public ModelAndView listarFornecedor() {
 
-		var mv = new ModelAndView("cliente/listar");
-		Iterable<Fornecedor> fornecedor = fornecedorService.findAll();
+		var mv = new ModelAndView("fornecedor/listarFor");
+		Iterable<Fornecedor> fornecedor = fornecedorService.projecaoFornecedor();
 		mv.addObject("fornecedor", fornecedor);
 		mv.addObject("listaContato", ContatoEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
 		return mv;
 	}
+	
 	@GetMapping("fornecedor/{fornecedorId}")
 	public ModelAndView getOneFornecedor(@PathVariable(value = "fornecedorId") Long id) {
 
@@ -128,16 +127,12 @@ public class FornecedorController{
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
 		Optional<Fornecedor> fornecedorOptional = this.fornecedorService.findById(id);
-		Optional<Contato> contatoOptional = this.contatoService.findById(id);
-		Optional<Endereco> enderecoOptional = this.enderecoService.findByIdEndereco(id);
-
-		if (fornecedorOptional.isPresent() && contatoOptional.isPresent() && enderecoOptional.isPresent()) {
+	
+		if (fornecedorOptional.isPresent()) {
 			Fornecedor fornecedor = fornecedorOptional.get();
-			Contato contato = contatoOptional.get();
-			Endereco endereco = enderecoOptional.get();
+			
 			fornecedorDto.fromFornecedor(fornecedor);
-			contatoDto.fromContato(contato);
-			enderecoDto.fromEndereco(endereco);
+			
 
 			mv.addObject("fornecedorId", fornecedor.getId());
 			mv.addObject("listaContato", ContatoEnum.values());
@@ -181,14 +176,12 @@ public class FornecedorController{
 
 			if (fornecedorOptional.isPresent() && contatoOptional.isPresent() && enderecoOptional.isPresent()) {
 				Fornecedor fornecedor = fornecedorDto.toFornecedor(fornecedorOptional.get());
-				Contato contato = contatoDto.toContato(contatoOptional.get());
-				Endereco endereco = enderecoDto.toEndereco(enderecoOptional.get());
+			
 
 				fornecedor.setDataAlteraForne(LocalDateTime.now(ZoneId.of("UTC")));
 
 				this.fornecedorService.saveFornecedor(fornecedor);
-				this.contatoService.saveContato(contato);
-				this.enderecoService.saveEndereco(endereco);
+				
 				mv.addObject("mensagem", "Cliente com inscrição " + id + " editado com sucesso!");
 				mv.addObject("erro", false);
 				return mv;

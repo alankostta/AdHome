@@ -2,10 +2,12 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link rel="stylesheet" href="/css/style.css">
-<head th:replace="~{fragmentos/head :: head('Editar Clientes')}"></head>
+
+<head th:replace="~{fragmentos/head :: head('Editar Fornecedor')}"></head>
+
 <body>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
-	<header th:replace="~{fragmentos/header :: header('Lista de Clientes')}"></header>
+	<header th:replace="~{fragmentos/header :: header('Lista de Fornecedores')}"></header>
 	<div class="container-sm mb-4">
 		<div class="col-12">
 			<span th:styleappend="${(param.erro == null || param.mensagem == null) ? 'display: none;' : ''}"
@@ -19,8 +21,8 @@
 			<div class="row">
 				<div class="col-12">
 					<div>
-						<a class="btn btn-outline-success btn-sm" href="../cliente"><i
-								class="bi bi-plus-circle-fill"></i> Novo Cliente</a>
+						<a class="btn btn-outline-success btn-sm" href="../fornecedor"><i
+								class="bi bi-plus-circle-fill"></i> Novo Fornecedor</a>
 					</div>
 					<br>
 					<table class="table table-hover">
@@ -28,9 +30,7 @@
 							<tr>
 								<th class="table-active">Id.</th>
 								<th class="table-active">Nome.</th>
-								<th class="table-active">Sexo.</th>
-								<th class="table-active">Dt.</th>
-								<th class="table-active">Dtc.</th>
+								<th class="table-active">Empre.</th>
 								<th class="table-active">Cont.</th>
 								<th class="table-active">End.</th>
 								<th class="table-active"></th>
@@ -39,24 +39,21 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="c : ${cliente}">
-								<td th:text="${c.id}"></td>
-								<td th:text="${c.nome}"></td>
-								<td th:text="${c.sexo}"></td>
-								<td th:text="${c.dataNasci}" ></td>
-								<td th:text="${#temporals.format(c.dataCadastro, 'dd/MM/yyyy')}"></td>
-								<td th:each="contato : ${c.contato}">
-									<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"							   
+							<tr th:each="f : ${fornecedor}">
+								<td th:text="${f.id}"></td>
+								<td th:text="${f.nome}"></td>
+								<td th:text="${f.nomeEmpresa}"></td>
+								<td th:each="contato : ${f.contatos}">
+									<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
 									    th:attr="data-bs-content=${#strings.concat(
 									      contato.email, ' - ',
 									      contato.telefone, ' ',)}">
 									      <span class="bi bi-eye"></span>
 									</button>
-									<span th:each="contato : ${c.contato}" th:text="${contato.contatoEnum}"></span><br>
+									<span th:each="contato : ${f.contatos}" th:text="${contato.contatoEnum}"></span><br>
 								</td>
-								<td th:each="end : ${c.endereco}">								
+								<td th:each="end : ${f.endereco}">								
 									<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
-									    th:each="end : ${c.endereco}" 
 									    th:attr="data-bs-content=${#strings.concat(
 									      end.uf, ' - ',
 									      end.localidade, ' ',
@@ -70,11 +67,11 @@
 									  <span th:text="${end.enderecoEnum}"></span>
 									</td>
 								<td><a class="btn btn-outline-info btn-sm"
-										th:href="@{/cliente/{c.id}(c.id=${c.id})}">Detalhes</a></td>
+										th:href="@{/fornecedor/{f.id}(f.id=${f.id})}">Detalhes</a></td>
 								<td><a class="btn btn-outline-primary btn-sm"
-										th:href="@{/cliente/{c.id}/editar(c.id=${c.id})}">Editar</a></td>
+										th:href="@{/fornecedor/{f.id}/editar(f.id=${f.id})}">Editar</a></td>
 								<td><a class="btn btn-outline-danger btn-sm"
-										th:href="@{/cliente/{c.id}/excluir(c.id=${c.id})}">Excluir</a></td>
+										th:href="@{/fornecedor/{f.id}/excluir(f.id=${f.id})}">Excluir</a></td>
 							</tr>
 						</tbody>
 					</table>
@@ -87,4 +84,5 @@
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 </script>
+
 </html>

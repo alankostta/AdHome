@@ -17,11 +17,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
-@SuppressWarnings("serial")
+
 @Entity
 @Table(name="tb_ad_user")
 public class AdUser implements UserDetails {
 	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

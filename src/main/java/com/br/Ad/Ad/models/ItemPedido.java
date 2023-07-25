@@ -12,11 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@SuppressWarnings("serial")
+
 @Entity
 @Table(name="tb_item_pedido")
 public class ItemPedido implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -28,50 +29,48 @@ public class ItemPedido implements Serializable{
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="produto_id")
     private List<Produto> produto;
-    
-    public ItemPedido() {
-        
-    }
-    public ItemPedido(Long id, Integer quantidade,Double precoIten,  Pedido Pedido, List<Produto> produto) {
-        this.setQuantidade(quantidade);
-        this.setPrecoIten(precoIten);
-        this.setProduto(produto);
-    }
 
-    public Long getId() {
+	public ItemPedido() {
+		super();
+	}
+
+	public ItemPedido(Long id, Integer quantidade, Double precoIten, List<Produto> produto) {
+		super();
+		this.id = id;
+		this.quantidade = quantidade;
+		this.precoIten = precoIten;
+		this.produto = produto;
+	}
+
+	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public Integer getQuantidade() {
-        return quantidade;
-    }
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-    public Double getPrecoIten() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public Double getPrecoIten() {
 		return precoIten;
 	}
+
 	public void setPrecoIten(Double precoIten) {
 		this.precoIten = precoIten;
-		
-		//if(produto == null && this.precoIten == null) {
-			//this.setPrecoIten(produto.getPreco());
-		//}
 	}
-    public List<Produto> getProduto() {
-        return produto;
-    }
-    public void setProduto(List<Produto> produto) {
-        this.produto = produto;
-    }
-    public void addItens(Produto prod) {
-    	this.produto.add(prod);
-    }
-//    private void calcularValorPedido() {
-//    	for (Produto produ : this.produto) {
-//			this.precoTotalDoPedido += produ.getValorSaida();
-//		}
-//    }
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
+	}
 }
