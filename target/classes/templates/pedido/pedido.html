@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:replace="~{fragmentos :: head('Cadastro Pedido')}"></head>
+<head th:replace="~{fragmentos/head :: head('Cadastro Pedido')}"></head>
 <body>
 	<script src="js/scripts.js"></script>
-	<header th:replace="~{fragmentos :: header('Cadastrar Pedido')}"></header>
-	<br>
-	<main th:replace="~{fragmentos_pedido :: main(pedidoDto, clienteDto, produtoDto, itemPedidoDto, aduserDto, enderecoDto,'../pedido')}"></main>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Cadastrar Pedido')}"></header>
+	<main th:replace="~{fragmentos/fragmentos_pedido :: main(pedidoDto, clienteDto, produtoDto, itemPedidoDto, aduserDto, enderecoDto,'../pedido')}"></main>
 	<div class="modal fade" id="pesquisarClienteModal" tabindex="-1"
 		aria-labelledby="clienteModalpesquisa" aria-hidden="true">
 		<div class="modal-dialog">

@@ -70,7 +70,7 @@ public class PedidoController {
 
 	}
 
-	@GetMapping("")
+	@GetMapping("/pedido")
 	public ModelAndView exibirPedido(
 			ProdutoDto produtoDto, PedidoDto pedidoDto, 
 			ClienteDto clienteDto, ItemPedidoDto itemPedidoDto,
@@ -115,14 +115,14 @@ public class PedidoController {
 			pedido.setItens(pedido.getItens());
 			pedidoService.savePedido(pedido);
 
-			return new ModelAndView("redirect:/pedido");
+			return new ModelAndView("redirect:/pedido/listarPed");
 		}
 	}
-
+	@GetMapping("/listarPed")
 	public ModelAndView findAllPedidos() {
-		var mv = new ModelAndView("pedido/pedido");
+		var mv = new ModelAndView("pedido/listarPed");
 		List<Pedido> pedidos = pedidoService.findAll();
-		mv.addObject("listaPedido", pedidos);
+		mv.addObject("listaPedidos", pedidos);
 		return mv;
 	}
 

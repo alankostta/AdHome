@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.br.Ad.Ad.configs.UserDetailsServiceImpl;
@@ -17,29 +16,48 @@ import com.br.Ad.Ad.dto.AduserDto;
 import com.br.Ad.Ad.models.AdUser;
 import com.br.Ad.Ad.models.RoleModel;
 import com.br.Ad.Ad.models.RoleName;
+import com.br.Ad.Ad.services.RolesModelService;
 
 import jakarta.validation.Valid;
 
 @Controller
-@RestController
 public class UserAdController {
 
 	@Autowired
 	UserDetailsServiceImpl userDetailsServiceImpl;
 	
-	@GetMapping("/cadastrar-user")
-	public ModelAndView exibirCadastrarUser(AduserDto aduserDto) {
-		var mv = new ModelAndView("/cadastrar-user");
+	@Autowired
+	RolesModelService roleService;
+	
+	
+	@GetMapping("/usuario/login")
+	public ModelAndView exibirLoguin() {
+		var mv = new ModelAndView("usuario/login");
 		return mv;
 	}
-	@GetMapping("/usuarios")
-	public ResponseEntity<List<AdUser>> listarUsuarios() {
-	    List<AdUser> usuarios = userDetailsServiceImpl.findAllUser();
-	    return ResponseEntity.ok(usuarios);
+	
+	@GetMapping("/usuario/cadastrar-user")
+	public ModelAndView exibirCadastrarUser(AduserDto aduserDto) {
+		var mv = new ModelAndView("usuario/cadastrar-user");
+		return mv;
 	}
-	@PostMapping("/cadastrar-user")
+	@ModelAttribute("roles")
+	public List<RoleModel> listaDepartamentos() {
+		List<RoleModel> roles = roleService.findAll();
+		return roles;
+	}
+	@GetMapping("/usuario/listarUser")
+	public ModelAndView listarUsuarios() {
+		var mv = new ModelAndView();
+		
+	    List<AdUser> usuarios = userDetailsServiceImpl.findAllUser();
+	    mv.addObject("usuarios", usuarios);
+	    
+	    return mv;
+	}
+	@PostMapping("/usuario/cadastrar-user")
 	public ModelAndView saveUser(@Valid AduserDto aduserDto, BindingResult aduserDtoResult) {
-		ModelAndView mv = new ModelAndView("/cadastrar-user");
+		ModelAndView mv = new ModelAndView("usuario/cadastrar-user");
 
 		if (aduserDtoResult.hasErrors()) {
 			this.retornaErroUser("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
@@ -51,7 +69,7 @@ public class UserAdController {
 	   // user.setPassword(encodedPassword);
 		userDetailsServiceImpl.saveUser(user);
 
-		return new ModelAndView("redirect:/cadastrar-user");
+		return new ModelAndView("redirect:usuario/listarUser");
 	}
 
 	public ModelAndView saveMultipleUsers(int numberOfUsers) {
@@ -72,11 +90,11 @@ public class UserAdController {
 			userDetailsServiceImpl.saveUser(user);
 		}
 
-		return new ModelAndView("redirect:/cadastrar-user");
+		return new ModelAndView("redirect:usuario/cadastrar-user");
 	}
 
 	private ModelAndView retornaErroUser(String msg) {
-		ModelAndView mv = new ModelAndView("redirect:/cadastrar-user");
+		ModelAndView mv = new ModelAndView("redirect:usuario/cadastrar-user");
 		mv.addObject("mensagem", msg);
 		mv.addObject("erro", true);
 		return mv;

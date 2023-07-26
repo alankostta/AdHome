@@ -25,7 +25,9 @@ function pesquisarFornecedor() {
 	}
 }
 function pesquisarCliente() {
-	var nomeCliente = $('#nomeCliente').val();
+	alert(nomeCliente)
+	let nomeCliente = $('#nomeCliente').val();
+	
 	if (nomeCliente != null && nomeCliente.trim() != '') {
 		$.ajax({
 			method: "GET",

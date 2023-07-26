@@ -103,7 +103,7 @@
 	<button type="button" class="bnt-close" data-bs-dismiss="alert"></button>
 	<span>Senha ou usuário inválido</span>
 </div>
-<form class="login" th:action="@{/login}" method="POST" id="formLog">
+<form class="login" th:action="@{/usuario/login}" method="POST" id="formLog">
 	<h3>Sistema AdHome</h3>
 	<br>
 	<h2>Login</h2>
@@ -122,7 +122,7 @@
 	</div>
 	<a type="button" onClick="document.getElementById('formLog').submit();"class="btn">Entrar</a>
 	<br>
-	<a href="/cadastrar-user" class="btn">Criar Usúario</a>
+	<a th:href="@{/cadastrar-user}" class="btn">Criar Usúario</a>
 </form>	
 </body>
 </html>

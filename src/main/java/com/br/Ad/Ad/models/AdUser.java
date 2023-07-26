@@ -23,9 +23,11 @@ import jakarta.validation.constraints.Size;
 public class AdUser implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(name = "nome_user", nullable = false, length = 60)
 	@Size(min = 3)
 	private String nomeUser;
@@ -46,13 +48,13 @@ public class AdUser implements UserDetails {
 	public AdUser() {
 		
 	}
-	public AdUser(Long id, String nome, String nomeUser, String emailUser, String password) {
+	public AdUser(Long id, String nome, String nomeUser, String emailUser, String password, List<RoleModel> roles) {
 		this.id = id;
 		this.nome = nome;
 		this.nomeUser = nomeUser;
 		this.emailUser = emailUser;
 		this.password = password;
-		
+		this.roles = roles;
 	}
 	
 	public Long getId() {

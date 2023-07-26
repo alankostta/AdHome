@@ -37,13 +37,13 @@
 					</ul>
 				</li>
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+					<a class="nav-link dropdown-toggle"  role="button" data-bs-toggle="dropdown"
 						aria-expanded="false"><i class="bi bi-bag-check-fill"></i>
 						Pedido
 					</a>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item"  th:href="@{/pedido/pedido}"><i class="bi bi-plus-circle-dotted"></i><span style="margin-right: 5px;"></span>Cadastrar Pedido</a></li>
-						<li><a class="dropdown-item" href="#"><i class="bi bi-card-checklist"></i><span style="margin-right: 5px;"></span>Listar Pedido</a></li>
+						<li><a class="dropdown-item" th:href="@{/pedido/listarPed}"><i class="bi bi-card-checklist"></i><span style="margin-right: 5px;"></span>Listar Pedido</a></li>
 					</ul>
 				</li>
 				<li class="nav-item dropdown">
@@ -52,15 +52,12 @@
 						Login
 					</a>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item"  th:href="@{/usuario/logout}"><i class="bi bi-box-arrow-in-right"></i><span style="margin-right: 5px;"></span>Sair</a></li>
+						<li><a class="dropdown-item"  th:href="@{/usuario/login}"><i class="bi bi-box-arrow-in-right"></i><span style="margin-right: 5px;"></span>Sair</a></li>
 						<li><a class="dropdown-item" th:href="@{/usuario/cadastrar-user}"><i class="bi bi-person-fill-add"></i><span style="margin-right: 5px;"></span>Cadastrar User</a></li>
+						<li><a class="dropdown-item" th:href="@{/usuario/listarUser}"><i class="bi bi-person-fill-add"></i><span style="margin-right: 5px;"></span>Listar User</a></li>
 					</ul>
 				</li>
 			</ul>
-			<form class="d-flex" role="search">
-				<input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Search">
-				<button class="btn btn-light">Buscar</button>
-			</form>
 		</div>
 	</div>
 </nav>

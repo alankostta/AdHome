@@ -3,11 +3,11 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link rel="stylesheet" href="/css/style.css">
 
-<head th:replace="~{fragmentos/head :: head('Produtos')}"></head>
+<head th:replace="~{fragmentos/head :: head('Editar Fornecedor')}"></head>
 
 <body>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
-	<header th:replace="~{fragmentos/header :: header('Lista de Produtos')}"></header>
+	<header th:replace="~{fragmentos/header :: header('Lista de Usuários')}"></header>
 	<div class="container-sm mb-4">
 		<div class="col-12">
 			<span th:styleappend="${(param.erro == null || param.mensagem == null) ? 'display: none;' : ''}"
@@ -21,8 +21,8 @@
 			<div class="row">
 				<div class="col-12">
 					<div>
-						<a class="btn btn-outline-success btn-sm" href="../produto"><i
-								class="bi bi-plus-circle-fill"></i> Novo Produto</a>
+						<a class="btn btn-outline-success btn-sm" href="../usuario/cadastrar-user"><i
+								class="bi bi-plus-circle-fill"></i> Novo pedido</a>
 					</div>
 					<br>
 					<table class="table table-hover">
@@ -30,33 +30,27 @@
 							<tr>
 								<th class="table-active">Id.</th>
 								<th class="table-active">Nome.</th>
-								<th class="table-active">Marca.</th>
-								<th class="table-active">Categ.</th>
-								<th class="table-active">Vl.Entra.</th>
-								<th class="table-active">Vl.Said.</th>
-								<th class="table-active">Dt.Cad.</th>
-								<th class="table-active">Qtd.Esto.</th>
+								<th class="table-active">Usuário.</th>
+								<th class="table-active">Email.</th>
+								<th class="table-active">Tipo Conta</th>
 								<th class="table-active"></th>
 								<th class="table-active"></th>
 								<th class="table-active"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="p : ${produtos}">
-								<td th:text="${p.id}"></td>
-								<td th:text="${p.nome}"></td>
-								<td th:text="${p.marca}"></td>
-								<td th:text="${p.categoria.nomeCategoria}"></td>
-								<td th:text="${p.valorEntrada}"></td>
-								<td th:text="${p.valorSaida}"></td>
-								<td th:text="${p.dataCadastro}"></td>
-								<td th:text="${p.estoqueQtd}"></td>
+							<tr th:each="u : ${usuarios}">
+								<td th:text="${u.id}"></td>
+								<td th:text="${u.nome}"></td>
+								<td th:text="${u.nomeUser}"></td>
+								<td th:text="${u.email}"></td>
+								<td th:text="${u.roles.roleName}"></td>
 								<td><a class="btn btn-outline-info btn-sm"
-										th:href="@{/produto/{p.id}(p.id=${p.id})}">Detalhes</a></td>
+										th:href="@{/usuario/{u.id}(p.id=${u.id})}">Detalhes</a></td>
 								<td><a class="btn btn-outline-primary btn-sm"
-										th:href="@{/produto/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
+										th:href="@{/usuario/{u.id}/editar(u.id=${u.id})}">Editar</a></td>
 								<td><a class="btn btn-outline-danger btn-sm"
-										th:href="@{/produto/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
+										th:href="@{/usuario/{u.id}/excluir(u.id=${u.id})}">Excluir</a></td>
 							</tr>
 						</tbody>
 					</table>
