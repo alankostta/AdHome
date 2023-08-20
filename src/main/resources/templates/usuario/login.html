@@ -1,45 +1,47 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec=http://www.thymeleaf.org/extras/spring-security
-    xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <style>
-	*{
+	* {
 		margin: 0;
 		padding: 0;
 		box-sizing: border-box;
 		font-family: sans-serif;
 	}
-	body{
+
+	body {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		min-height: 100vh;
-		background:#F0F8FF;
+		background: #F0F8FF;
 	}
-	.login{
-		background: rgba(0,0,0,.5);
+
+	.login {
+		background: rgba(0, 0, 0, .5);
 		border-radius: 10px;
 		width: 400px;
 		padding: 40px;
 	}
-	.login h3{
+
+	.login h3 {
 		margin-bottom: 40px;
 		font-size: 30px;
 		color: #fff;
 		text-align: center;
 	}
-	.login h2{
+
+	.login h2 {
 		margin-bottom: 30px;
 		font-size: 30px;
 		color: #fff;
 		text-align: center;
 	}
-	.login .box-user{
+
+	.login .box-user {
 		position: relative;
 	}
-	.login .box-user input{
+
+	.login .box-user input {
 		width: 100%;
 		padding: 10px 0;
 		outline: none;
@@ -50,7 +52,8 @@
 		font-size: 16px;
 		margin-bottom: 30px;
 	}
-	.login .box-user label{
+
+	.login .box-user label {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -60,22 +63,24 @@
 		pointer-events: none;
 		transition: .5s;
 	}
+
 	.login .box-user input:focus~label,
-	.login .box-user input:valid~label
-	{
+	.login .box-user input:valid~label {
 		top: -20px;
 		left: 0;
 		color: #03e9f4;
 		font-size: 12px;
 	}
-	.forget{
+
+	.forget {
 		font-size: 12px;
 		color: #03e9f4;
 		display: flex;
 		justify-content: flex-end;
-		text-decoration: none;	
+		text-decoration: none;
 	}
-	.btn{
+
+	.btn {
 		position: relative;
 		display: inline-block;
 		padding: 12px 20px;
@@ -88,9 +93,10 @@
 		margin-top: 20px;
 		transition: .5s;
 		overflow: hidden;
-		
+
 	}
-	.btn:hover{
+
+	.btn:hover {
 		background: #03e9f4;
 		border-radius: 5px;
 		color: #172031;
@@ -98,31 +104,30 @@
 </style>
 <link rel="icon" href="data:,">
 <body>
-<div class="alert alert-danger alert-dismissible fade show" 
-			th:if="${param.error}">
-	<button type="button" class="bnt-close" data-bs-dismiss="alert"></button>
-	<span>Senha ou usuário inválido</span>
-</div>
-<form class="login" th:action="@{/usuario/login}" method="POST" id="formLog">
-	<h3>Sistema AdHome</h3>
-	<br>
-	<h2>Login</h2>
-	<div class="box-user">
-		
-		<input type="text" name="nomeUser" required/>
-		<label>Usuário:</label>
+	<div class="alert alert-danger alert-dismissible fade show" th:if="${param.error}">
+		<button type="button" class="bnt-close" data-bs-dismiss="alert"></button>
+		<span>Senha ou usuário inválido</span>
 	</div>
-	<div class="box-user">
-		
-		<input type="password" name="password" required/>
-		<label>Senha:</label>
-	</div>
-	<div>
-		<a href="#" class="forget">Esqueceu a senha?</a>
-	</div>
-	<a type="button" onClick="document.getElementById('formLog').submit();"class="btn">Entrar</a>
-	<br>
-	<a th:href="@{/cadastrar-user}" class="btn">Criar Usúario</a>
-</form>	
+	<form class="login" th:action="@{/usuario/login}" method="POST" id="formLog">
+		<h3>Sistema AdHome</h3>
+		<br>
+		<h2>Login</h2>
+		<div class="box-user">
+
+			<input type="text" name="nomeUser" required />
+			<label>Usuário:</label>
+		</div>
+		<div class="box-user">
+
+			<input type="password" name="password" required />
+			<label>Senha:</label>
+		</div>
+		<div>
+			<a href="#" class="forget">Esqueceu a senha?</a>
+		</div>
+		<a type="button" onClick="document.getElementById('formLog').submit();" class="btn">Entrar</a>
+		<br>
+		<a th:href="@{/usuario/cadastrar-user}" class="btn">Criar Usúario</a>
+	</form>
 </body>
 </html>

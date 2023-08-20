@@ -22,7 +22,7 @@
 				<div class="col-12">
 					<div>
 						<a class="btn btn-outline-success btn-sm" href="../usuario/cadastrar-user"><i
-								class="bi bi-plus-circle-fill"></i> Novo pedido</a>
+								class="bi bi-plus-circle-fill"></i> Novo Usuário</a>
 					</div>
 					<br>
 					<table class="table table-hover">
@@ -43,8 +43,10 @@
 								<td th:text="${u.id}"></td>
 								<td th:text="${u.nome}"></td>
 								<td th:text="${u.nomeUser}"></td>
-								<td th:text="${u.email}"></td>
-								<td th:text="${u.roles.roleName}"></td>
+								<td th:text="${u.emailUser}"></td>
+								<td>
+									<span th:each="role : ${u.roles}" th:text="${role.roleName}"></span>
+								</td>
 								<td><a class="btn btn-outline-info btn-sm"
 										th:href="@{/usuario/{u.id}(p.id=${u.id})}">Detalhes</a></td>
 								<td><a class="btn btn-outline-primary btn-sm"

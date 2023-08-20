@@ -29,16 +29,19 @@ public class UserAdController {
 	@Autowired
 	RolesModelService roleService;
 	
-	
 	@GetMapping("/usuario/login")
 	public ModelAndView exibirLoguin() {
+		AduserDto aduserDto = new AduserDto();
 		var mv = new ModelAndView("usuario/login");
+		mv.addObject(aduserDto);
 		return mv;
 	}
 	
 	@GetMapping("/usuario/cadastrar-user")
-	public ModelAndView exibirCadastrarUser(AduserDto aduserDto) {
+	public ModelAndView exibirCadastrarUser() {
+		AduserDto aduserDto = new AduserDto();
 		var mv = new ModelAndView("usuario/cadastrar-user");
+		mv.addObject(aduserDto);
 		return mv;
 	}
 	@ModelAttribute("roles")
