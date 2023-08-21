@@ -7,7 +7,7 @@ function pesquisarFornecedor() {
 	if (nome != null && nome.trim() != '') {
 		$.ajax({
 			method: "GET",
-			url: "produto/buscarPorNomeFornecedor",
+			url: "/produto/buscarPorNomeFornecedor",
 			data: "name=" + nome,
 			success: function(response) {
 				$('#tabelaresultados > tbody > tr').remove();
@@ -25,13 +25,13 @@ function pesquisarFornecedor() {
 	}
 }
 function pesquisarCliente() {
-	alert(nomeCliente)
-	let nomeCliente = $('#nomeCliente').val();
 	
+	let nomeCliente = $('#nomeCliente').val();
+	alert(nomeCliente)
 	if (nomeCliente != null && nomeCliente.trim() != '') {
 		$.ajax({
 			method: "GET",
-			url: "pedido/buscarPorNomeCliente",
+			url: "/pedido/buscarPorNomeCliente",
 			data: "name=" + nomeCliente,
 			success: function(response) {
 				$('#tabResultadosCliente > tbody > tr').remove();
@@ -55,7 +55,7 @@ function pesquisarProduto() {
 	if (descricao != null && descricao.trim() != '') {
 		$.ajax({
 			method: "GET",
-			url: "pedido/buscarProduto",
+			url: "/pedido/buscarProduto",
 			data: "descricao=" + descricao,
 			success: function(response) {
 				$('#tabDescricaoProduto > tbody > tr').remove();
@@ -80,7 +80,7 @@ function pesquisarProduto() {
 function carregarFornecedor(id) {
 	$.ajax({
 		method: "GET",
-		url: "produto/buscarPorIdFornecedor",
+		url: "/produto/buscarPorIdFornecedor",
 		data: "id=" + id,
 		success: function(response) {
 			$("#idFor").val(response.id);
@@ -95,15 +95,15 @@ function carregarFornecedor(id) {
 		alert("Erro ao buscar fornecedor: " + xhr.responseText, status,  errorThrow);
 	});
 }
-function carregarCliente(clienteId) {
+function carregarCliente(id) {
 	$.ajax({
 		method: "GET",
-		url: "pedido/buscarPorIdCliente",
-		data: "clienteId=" + clienteId,
+		url: "/pedido/buscarPorIdCliente",
+		data: "id=" + id,
 		success: function(response) {
 
 			for (var i = 0; i < response.length; i++) {
-				var clienteId = response[i][0];
+				var id = response[i][0];
 				var nome = response[i][1];
 				var bairro = response[i][2];
 				var uf = response[i][3];
@@ -115,7 +115,7 @@ function carregarCliente(clienteId) {
 				var logradouro = response[i][9];
 			}
 
-			$("#idClie").val(clienteId);
+			$("#idClie").val(id);
 			$("#nomeClie").val(nome);
 			$("#pedidoUf").val(uf);
 			$("#pedidoCidade").val(localidade);
@@ -173,15 +173,6 @@ function carregarProduto(produtoId) {
 	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
 }
 */
-function calcularTotal() {
-	var total = 0.0;
-	$('#listaPedido > tbody > tr').each(function() {
-		var subTotal = parseFloat($(this).find('#subTotal').val());
-		total += subTotal;
-	});
-
-	$("#total").val(total);
-}
 function buscarCep() {
 	var cep = $('#cep').val();
 	if (cep != null && cep.trim() != '') {
@@ -260,50 +251,49 @@ function listarUser() {
 	});
 }
 */
-function calcularDescontoPedido() {
-		var desconto = parseFloat($('#porcentagem').val());
-		var total = parseFloat($('#total').val());
-		var novoTotal = total - (total * (desconto / 100));
-		$("#total").val(novoTotal);
 
-}
-function carregarProduto(produtoId) {
+function carregarProduto(id) {
     $.ajax({
         method: "GET",
-        url: "pedido/buscarProdutoId/",
-        data: "produtoId=" + produtoId,
+        url: "/pedido/buscarProdutoId",
+        data: "id=" + id, // Envie os dados como um objeto, não uma string
         success: function(response) {
-            for (var i = 0; i < response.length; i++) {
-                var produto = response[i];
-                var descricao = produto.descricao;
-                var marca = produto.marca;
-                var preco = produto.preco;
-                var row = $("<tr></tr>");
-                row.append($("<td>" + produto.produtoId + "</td>"));
-                row.append($("<td>" + descricao + "</td>"));
-                row.append($("<td>" + marca + "</td>"));
-                row.append($("<td>" + preco + "</td>"));
-                var qtdInput = $("<input>", {
-                    type: "number",
-                    min: "0",
-                    class: "form-control qtd",
-                });
-                row.append($("<td></td>").append(qtdInput));
-                var subTotalInput = $("<input>", {
-                    type: "number",
-                    min: "0",
-                    class: "form-control",
-                    style: "background-color: #DCDCDC",
-                    readonly: "readonly",
-                });
-                row.append($("<td></td>").append(subTotalInput));
-                var removeButton = $("<button>", {
-                    class: "btn btn-danger remove-btn",
-                    text: "Remover",
-                });
-                row.append($("<td></td>").append(removeButton));
-                $("#listaPedido tbody").append(row);
+			for(let i = 0; i < response.length; i++){
+	            var codigo = response[i].id;
+	            var descricao = response[i].descricao;
+	            var marca = response[i].marca;
+	            var preco = response[i].preco;
             }
+
+            var row = $("<tr></tr>");
+            row.append($("<td>" + codigo + "</td>"));
+            row.append($("<td>" + descricao + "</td>"));
+            row.append($("<td>" + marca + "</td>"));
+            row.append($("<td>" + preco + "</td>"));
+            
+            var qtdInput = $("<input>", {
+                type: "number",
+                min: "0",
+                class: "form-control qtd",
+            });
+            row.append($("<td></td>").append(qtdInput));
+            
+            var subTotalInput = $("<input>", {
+                type: "number",
+                min: "0",
+                class: "form-control",
+                style: "background-color: #DCDCDC",
+                readonly: "readonly",
+            });
+            row.append($("<td></td>").append(subTotalInput));
+            
+            var removeButton = $("<button>", {
+                class: "btn btn-danger remove-btn",
+                text: "Remover",
+            });
+            row.append($("<td></td>").append(removeButton));
+
+            $("#listaPedido tbody").append(row);
 
             $(document).on("click", ".remove-btn", function() {
                 $(this).closest("tr").remove();
@@ -311,23 +301,40 @@ function carregarProduto(produtoId) {
             });
 
             $(document).on("change", ".qtd", function() {
-                var qtd = $(this).val();
-                var preco = $(this)
+                var qtd = parseFloat($(this).val());
+                var preco = parseFloat($(this)
                     .closest("tr")
                     .find("td:nth-child(4)")
-                    .text();
-                var subTotal = qtd * preco;
+                    .text());
+                var subTotal = qtd * preco || 0;
                 $(this)
                     .closest("tr")
                     .find("td:nth-child(6) input")
-                    .val(subTotal);
+                    .val(subTotal.toFixed(2)); // Formate para exibir duas casas decimais
                 calcularTotal();
             });
+
             $("#pesquisarProdutoModal").modal("hide");
         },
         error: function(xhr, status, error) {
-            alert("Erro ao buscar produto: " + xhr.responseText);
+            alert("Erro ao buscar produto: " + xhr.responseText, status, error);
         }
     });
 }
+function calcularDescontoPedido() {
+		var desconto = parseFloat($('#porcentagem').val());
+		var total = parseFloat($('#total').val());
+		var novoTotal = total - (total * (desconto / 100));
+		$("#total").val(novoTotal);
 
+}
+function calcularTotal() {
+	var total = 0.0;
+	var subTotal = 0.0;
+	$('#listaPedido > tbody > tr').each(function() {
+		subTotal = parseFloat($(this).find('#subTotal').val());
+		total += subTotal;
+	});
+	
+	 $("#total").val(total.toFixed(2));
+}

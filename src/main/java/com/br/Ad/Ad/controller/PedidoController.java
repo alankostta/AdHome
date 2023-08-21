@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,27 +50,24 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
-
-	final PedidoService pedidoService;
-	final ProdutoService produtoService;
-	final ClienteService clienteService;
-	final UserDetailsServiceImpl userDetailsServiceImpl;
-	final ItemPedidoService itemPedidoService;
-	final EnderecoService enderecoService;
-
-	public PedidoController(
-			PedidoService pedidoService, ProdutoService produtoService, 
-			ClienteService clienteService, ItemPedidoService itemPedidoService,
-			UserDetailsServiceImpl userDetailsServiceImpl, EnderecoService enderecoService) {
-		
-		this.pedidoService = pedidoService;
-		this.produtoService = produtoService;
-		this.clienteService = clienteService;
-		this.userDetailsServiceImpl = userDetailsServiceImpl;
-		this.itemPedidoService = itemPedidoService;
-		this.enderecoService = enderecoService;
-
-	}
+	
+	@Autowired
+	private PedidoService pedidoService;
+	
+	@Autowired
+	private ProdutoService produtoService;
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
+	private UserDetailsServiceImpl userDetailsServiceImpl;
+	
+	@Autowired
+	private ItemPedidoService itemPedidoService;
+	
+	@Autowired
+	private EnderecoService enderecoService;
 
 	@GetMapping("/pedido")
 	public ModelAndView exibirPedido(
@@ -87,28 +86,15 @@ public class PedidoController {
 	// Criando os metodos getPost onde irá receber as requisições
 	// que serão persistidas no banco
 	@PostMapping("")
-	public ModelAndView savePedido(
-			@Valid ClienteDto clienteDto, BindingResult resultCliente,
-			@Valid PedidoDto pedidoDto, BindingResult resultPedido,
-			@Valid ProdutoDto produtoDto,BindingResult resultProduto, 
-			@Valid EnderecoDto enderecoDto, BindingResult resultEnderecoDto,
-			@Valid AduserDto aduserDto, BindingResult resultAduserDto,
-			@Valid ItemPedidoDto itemPedidoDto, BindingResult resultItemPedidoDto) {
+	public ModelAndView savePedido(@Valid PedidoDto pedidoDto, BindingResult resultPedido) {
 
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 
-		if (resultCliente.hasErrors() && resultPedido.hasErrors() 
-				&& resultEnderecoDto.hasErrors() && resultProduto.hasErrors()) {
-
+		if ( resultPedido.hasErrors() ) {
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
 			Pedido pedido = pedidoDto.toPedido();
-			//Produto produto = produtoDto.toProduto();
-			//Cliente cliente = clienteDto.toCliente();
-			ItemPedido itens = itemPedidoDto.toItens();
-			List<Produto> produtos = new ArrayList<>();
-			itens.setProduto(produtos);
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(LocalDateTime.now());
@@ -129,18 +115,14 @@ public class PedidoController {
 	@GetMapping(value = "buscarPorNomeCliente")
 	@ResponseBody // Retorna os dados para o corpo da resposta.
 	public ResponseEntity<List<Cliente>> buscarPorNomecliente(@RequestParam(name = "name") String name) {
-		// List<Fornecedor> fornecedor =
-		// fornecedorService.findByName(name.trim().toLowerCase());
-		List<Cliente> cliente = clienteService.findByNameContaining(name);// Execeuta a consulta no banco de dados ao
-																			// qual está sendo por nome
-
-		return new ResponseEntity<List<Cliente>>(cliente, HttpStatus.OK);// Retorna uma lista de nomes em formato JSON
+		List<Cliente> cliente = clienteService.findByNameContaining(name);
+		return new ResponseEntity<List<Cliente>>(cliente, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "buscarPorIdCliente")
 	@ResponseBody
-	public ResponseEntity<List<Object[]>> buscarPorIdCliente(@RequestParam(name = "clienteId") Long clienteId) {
-		List<Object[]> clientes = clienteService.findClienteEndereco(clienteId);
+	public ResponseEntity<List<Object[]>> buscarPorIdCliente(@RequestParam(name = "id") Long id) {
+		List<Object[]> clientes = clienteService.findClienteEndereco(id);
 		return new ResponseEntity<List<Object[]>>(clientes, HttpStatus.OK);
 	}
 
@@ -153,8 +135,8 @@ public class PedidoController {
 
 	@GetMapping(value = "buscarProdutoId")
 	@ResponseBody
-	public ResponseEntity<List<Produto>> buscarProdutoPorId(@RequestParam(name = "produtoId") Long produtoId) {
-		Optional<Produto> produtoOptional = produtoService.findById(produtoId);
+	public ResponseEntity<List<Produto>> buscarProdutoPorId(@RequestParam(name = "id") Long id) {
+		Optional<Produto> produtoOptional = produtoService.findById(id);
 		if (produtoOptional.isPresent()) {
 			Produto produto = produtoOptional.get();
 			List<Produto> produtoList = new ArrayList<Produto>();

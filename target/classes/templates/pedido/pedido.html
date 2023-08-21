@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="~{fragmentos/head :: head('Cadastro Pedido')}"></head>
 <body>
-	<script src="js/scripts.js"></script>
+	<script src="../js/scripts.js"></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastrar Pedido')}"></header>
 	<main th:replace="~{fragmentos/fragmentos_pedido :: main(pedidoDto, clienteDto, produtoDto, itemPedidoDto, aduserDto, enderecoDto,'../pedido')}"></main>

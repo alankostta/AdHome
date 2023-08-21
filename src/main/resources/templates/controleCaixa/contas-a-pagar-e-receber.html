@@ -5,29 +5,39 @@
 <body>
 	<script src="js/scripts.js"></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
-	<header th:replace="~{fragmentos/header :: header('Controle de Despesas')}"></header>
-	<div class="container">
-		<h4>Saldo Atual</h4>
-		<h1 id="balance" class="balance">R$ 0.00</h1>
-		<div class="inc-exp-container">
-			<div>
-				<h4>Receitas</h4>
-				<p id="money-minus" class="money minus"> - R$0.00</p>
-			</div>
+	<header th:replace="~{fragmentos/header :: header('Cadastro de Despesas')}"></header>
+	<fieldset class="fieldset text-left mb-6">
+	<div class="text-center">
+	<div class="row">
+		<div class="col">
+			<label>Descrição do débito</label>
+			<input class="form-control" type="text"/>
 		</div>
-		<h3>Transações</h3>
-		<ul id="transactions" class="transactions"></ul>
-		<h3>Adicionar Transação</h3>
-		<form id="form">
-			<div class="form-control">
-				<label for="amount">Valor<br />
-					<small>(negativo - despesas, positivo - receitas)</small>
-				</label>
-				<input type="number" id="amount" placeholder="Valor da transação" />
-			</div>
-			<button class="bnt">Adicionar</button>
-		</form>
+		<div class="col">
+			<label>Valor do débito</label>
+			<input class="form-control" type="text"/>
+		</div>
+		<div class="col">
+			<label>Data de vencimento</label>
+			<input class="form-control" type="text"/>
+		</div>
 	</div>
+	<div class="row">
+		<div class="col">
+			<label>Categoria do débito</label>
+			<input class="form-control" type="text"/>
+		</div>
+		<div class="col">
+			<label>Data de cadastro</label>
+			<input class="form-control" type="text"/>
+		</div>
+		<div class="col">
+			<label>Tipo de pagamanto</label>
+			<input class="form-control" type="text"/>
+		</div>
+	</div>
+	</div>
+	</fieldset>
 	<script src="#"></script>
 </body>
 </html>

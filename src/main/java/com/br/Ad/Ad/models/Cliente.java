@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,16 +54,19 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name="cliente_id")
 	private List<Contato> contato;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinTable(name = "cliente_endereco", 
 	joinColumns = @JoinColumn(name = "cliente_fk"), 
 	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private List<Endereco> endereco;
 	
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "cliente_id")
 	private Set<Pedido> pedido;
