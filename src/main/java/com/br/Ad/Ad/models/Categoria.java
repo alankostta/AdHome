@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -24,17 +25,23 @@ public class Categoria implements Serializable {
 	private String nomeCategoria;
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="produto_id")
 	private List<Produto> produtos;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="despesas_id")
+	private List<Despesas> despesas;
 
 	public Categoria() {
 		super();
 	}
 
-	public Categoria(Long id, String nomeCategoria, List<Produto> produtos) {
+	public Categoria(Long id, String nomeCategoria, List<Produto> produtos, List<Despesas> despesas) {
 		super();
 		this.id = id;
 		this.nomeCategoria = nomeCategoria;
 		this.produtos = produtos;
+		this.despesas = despesas;
 	}
 
 	public Long getId() {
@@ -59,5 +66,13 @@ public class Categoria implements Serializable {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
+	}
+
+	public List<Despesas> getDespesas() {
+		return despesas;
+	}
+
+	public void setDespesas(List<Despesas> despesas) {
+		this.despesas = despesas;
 	}
 }

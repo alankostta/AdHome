@@ -2,72 +2,59 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link rel="stylesheet" href="/css/style.css">
-
 <head th:replace="~{fragmentos/head :: head('Produtos')}"></head>
-
 <body>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Lista de Produtos')}"></header>
-	<div class="container-sm mb-4">
-		<div class="col-12">
-			<span th:styleappend="${(param.erro == null || param.mensagem == null) ? 'display: none;' : ''}"
-				th:classappend="${(param.erro != null && param.erro) ? 'error-message' : 'success-message'}"
-				th:text="${param.mensagem != null ? param.mensagem : ''}">Aviso
-			</span>
-		</div>
-	</div>
-	<div class="mt-4">
-		<fieldset class="fieldset text-left mb-5">
-			<div class="row">
-				<div class="col-12">
-					<div>
-						<a class="btn btn-outline-success btn-sm" href="../produto"><i
-								class="bi bi-plus-circle-fill"></i> Novo Produto</a>
-					</div>
-					<br>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th class="table-active">Id.</th>
-								<th class="table-active">Nome.</th>
-								<th class="table-active">Marca.</th>
-								<th class="table-active">Categ.</th>
-								<th class="table-active">Vl.Entra.</th>
-								<th class="table-active">Vl.Said.</th>
-								<th class="table-active">Dt.Cad.</th>
-								<th class="table-active">Qtd.Esto.</th>
-								<th class="table-active"></th>
-								<th class="table-active"></th>
-								<th class="table-active"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="p : ${produtos}">
-								<td th:text="${p.id}"></td>
-								<td th:text="${p.nome}"></td>
-								<td th:text="${p.marca}"></td>
-								<td th:text="${p.categoria.nomeCategoria}"></td>
-								<td th:text="${p.valorEntrada}"></td>
-								<td th:text="${p.valorSaida}"></td>
-								<td th:text="${p.dataCadastro}"></td>
-								<td th:text="${p.estoqueQtd}"></td>
-								<td><a class="btn btn-outline-info btn-sm"
-										th:href="@{/produto/{p.id}(p.id=${p.id})}">Detalhes</a></td>
-								<td><a class="btn btn-outline-primary btn-sm"
-										th:href="@{/produto/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
-								<td><a class="btn btn-outline-danger btn-sm"
-										th:href="@{/produto/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
-							</tr>
-						</tbody>
-					</table>
+	<fieldset class="fieldset text-left mb-5">
+		<div class="row">
+			<div class="col-12">
+				<div>
+					<a class="btn btn-outline-success btn-sm" href="../produto"><i class="bi bi-plus-circle-fill"></i>
+						Novo Produto</a>
 				</div>
+				<br>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="table-active">Id.</th>
+							<th class="table-active">Nome.</th>
+							<th class="table-active">Marca.</th>
+							<th class="table-active">Categ.</th>
+							<th class="table-active">Vl.Entra.</th>
+							<th class="table-active">Vl.Said.</th>
+							<th class="table-active">Dt.Cad.</th>
+							<th class="table-active">Qtd.Esto.</th>
+							<th class="table-active"></th>
+							<th class="table-active"></th>
+							<th class="table-active"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="p : ${produtos}">
+							<td th:text="${p.id}"></td>
+							<td th:text="${p.nome}"></td>
+							<td th:text="${p.marca}"></td>
+							<td th:text="${p.categoria.nomeCategoria}"></td>
+							<td th:text="${p.valorEntrada}"></td>
+							<td th:text="${p.valorSaida}"></td>
+							<td th:text="${p.dataCadastro}"></td>
+							<td th:text="${p.estoqueQtd}"></td>
+							<td><a class="btn btn-outline-info btn-sm"
+									th:href="@{/produto/{p.id}(p.id=${p.id})}">Detalhes</a></td>
+							<td><a class="btn btn-outline-primary btn-sm"
+									th:href="@{/produto/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
+							<td><a class="btn btn-outline-danger btn-sm"
+									th:href="@{/produto/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-		</fieldset>
-	</div>
+		</div>
+	</fieldset>
 </body>
 <script th:type="@{text/javascript}">
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 </script>
-
 </html>

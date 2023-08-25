@@ -1,35 +1,35 @@
 <div th:fragment="dadosEntrega" class="row">
 	<div class="form-group col-md-3">
-        <label for="codigoEndereco">Código Endereço</label>
+        <label>Código Endereço</label>
         <input type="number" class="form-control" id="codigoEndereco"
         th:field="*{enderecoDto.id}" placeholder="Código Edereço">
     </div>
     <div class="form-group col-md-3">
-        <label for="uf">UF</label>
+        <label>UF</label>
         <input type="text" th:field="*{enderecoDto.uf}"  class="form-control" id="pedidoUf" placeholder="UF">
     </div>
     <div class="form-group col-md-6">
-        <label for="cidade">Cidade</label>
+        <label>Cidade</label>
         <input type="text" th:field="*{enderecoDto.localidade}" class="form-control" id="pedidoCidade" placeholder="Cidade">
     </div>
     <div class="form-group col-md-5">
-        <label for="cidade">Bairro</label>
+        <label>Bairro</label>
         <input type="text"  th:field="*{enderecoDto.bairro}" class="form-control" id="pedidoBairro" placeholder="Bairro">
     </div>
     <div class="form-group col-md-7">
-        <label for="logradouro">Logradouro</label>
+        <label>Logradouro</label>
         <input type="text" class="form-control" th:field="*{enderecoDto.logradouro}" id="pedidoLogradouro" placeholder="Logradouro">
     </div>
     <div class="form-group col-md-2">
-        <label for="numero">Número:</label>
+        <label>Número:</label>
         <input type="text" class="form-control" th:field="*{enderecoDto.numero}" id="pedidoNumero" placeholder="Número">
     </div>
     <div class="form-group col-md-3">
-        <label for="cep">Cep</label>
+        <label>Cep</label>
         <input type="text" class="form-control"  th:field="*{enderecoDto.cep}" id="pedidoCep" placeholder="Cep">
     </div>
       <div class="form-group col-md-3">
-        <label for="cep">Complemento</label>
+        <label>Complemento</label>
         <input type="text" class="form-control" th:field="*{enderecoDto.complemento}"  id="pedidoComplemento" placeholder="Complemento">
     </div>
 </div>

@@ -60,7 +60,8 @@ public class UserAdController {
 	}
 	@PostMapping("/usuario/cadastrar-user")
 	public ModelAndView saveUser(@Valid AduserDto aduserDto, BindingResult aduserDtoResult) {
-		ModelAndView mv = new ModelAndView("usuario/cadastrar-user");
+		
+		ModelAndView mv = new ModelAndView("redirect:usuario/cadastrar-user");
 
 		if (aduserDtoResult.hasErrors()) {
 			this.retornaErroUser("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
@@ -72,7 +73,7 @@ public class UserAdController {
 	   // user.setPassword(encodedPassword);
 		userDetailsServiceImpl.saveUser(user);
 
-		return new ModelAndView("redirect:usuario/listarUser");
+		return mv;
 	}
 
 	public ModelAndView saveMultipleUsers(int numberOfUsers) {

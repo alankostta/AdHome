@@ -19,10 +19,4 @@ public class HomeController {
 		var mv = new ModelAndView("/modal");
 		return mv;
 	}
-	
-	@GetMapping("/controleCaixa/contas-a-pagar-e-receber")
-	public ModelAndView exibirContasPagarReceber() {
-		var mv = new ModelAndView("/controleCaixa/contas-a-pagar-e-receber");
-		return mv;
-	}
 }

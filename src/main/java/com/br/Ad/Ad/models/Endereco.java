@@ -48,11 +48,11 @@ public class Endereco implements Serializable{
 	private EnderecoEnum enderecoEnum;
 	
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(mappedBy = "endereco")
 	private Set<Cliente> cliente;
 		
 	@JsonIgnore
-	@ManyToMany
+	@ManyToMany(mappedBy = "endereco")
 	private List<Fornecedor> fornecedor;
 	
 	@JsonIgnore

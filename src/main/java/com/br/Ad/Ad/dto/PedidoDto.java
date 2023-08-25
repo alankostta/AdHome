@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.br.Ad.Ad.models.AdUser;
 import com.br.Ad.Ad.models.BandeiraCartao;
 import com.br.Ad.Ad.models.ItemPedido;
 import com.br.Ad.Ad.models.Pedido;
@@ -20,6 +21,7 @@ public class PedidoDto {
 	private ItemPedidoDto itemPedidoDto;
 	private ClienteDto clienteDto;
 	private EnderecoDto enderecoDto;
+	private AdUser aduser;
 	private Double valorPedido;
 	private Double descontoPedido;
 	private String observacaoPedido;
@@ -31,15 +33,6 @@ public class PedidoDto {
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date dataCadastro;
-	
-	public PedidoDto(ItemPedidoDto itemPedidoDto, ClienteDto clienteDto, EnderecoDto enderecoDto, 
-			Double valorPedido, Double descontoPedido, String observacaoPedido) {
-		this.itemPedidoDto = itemPedidoDto;
-		this.clienteDto = clienteDto;
-		this.enderecoDto = enderecoDto;
-		this.clienteDto = clienteDto;
-		this.enderecoDto = enderecoDto;
-	}
 	
 	public BandeiraCartao getEnumCartao() {
 		return enumCartao;
@@ -118,6 +111,14 @@ public class PedidoDto {
 		this.enderecoDto = enderecoDto;
 	}
 
+	public AdUser getAduser() {
+		return aduser;
+	}
+
+	public void setAduser(AdUser aduser) {
+		this.aduser = aduser;
+	}
+
 	public Pedido toPedido() {
 		Pedido pedido = new Pedido();
 		pedido.setEnumStatus(this.enumStatus);
@@ -126,6 +127,7 @@ public class PedidoDto {
 		pedido.setDataCadastro(this.dataCadastro);
 		pedido.setValorPedido(this.valorPedido);
 		pedido.setObservacaoPedido(this.observacaoPedido);
+		pedido.setUser(this.aduser);
 		return pedido;
 	}
 	public Pedido toPedido(Pedido pedido) {
@@ -135,6 +137,7 @@ public class PedidoDto {
 		pedido.setDataCadastro(this.dataCadastro);
 		pedido.setObservacaoPedido(this.observacaoPedido);
 		pedido.setValorPedido(this.valorPedido);
+		pedido.setUser(this.aduser);
 		return pedido;
 	}
 	public void fromPedido(Pedido pedido) {
@@ -145,5 +148,6 @@ public class PedidoDto {
 		this.valorPedido = pedido.getValorPedido();
 		this.descontoPedido = pedido.getDescontoPedido();
 		this.observacaoPedido = pedido.getObservacaoPedido();
+		this.aduser = pedido.getUser();
 	}
 }

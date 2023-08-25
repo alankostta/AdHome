@@ -61,11 +61,13 @@ public class Fornecedor implements Serializable {
 	 * objeto
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy="fornecedor", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="fornecedor_id")
 	private List<Contato> contatos = new ArrayList<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy="fornecedor", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="fornecedor_id")
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Fornecedor() {

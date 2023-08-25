@@ -1,15 +1,15 @@
-<main th:fragment="main(pedidoDto, clienteDto, produtoDto, itemPedidoDto, aduserDto, enderecoDto, action)">
+<main th:fragment="main">
 	<div class="row-12">
 		<fieldset class="fieldset text-left mb-5">
 			<legend>Menu</legend>
 			<div class="row mt-3">
 				<div class="col">
-					<form class="formulario" th:action="${action}" method="POST">
+					<form class="formulario" th:object="${pedidoDto}" th:action="${action}" method="POST">
 						<div class="row">
 							<div class="col">
 								<label class="form-label">Status do Pedido</label>
 								<select class="form-select form-select" aria-label="Default select example"
-									th:field="*{pedidoDto.enumStatus}">
+									th:field="*{enumStatus}">
 									<option th:each="pedido : ${listaStatus}" th:value="${pedido}" th:text="${pedido}">
 									</option>
 								</select>
@@ -17,7 +17,7 @@
 							<div class="col">
 								<label class="form-label">Tipo de pagamento</label>
 								<select class="form-select form-select" aria-label="Default select example"
-									th:field="*{pedidoDto.enumPagamento}">
+									th:field="*{enumPagamento}">
 									<option th:each="pedido : ${listaPagamento}" th:value="${pedido}"
 										th:text="${pedido}"></option>
 								</select>
@@ -25,13 +25,13 @@
 							<div class="col">
 								<label class="form-label">Data de geração
 									do pedido</label>
-								<input type="date" class="form-control" th:field="*{pedidoDto.dataCadastro}" />
+								<input type="date" class="form-control" th:field="*{dataCadastro}" />
 
 							</div>
 							<div class="col">
 								<label class="form-label">Bandeira doCartão</label>
 								<select class="form-select form-select col-sm-3" aria-label="Default select example"
-									th:field="*{pedidoDto.enumCartao}">
+									th:field="*{enumCartao}">
 									<option th:each="pedido : ${listaCartao}" th:value="${pedido}" th:text="${pedido}">
 									</option>
 								</select>
@@ -52,9 +52,7 @@
 							<div class="col">
 								<label class="form-label">Cliente:</label>
 								<div class="input-group">
-
 									<div class="input-group-prepend">
-
 										<button class="btn btn-outline-primary btn" type="button" data-bs-toggle="modal"
 											data-bs-target="#pesquisarClienteModal">Pesquisar</button>
 									</div>
@@ -64,10 +62,10 @@
 							</div>
 							<div class="col">
 								<label class="form-label">Vendedor:</label>
-								<select class="form-select form-select" th:field="*{aduserDto.nome}"
+								<select class="form-select form-select" th:field="*{aduser.nome}"
 									aria-label="Default select example" id="selectUsuarios">
 									<option value="">Selecione um Vendedor</option>
-									<option th:each="user : ${listaAduserDto}" th:value="${user.id}"
+									<option th:each="user : ${listaAduser}" th:value="${user.id}"
 										th:text="${user.nome}"></option>
 								</select>
 							</div>
@@ -77,10 +75,9 @@
 							<div class="row">
 								<div class="col-3">
 									<label class="col-md-2 col-form-label">Valor/Desconto:</label>
-
 									<div class="input-group">
 										<span class="input-group-text" id="basic-addon1">R$</span>
-										<input id="porcentagem" th:field="*{pedidoDto.descontoPedido}" type="number"
+										<input id="porcentagem" th:field="*{descontoPedido}" type="number"
 											class="form-control form-control-sm" aria-describedby="basic-addon1">
 										<button type="button" class="btn btn-warning"
 											onClick="calcularDescontoPedido()">Calcular</button>

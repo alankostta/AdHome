@@ -57,11 +57,9 @@ public class Produto implements Serializable {
 	private LocalDateTime dataAltera;
 	
 	@ManyToOne
-	@JoinColumn(name="fornecedor_id")
 	private Fornecedor fornecedor;
 	
 	@ManyToOne
-	@JoinColumn(name="categoria_id")
 	private Categoria categoria;
 
 	public Produto() {

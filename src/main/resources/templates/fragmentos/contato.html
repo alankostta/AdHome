@@ -1,11 +1,4 @@
 <div th:fragment="contato-1">
-	
-
-
-
-
-
-
 	<div class="row" th:each="contato, stat : *{contato}">
 		<div class="col">
 			<select class="form-select" th:field="*{contato[__${stat.index}__].contatoEnum}">

@@ -1,43 +1,133 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="pt" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head th:replace="~{fragmentos/head :: head('Controle de Despesas')}"></head>
+
 <body>
-	<script src="js/scripts.js"></script>
+	<script src="/js/scripts.js"></script>
+	<script src="/js/util.js"></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastro de Despesas')}"></header>
 	<fieldset class="fieldset text-left mb-6">
-	<div class="text-center">
-	<div class="row">
-		<div class="col">
-			<label>Descrição do débito</label>
-			<input class="form-control" type="text"/>
+		<form action="/controleCaixa/salvarDespesas" th:object="${despesasDto}" method="POST">
+			<div class="text-center">
+				<div class="row">
+					<div class="col">
+						<label class="col-form-label">Descrição do débito</label>
+						<input class="form-control" type="text" th:field="*{descDebito}" />
+					</div>
+					<div class="col">
+						<br>
+						<div class="d-flex flex-column align-items-center">
+							<label class="form-check-label">Tem Parcela</label>
+							<input type="radio" class="form-check-input" id="simRadio" name="temParcelas" value="true" th:field="*{parcela}">
+						</div>
+					</div>
+					<div class="col">
+						<br>
+						<div class="d-flex flex-column align-items-center">
+							<label class="form-check-label">Não Tem Parcela</label>
+							<input type="radio" class="form-check-input" id="naoRadio" name="temParcelas" value="false" th:field="*{parcela}">
+						</div>
+					</div>
+					<div class="col">
+						<div class="d-flex flex-column align-items-center">
+							<label class="col-form-label">Numero de Parcelas</label>
+							<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-outline-primary dropdown-toggle"
+										data-bs-toggle="dropdown" id="btParce" aria-expanded="false" disabled>
+										Nº
+									</button>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item"><input class="form-control" type="number" th:field="*{numeroPercelas}" /></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="d-flex flex-column align-items-center">
+							<label class="col-form-label">Valor do débito</label>
+							<input id="valDebitoInput" class="form-control" type="text" th:field="*{valDebito}" />
+						</div>
+					</div>
+					<div class="col">
+						<div class="d-flex flex-column align-items-center">
+							<label class="col-form-label">Data de vencimento</label>
+							<input class="form-control" id="dat" type="date" th:field="*{dtVencimento}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label class="col-form-label">Categoria do débito</label>
+					<select class="form-select" aria-label="Default select example" th:field="*{categoria}">
+						<option value="">Selecione</option>
+						<option th:each="d : ${listaCategoria}" th:value="${d.id}" th:text="${d.nomeCategoria}">
+						</option>
+					</select>
+				</div>
+				<div class="col">
+					<label class="col-form-label">Data de cadastro</label>
+					<input class="form-control" id="data" type="date" th:field="*{dtCadastro}" />
+				</div>
+				<div class="col">
+					<label class="col-form-label">Forma de pagamanto</label>
+					<select class="form-select" aria-label="Default select example" th:field="*{enumPagamento}">
+						<option value="">Selecione</option>
+						<option th:each="d : ${listaPagamento}" th:value="${d}" th:text="${d}">One</option>
+
+					</select>
+				</div>
+			</div>
+			<div>
+
+				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+		</form>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">Código:</th>
+					<th scope="col">Descrição:</th>
+					<th scope="col">Valor:</th>
+					<th scope="col">Parcelamento:</th>
+					<th scope="col">Numero da Parcela:</th>
+					<th scope="col">Data Vencimento:</th>
+					<th scope="col">Categoria:</th>
+					<th scope="col">Data de cadastro:</th>
+					<th scope="col">Forma de pagamento:</th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<h2>Lista de Contas</h2>
+			<tbody class="table-group-divider">
+				<tr th:each="d : ${listaDespesas}">
+					<td scope="row" th:text="${d.id}"></td>
+					<td th:text="${d.descDebito}"></td>
+					<td th:text="${d.valDebito}"></td>
+					<td th:text="${d.parcela}"></td>
+					<td th:text="${d.numeroPercelas}"></td>
+					<td th:text="${d.dtVencimento}"></td>
+					<td th:text="${d.categoria.nomeCategoria}"></td>
+					<td th:text="${d.dtCadastro}"></td>
+					<td th:text="${d.enumPagamento}"></td>
+					<td><a class="btn btn-outline-primary btn-sm"
+							th:href="@{/controleCaixa/{d.id}/editar(d.id=${d.id})}">Editar</a></td>
+					<td><a class="btn btn-outline-danger btn-sm"
+							th:href="@{/controleCaixa/{d.id}/excluir(d.id=${d.id})}">Excluir</a></td>
+				</tr>
+			</tbody>
+		</table>
 		</div>
-		<div class="col">
-			<label>Valor do débito</label>
-			<input class="form-control" type="text"/>
 		</div>
-		<div class="col">
-			<label>Data de vencimento</label>
-			<input class="form-control" type="text"/>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			<label>Categoria do débito</label>
-			<input class="form-control" type="text"/>
-		</div>
-		<div class="col">
-			<label>Data de cadastro</label>
-			<input class="form-control" type="text"/>
-		</div>
-		<div class="col">
-			<label>Tipo de pagamanto</label>
-			<input class="form-control" type="text"/>
-		</div>
-	</div>
-	</div>
 	</fieldset>
-	<script src="#"></script>
+	<!-- Adicione essas linhas no final do seu arquivo HTML, antes de </body> -->
+
+	
 </body>
+
 </html>
