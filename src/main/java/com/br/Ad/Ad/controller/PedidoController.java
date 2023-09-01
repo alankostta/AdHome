@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.br.Ad.Ad.configs.UserDetailsServiceImpl;
 import com.br.Ad.Ad.dto.AduserDto;
+import com.br.Ad.Ad.dto.ItemPedidoDto;
 import com.br.Ad.Ad.dto.PedidoDto;
 import com.br.Ad.Ad.models.AdUser;
 import com.br.Ad.Ad.models.BandeiraCartao;
@@ -66,6 +68,8 @@ public class PedidoController {
 	
 	@Autowired
 	private FornecedorService fornecedorService;
+	
+	private List<ItemPedidoDto> itens = new ArrayList<ItemPedidoDto>();
 
 	@GetMapping("/pedido")
 	public ModelAndView exibirPedido() {
@@ -79,8 +83,10 @@ public class PedidoController {
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		mv.addObject("listaCartao", BandeiraCartao.values());
 		List<AdUser> user = userDetailsServiceImpl.findAllUser();
+		List<Produto> produtos = produtoService.findAll();
 		mv.addObject("pedidoDto",pedidoDto);
 		mv.addObject("listaAduser",aduserDto.listUser(user));
+		mv.addObject("listaProdutos",produtos);
 		return mv;
 	}
 	// Criando os metodos getPost onde irá receber as requisições
@@ -155,13 +161,38 @@ public class PedidoController {
 		List<Produto> produto = produtoService.findBydescricao(descricao);
 		return new ResponseEntity<List<Produto>>(produto, HttpStatus.OK);
 	}
-	@GetMapping(value = "addListaIten")
+	//======================Add produto na lista de intens===================================================
+	@GetMapping("/addListaIten/{id}")
 	@ResponseBody
-	public String addListaIten(@RequestParam(name = "id") Long id) {
-		System.out.println(id);
-		return null;
+	public ModelAndView addListaIten(@PathVariable(name = "id") Long id) {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		Optional<Produto> produtos = produtoService.findById(id);
+		Produto produto = produtos.get();
+		int controle = 0;
+		for(ItemPedidoDto it: itens) {
+			if(it.getProduto().getId().equals(produto.getId())) {
+				it.setQuantidade(it.getQuantidade() + 1);
+				controle = 1;
+				break;
+			}
+		}
+		if(controle == 0) {
+			ItemPedidoDto item = new ItemPedidoDto();
+			item.setProduto(produto);
+			item.setPrecoIten(produto.getValorSaida());
+			item.setQuantidade(item.getQuantidade() + 1);
+			item.setSubTotal(item.getQuantidade() * item.getPrecoIten());
+			item.setValorTotal(item.getValorTotal() * item.getPrecoIten());
+			itens.add(item);
+			
+			mv.addObject("listaItens", itens);
+		}
+		
+		return mv;
 	}
-
+	//=======================================================================================================
 	@GetMapping(value = "buscarProdutoId")
 	@ResponseBody
 	public ResponseEntity<List<Produto>> buscarProdutoPorId(@RequestParam(name = "id") Long id) {

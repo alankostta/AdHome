@@ -46,38 +46,14 @@ public class ProdutoDto {
 	@DecimalMax(value = "1000000", inclusive = false)
 	private Integer estoqueQtd;
 	
-	@NotNull
-	@DecimalMin(value = "0.0", inclusive = false)
-	@DecimalMax(value = "1000000", inclusive = false)
-	private Double preco;
-	
 	private Fornecedor fornecedor;
+	
 	private Categoria categoria;
 	
 	public ProdutoDto() {
 		super();
 	}
 	
-	public ProdutoDto(BigInteger id, @NotBlank @Size(max = 255) String descricao,
-			@NotBlank @Size(max = 255) String marca, String nome,
-			@NotNull @DecimalMin(value = "0.0", inclusive = false) @DecimalMax(value = "1000000", inclusive = false) Double valorEntrada,
-			@DecimalMin(value = "0.0", inclusive = false) @DecimalMax(value = "1000000", inclusive = false) Double valorSaida,
-			@NotNull @DecimalMin(value = "0", inclusive = false) @DecimalMax(value = "1000000", inclusive = false) Integer estoqueQtd,
-			@NotNull @DecimalMin(value = "0.0", inclusive = false) @DecimalMax(value = "1000000", inclusive = false) 
-			Double preco, Fornecedor fornecedor, Categoria categoria) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.descricao = descricao;
-		this.marca = marca;
-		this.valorEntrada = valorEntrada;
-		this.valorSaida = valorSaida;
-		this.estoqueQtd = estoqueQtd;
-		this.preco = preco;
-		this.categoria = categoria;
-		this.fornecedor = fornecedor;
-	}
-
 	public BigInteger getId() {
 		return id;
 	}
@@ -120,13 +96,6 @@ public class ProdutoDto {
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-	public Double getPreco() {
-		return preco;
-	}
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-	
 	public String getNome() {
 		return nome;
 	}
@@ -162,7 +131,6 @@ public class ProdutoDto {
 		produto.setValorEntrada(valorEntrada);
 		produto.setValorSaida(valorSaida);
 		produto.setEstoqueQtd(estoqueQtd);
-		produto.setPreco(preco);
 		produto.setMarca(marca);
 		produto.setCategoria(categoria);
 		produto.setFornecedor(fornecedor);
@@ -175,7 +143,6 @@ public class ProdutoDto {
 		produto.setValorEntrada(valorEntrada);
 		produto.setValorSaida(valorSaida);
 		produto.setEstoqueQtd(estoqueQtd);
-		produto.setPreco(preco);
 		produto.setMarca(marca);
 		produto.setCategoria(categoria);
 		produto.setFornecedor(fornecedor);
@@ -188,7 +155,6 @@ public class ProdutoDto {
 		this.valorEntrada = produto.getValorEntrada();
 		this.valorSaida = produto.getValorSaida();
 		this.estoqueQtd = produto.getEstoqueQtd();
-		this.preco = produto.getPreco();
 		this.marca = produto.getMarca();
 		this.categoria = produto.getCategoria();
 		this.fornecedor = produto.getFornecedor();

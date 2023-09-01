@@ -10,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -42,9 +41,6 @@ public class Produto implements Serializable {
 	@Column(name = "Qtd_estoque", nullable = false)
 	private Integer estoqueQtd = 0;
 	
-	@Column(name = "preco", nullable = false)
-	private Double preco;
-	
 	@Column(name = "data_cadastro", nullable = false, length = 30)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataCadastro;
@@ -66,8 +62,8 @@ public class Produto implements Serializable {
 		super();
 	}
 
-	public Produto(Long id, String nome, String descricao, String marca, Double valorEntrada, Double valorSaida, Integer estoqueQtd,
-			Double preco, LocalDateTime dataCadastro, Integer anoRef, LocalDateTime dataAltera, Fornecedor fornecedor, Categoria categoria) {
+	public Produto(Long id, String nome, String descricao, String marca, Double valorEntrada, Double valorSaida, Integer estoqueQtd
+			, LocalDateTime dataCadastro, Integer anoRef, LocalDateTime dataAltera, Fornecedor fornecedor, Categoria categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -76,7 +72,6 @@ public class Produto implements Serializable {
 		this.valorEntrada = valorEntrada;
 		this.valorSaida = valorSaida;
 		this.estoqueQtd = estoqueQtd;
-		this.preco = preco;
 		this.dataCadastro = dataCadastro;
 		this.anoRef = anoRef;
 		this.dataAltera = dataAltera;
@@ -138,14 +133,6 @@ public class Produto implements Serializable {
 
 	public void setEstoqueQtd(Integer estoqueQtd) {
 		this.estoqueQtd = estoqueQtd;
-	}
-
-	public Double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
 	}
 
 	public LocalDateTime getDataCadastro() {

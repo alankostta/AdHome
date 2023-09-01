@@ -1,15 +1,12 @@
 package com.br.Ad.Ad.models;
 
 import java.io.Serializable;
-import java.util.List;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 
@@ -18,28 +15,42 @@ import jakarta.persistence.Table;
 public class ItemPedido implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
     @Column(name="qtd_itens")
     private Integer quantidade;
+    
     @Column(name="preco_iten")
     private Double precoIten;
+    
+    @Column(name="sub_total")
+    private Double subTotal;
+    
+    @Column(name="valor_total")
+    private Double valorTotal;
        
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="produto_id")
-    private List<Produto> produto;
+    @ManyToOne
+    private Produto produto;
+    
+    @ManyToOne
+    private Pedido pedido;
 
 	public ItemPedido() {
 		super();
 	}
 
-	public ItemPedido(Long id, Integer quantidade, Double precoIten, List<Produto> produto) {
+	public ItemPedido(Long id, Integer quantidade, Double precoIten, Double subTotal
+			, Double valorTotal, Produto produto, Pedido pedido) {
 		super();
 		this.id = id;
 		this.quantidade = quantidade;
+		this.subTotal = subTotal;
 		this.precoIten = precoIten;
 		this.produto = produto;
+		this.valorTotal = valorTotal;
 	}
 
 	public Long getId() {
@@ -51,11 +62,23 @@ public class ItemPedido implements Serializable{
 	}
 
 	public Integer getQuantidade() {
+		if(quantidade == null) {
+			quantidade = 0;
+			return quantidade;
+		}
 		return quantidade;
 	}
 
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public Double getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(Double subTotal) {
+		this.subTotal = subTotal;
 	}
 
 	public Double getPrecoIten() {
@@ -66,11 +89,27 @@ public class ItemPedido implements Serializable{
 		this.precoIten = precoIten;
 	}
 
-	public List<Produto> getProduto() {
+	public Produto getProduto() {
 		return produto;
 	}
 
-	public void setProduto(List<Produto> produto) {
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
 }

@@ -43,7 +43,6 @@ function isNumeric(str) {
 function pesquisarCliente() {
 
 	let nomeCliente = $('#nomeCliente').val();
-
 	if (nomeCliente != null && nomeCliente.trim() != '') {
 		$.ajax({
 			method: "GET",
@@ -102,6 +101,7 @@ function pesquisarCliente() {
 }
 
 function pesquisarProduto() {
+	
 	var descricao = $('#descricaoProduto').val();
 	if (descricao != null && descricao.trim() != '') {
 		$.ajax({
@@ -123,10 +123,9 @@ function pesquisarProduto() {
 			alert("Erro ao buscar o produto1!!!: " + xhr.responseText, status, errorThrown);
 		});
 	}else{
-		
 		$.ajax({
 			method: "GET",
-			url: "/pedido/buscarProduto",
+			url: "/pedido/listarProdutos",
 			data: "descricao=" + descricao,
 			success: function(response) {
 				$('#tabDescricaoProduto > tbody > tr').remove();
@@ -144,7 +143,40 @@ function pesquisarProduto() {
 		});
 	}
 }
+function pesquiProduto() {
+	
+	var descricao = $('#descricaoProduto').val();
+	if (descricao != null && descricao.trim() != '') {
+		$.ajax({
+			method: "GET",
+			url: "/pedido/buscarProduto",
+			data: "descricao=" + descricao,
+			success: function(response) {
+				$('#tabDescricaoProduto > tbody > tr').remove();
+				for (var i = 0; i < response.length; i++) {
+					var productId = response[i].id;
+					var descricaoProduto = response[i].descricao;
 
+					var buttonHtml = '<button type="button" class="btn btn-primary">Selecionar</button>';
+					var $button = $(buttonHtml);
+					alert("entrou", response[i].id)
+					$button.click(function() {
+						carregarProduto(productId);
+						addListaItensProduto(productId);
+					});
+
+					var rowHtml = '<tr><td>' + productId + '</td><td>' + descricaoProduto + '</td><td></td></tr>';
+					var $row = $(rowHtml);
+					$row.find('td:last').append($button);
+
+					$('#tabDescricaoProduto > tbody').append($row);
+				}
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao buscar o produto1!!!: " + xhr.responseText, status, errorThrown);
+		});
+	}
+}
 function carregarFornecedor(id) {
 	$.ajax({
 		method: "GET",
@@ -164,83 +196,56 @@ function carregarFornecedor(id) {
 	});
 }
 function carregarCliente(id) {
-    $.ajax({
-        method: "GET",
-        url: "/pedido/buscarPorIdCliente",
-        data: "id=" + id,
-        success: function(response) {
-			console.log("Success - Response:",response)
-            var id = response.id;
-            var nome = response.nome;
-            var bairro = response.bairro;
-            var uf = response.uf;
-            var localidade = response.localidade;
-            var complemento = response.complemento;
-            var numero = response.numero;
-            var cep = response.cep;
-            var logradouro = response.logradouro;
-            var enderecoId = response.endereco;
-
-
-
-            $("#idClie").val(id);
-            $("#nomeClie").val(nome);
-            $("#pedidoUf").val(uf);
-            $("#pedidoCidade").val(localidade);
-            $("#pedidoBairro").val(bairro);
-            $("#pedidoLogradouro").val(logradouro);
-            $("#pedidoNumero").val(numero);
-            $("#pedidoCep").val(cep);
-            $("#pedidoComplemento").val(complemento);
-            $("#codigoEndereco").val(enderecoId);
-
-            // Fechar o modal
-            $("#pesquisarClienteModal").modal('hide');
-        },
-        error: function(xhr, status, errorThrown) {
-            alert("Erro ao buscar fornecedor: " + xhr.responseText, status, errorThrown);
-        }
-    });
-}
-
-/*
-function carregarProduto(produtoId) {
-
 	$.ajax({
 		method: "GET",
-		url: "pedido/buscarProdutoId/",
-		data: "produtoId=" + produtoId,
+		url: "/pedido/buscarPorIdCliente",
+		data: "id=" + id,
 		success: function(response) {
+			console.log("Success - Response:", response)
+			var id = response.id;
+			var nome = response.nome;
+			var bairro = response.bairro;
+			var uf = response.uf;
+			var localidade = response.localidade;
+			var complemento = response.complemento;
+			var numero = response.numero;
+			var cep = response.cep;
+			var logradouro = response.logradouro;
+			var enderecoId = response.endereco;
 
-			for (var i = 0; i < response.length; i++) {
 
-				$('#listaPedido > tbody').append(
-					'<tr><td>' + response[i].produtoId + '</td><td>' + response[i].descricao + '</td><td>' + response[i].marca +
-					'</td><td>' + response[i].preco +
-					'</td><td><input type="number" min="0" class="form-control" id="qtd"/></td><td><input type="number" id="subTotal" min="0" class="form-control" style="background-color: #DCDCDC" readonly="readonly"/></td><td><button class="btn btn-danger remove-btn">Remover</button></td></tr>'
-				);
 
-				$(document).on('click', '.remove-btn', function() {
-					$(this).closest('tr').remove();
-					calcularTotal();
-				});
+			$("#idClie").val(id);
+			$("#nomeClie").val(nome);
+			$("#pedidoUf").val(uf);
+			$("#pedidoCidade").val(localidade);
+			$("#pedidoBairro").val(bairro);
+			$("#pedidoLogradouro").val(logradouro);
+			$("#pedidoNumero").val(numero);
+			$("#pedidoCep").val(cep);
+			$("#pedidoComplemento").val(complemento);
+			$("#codigoEndereco").val(enderecoId);
 
-			}
-
-			$(document).on('change', '#qtd', function() {
-				var qtd = $(this).val();
-				var preco = $(this).closest('tr').find('td:nth-child(4)').text();
-				var subTotal = qtd * preco;
-				$(this).closest('tr').find('#subTotal').val(subTotal);
-				calcularTotal();
-			});
-			
-			$("#pesquisarProdutoModal").modal('hide');
-
+			// Fechar o modal
+			$("#pesquisarClienteModal").modal('hide');
+		},
+		error: function(xhr, status, errorThrown) {
+			alert("Erro ao buscar fornecedor: " + xhr.responseText, status, errorThrown);
 		}
-	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText); });
+	});
 }
-*/
+
+function addListaItensProduto(id) {
+	alert("entrou", id)
+	$.ajax({
+		method: "GET",
+		url: "/pedido/addListaIten",
+		data: "id=" + id,
+		success: function(response) {
+			console.log(response)
+		}
+	}).fail(function(xhr, status, errorThrow) { alert("Erro ao buscar fornecedor: " + xhr.responseText, status, errorThrow); });
+}
 function buscarCep() {
 	var cep = $('#cep').val();
 	if (cep != null && cep.trim() != '') {

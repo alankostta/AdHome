@@ -1,18 +1,63 @@
 package com.br.Ad.Ad.dto;
 
-import java.util.List;
-
 import com.br.Ad.Ad.models.ItemPedido;
+import com.br.Ad.Ad.models.Pedido;
 import com.br.Ad.Ad.models.Produto;
 
 public class ItemPedidoDto {
 	
 	private Integer quantidade;
-	private List<Produto> produto;
-	private Double subTotal;	
+	private Double precoIten;
+	private Double subTotal;
+	private Double valorTotal;
+	private Produto produto;
+	private Pedido pedido;
+		
 
 	public Integer getQuantidade() {
+		if(quantidade == null) {
+			quantidade = 0;
+			return quantidade;
+		}
 		return quantidade;
+	}
+	
+	public Double getPrecoIten() {
+		return precoIten;
+	}
+
+	public void setPrecoIten(Double precoIten) {
+		this.precoIten = precoIten;
+	}
+
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	public Double getValorTotal() {
+		if(valorTotal == null) {
+			valorTotal = 0.0;
+			return valorTotal;
+		}
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+	public Produto getProduto() {
+		return produto;
+	}
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 	
 	public Double getSubTotal() {
@@ -23,28 +68,28 @@ public class ItemPedidoDto {
 		this.subTotal = subTotal;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-	public List<Produto> getProduto() {
-		return produto;
-	}
-	public void setProduto(List<Produto> produto) {
-		this.produto = produto;
-	}
 	public ItemPedido toItens() {
 		ItemPedido itens = new ItemPedido();
-		itens.setQuantidade(quantidade);
-		itens.setProduto(produto);
+		itens.setQuantidade(this.quantidade);
+		itens.setSubTotal(this.subTotal);
+		itens.setProduto(this.produto);
+		itens.setPrecoIten(this.precoIten);
+		itens.setPedido(this.pedido);
 		return itens;
 	}
 	public ItemPedido toItens(ItemPedido itens) {
-		itens.setQuantidade(quantidade);
-		itens.setProduto(produto);
+		itens.setQuantidade(this.quantidade);
+		itens.setSubTotal(this.subTotal);
+		itens.setProduto(this.produto);
+		itens.setPrecoIten(this.precoIten);
+		itens.setPedido(this.pedido);
 		return itens;
 	}
 	public void fromItemPedido(ItemPedido itens) {
 		this.quantidade = itens.getQuantidade();
+		this.subTotal = itens.getSubTotal();
 		this.produto = itens.getProduto();
+		this.precoIten = itens.getPrecoIten();
+		this.pedido = itens.getPedido();
 	}
 }

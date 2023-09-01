@@ -13,19 +13,17 @@
 			</tr>
 		</thead>
 		<tbody id="tbody">
-<!--			<tr th:each="item : ${pedidoDto.itens}">-->
-<!--				<td><input type="text" th:field="*{itens[__${itemStat.index}__].produto.id}" /></td>-->
-<!--				<td><input type="text" th:field="*{itens[__${itemStat.index}__].produto.descricao}" /></td>-->
+<!--			<tr th:each="item : ${listaItens}">-->
+<!--				<td th:text="${item.id}"></td>-->
+<!--				<td th:text="${item.descricao}"></td>-->
 <!--			</tr>-->
 		</tbody>
 		<tfoot>
-			<tr>
-				<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>
-				<th socpe="col">
-					<input id="total" name="monto" th:field="*{valorPedido}" class="form-control"
-						readonly="readonly" style="background-color: #DCDCDC">
-				</th>
-			</tr>
+<!--			<tr>-->
+<!--				<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>-->
+<!--				<th th:text="*{item.valorPedido}" socpe="col">-->
+<!--				<th th:text="*{item.valorPedido}" style="background-color: #DCDCDC"></th>-->
+<!--			</tr>-->
 		</tfoot>
 	</table>
 </div>
