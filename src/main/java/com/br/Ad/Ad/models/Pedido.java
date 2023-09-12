@@ -2,9 +2,11 @@ package com.br.Ad.Ad.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -32,6 +34,7 @@ public class Pedido implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "data_altera", nullable = false)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataAlteraPedido;
 	
 	@Column(name = "ano_ref",nullable = false)
@@ -61,7 +64,7 @@ public class Pedido implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinColumn(name = "pedido_id")
-    private Set<ItemPedido> itens =  new HashSet<>();
+    private List<ItemPedido> itens =  new ArrayList<>();
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval =  true)
 	@JoinColumn(name = "endereco_id", unique = true)
@@ -80,7 +83,7 @@ public class Pedido implements Serializable {
 
 	public Pedido(Long id, LocalDateTime dataAlteraPedido, Integer anoRef, Double valorPedido, Double descontoPedido,
 			String observacaoPedido, Date dataCadastro, PedidoEnumStatus enumStatus,
-			PedidoEnumTipoPagamento enumPagamento, BandeiraCartao enumCartao, Set<ItemPedido> itens, Endereco endereco,
+			PedidoEnumTipoPagamento enumPagamento, BandeiraCartao enumCartao, List<ItemPedido> itens, Endereco endereco,
 			AdUser user, Cliente cliente) {
 		super();
 		this.id = id;
@@ -179,11 +182,11 @@ public class Pedido implements Serializable {
 		this.enumCartao = enumCartao;
 	}
 
-	public Set<ItemPedido> getItens() {
+	public List<ItemPedido> getItens() {
 		return itens;
 	}
 
-	public void setItens(Set<ItemPedido> itens) {
+	public void setItens(List<ItemPedido> itens) {
 		this.itens = itens;
 	}
 
@@ -209,6 +212,5 @@ public class Pedido implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-	
+	}	
 }

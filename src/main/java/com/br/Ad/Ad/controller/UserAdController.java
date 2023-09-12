@@ -40,7 +40,8 @@ public class UserAdController {
 	@GetMapping("/usuario/cadastrar-user")
 	public ModelAndView exibirCadastrarUser() {
 		AduserDto aduserDto = new AduserDto();
-		var mv = new ModelAndView("usuario/cadastrar-user");
+		var mv = new ModelAndView("/usuario/cadastrar-user");
+		mv.addObject("roles", RoleName.values());
 		mv.addObject(aduserDto);
 		return mv;
 	}
@@ -61,7 +62,7 @@ public class UserAdController {
 	@PostMapping("/usuario/cadastrar-user")
 	public ModelAndView saveUser(@Valid AduserDto aduserDto, BindingResult aduserDtoResult) {
 		
-		ModelAndView mv = new ModelAndView("redirect:usuario/cadastrar-user");
+		ModelAndView mv = new ModelAndView("redirect:/usuario/cadastrar-user");
 
 		if (aduserDtoResult.hasErrors()) {
 			this.retornaErroUser("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
@@ -98,7 +99,7 @@ public class UserAdController {
 	}
 
 	private ModelAndView retornaErroUser(String msg) {
-		ModelAndView mv = new ModelAndView("redirect:usuario/cadastrar-user");
+		ModelAndView mv = new ModelAndView("redirect:/usuario/cadastrar-user");
 		mv.addObject("mensagem", msg);
 		mv.addObject("erro", true);
 		return mv;

@@ -28,10 +28,7 @@ public class ItemPedido implements Serializable{
     
     @Column(name="sub_total")
     private Double subTotal;
-    
-    @Column(name="valor_total")
-    private Double valorTotal;
-       
+        
     @ManyToOne
     private Produto produto;
     
@@ -43,14 +40,13 @@ public class ItemPedido implements Serializable{
 	}
 
 	public ItemPedido(Long id, Integer quantidade, Double precoIten, Double subTotal
-			, Double valorTotal, Produto produto, Pedido pedido) {
+			, Produto produto, Pedido pedido) {
 		super();
 		this.id = id;
 		this.quantidade = quantidade;
 		this.subTotal = subTotal;
 		this.precoIten = precoIten;
 		this.produto = produto;
-		this.valorTotal = valorTotal;
 	}
 
 	public Long getId() {
@@ -99,14 +95,6 @@ public class ItemPedido implements Serializable{
 
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
-	}
-
-	public Double getValorTotal() {
-		return valorTotal;
-	}
-
-	public void setValorTotal(Double valorTotal) {
-		this.valorTotal = valorTotal;
 	}
 
 	public void setProduto(Produto produto) {

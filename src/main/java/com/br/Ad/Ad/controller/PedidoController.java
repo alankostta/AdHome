@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.br.Ad.Ad.configs.UserDetailsServiceImpl;
-import com.br.Ad.Ad.dto.AduserDto;
 import com.br.Ad.Ad.dto.ItemPedidoDto;
 import com.br.Ad.Ad.dto.PedidoDto;
-import com.br.Ad.Ad.models.AdUser;
 import com.br.Ad.Ad.models.BandeiraCartao;
 import com.br.Ad.Ad.models.Cliente;
 import com.br.Ad.Ad.models.Fornecedor;
@@ -33,7 +31,6 @@ import com.br.Ad.Ad.models.PedidoEnumTipoPagamento;
 import com.br.Ad.Ad.models.Produto;
 import com.br.Ad.Ad.services.ClienteService;
 import com.br.Ad.Ad.services.FornecedorService;
-import com.br.Ad.Ad.services.ItemPedidoService;
 import com.br.Ad.Ad.services.PedidoService;
 import com.br.Ad.Ad.services.ProdutoService;
 
@@ -50,53 +47,64 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/pedido")
 public class PedidoController {
-	
+
 	@Autowired
 	private PedidoService pedidoService;
-	
+
 	@Autowired
 	private ProdutoService produtoService;
-	
+
 	@Autowired
 	private ClienteService clienteService;
-	
+
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
-	
-	@Autowired
-	private ItemPedidoService itemPedidoService;
-	
+
 	@Autowired
 	private FornecedorService fornecedorService;
-	
+
 	private List<ItemPedidoDto> itens = new ArrayList<ItemPedidoDto>();
+	private PedidoDto pedidoDto = new PedidoDto();
 
 	@GetMapping("/pedido")
 	public ModelAndView exibirPedido() {
-		
-		var mv = new ModelAndView("pedido/pedido");
-		
-		PedidoDto pedidoDto = new PedidoDto();
-		AduserDto aduserDto = new AduserDto();
-		
+
+		ModelAndView mv = new ModelAndView("/pedido/pedido");
+		calcularTotal();
 		mv.addObject("listaStatus", PedidoEnumStatus.values());
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		mv.addObject("listaCartao", BandeiraCartao.values());
-		List<AdUser> user = userDetailsServiceImpl.findAllUser();
-		List<Produto> produtos = produtoService.findAll();
-		mv.addObject("pedidoDto",pedidoDto);
-		mv.addObject("listaAduser",aduserDto.listUser(user));
-		mv.addObject("listaProdutos",produtos);
+		mv.addObject("pedidoDto", pedidoDto);
+		mv.addObject("listaItens", itens);
+		mv.addObject("users", userDetailsServiceImpl.findAllUser());
+		mv.addObject("produtos", produtoService.findAll());
+		
 		return mv;
 	}
-	// Criando os metodos getPost onde irá receber as requisições
-	// que serão persistidas no banco
+	@GetMapping("/cancelar")
+	public ModelAndView cancelarPedido() {
+
+		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
+		this.pedidoDto.setValorPedido(0.0);
+		pedidoDto = new PedidoDto();
+		itens.clear();
+		mv.addObject("listaStatus", PedidoEnumStatus.values());
+		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
+		mv.addObject("listaCartao", BandeiraCartao.values());
+		mv.addObject("pedidoDto", pedidoDto);
+		mv.addObject("listaItens", itens);
+		mv.addObject("users", userDetailsServiceImpl.findAllUser());
+		mv.addObject("produtos", produtoService.findAll());
+	
+		return mv;
+	}
+
 	@PostMapping("")
 	public ModelAndView savePedido(@Valid PedidoDto pedidoDto, BindingResult resultPedido) {
 
 		ModelAndView mv = new ModelAndView("pedido/pedido");
 
-		if ( resultPedido.hasErrors() ) {
+		if (resultPedido.hasErrors()) {
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
@@ -110,6 +118,7 @@ public class PedidoController {
 			return new ModelAndView("redirect:/pedido/listarPed");
 		}
 	}
+
 	@GetMapping("/listarPed")
 	public ModelAndView findAllPedidos() {
 		var mv = new ModelAndView("pedido/listarPed");
@@ -117,11 +126,13 @@ public class PedidoController {
 		mv.addObject("listaPedidos", pedidos);
 		return mv;
 	}
+
 	@GetMapping(value = "/listarProdutos")
 	public ResponseEntity<List<Produto>> findTodosProdutos() {
 		List<Produto> produtos = produtoService.findAll();
 		return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
 	}
+
 	@GetMapping(value = "/listarFornecedores")
 	public ResponseEntity<List<Fornecedor>> findTodosFornecedores() {
 		List<Fornecedor> fornecedores = fornecedorService.findAll();
@@ -134,6 +145,7 @@ public class PedidoController {
 		List<Cliente> cliente = clienteService.findByNameContaining(name);
 		return new ResponseEntity<List<Cliente>>(cliente, HttpStatus.OK);
 	}
+
 	@GetMapping(value = "buscarTodosClientes")
 	public ResponseEntity<List<Cliente>> buscarTodosclientes() {
 		List<Cliente> cliente = clienteService.findAll();
@@ -143,16 +155,16 @@ public class PedidoController {
 	@GetMapping(value = "buscarPorIdCliente")
 	@ResponseBody
 	public ResponseEntity<Cliente> buscarPorIdCliente(@RequestParam(name = "id") Long id) {
-	    Optional<Cliente> clienteOptional = clienteService.findById(id);
-	    
-	    if (clienteOptional.isPresent()) {
-	        Cliente cliente = clienteOptional.get();
-	        
-	        return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
-	    } else {
-	        // Retorna uma lista vazia se o Optional estiver vazio
-	        return new ResponseEntity<Cliente>(new Cliente(), HttpStatus.NOT_FOUND);
-	    }
+		Optional<Cliente> clienteOptional = clienteService.findClienteEndereco(id);
+
+		if (clienteOptional.isPresent()) {
+			Cliente cliente = clienteOptional.get();
+
+			return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
+		} else {
+			// Retorna uma lista vazia se o Optional estiver vazio
+			return new ResponseEntity<Cliente>(new Cliente(), HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping(value = "buscarProduto")
@@ -161,24 +173,25 @@ public class PedidoController {
 		List<Produto> produto = produtoService.findBydescricao(descricao);
 		return new ResponseEntity<List<Produto>>(produto, HttpStatus.OK);
 	}
-	//======================Add produto na lista de intens===================================================
+
+	// ======================Add produto na lista de intens===================================================
 	@GetMapping("/addListaIten/{id}")
-	@ResponseBody
 	public ModelAndView addListaIten(@PathVariable(name = "id") Long id) {
-		
-		ModelAndView mv = new ModelAndView();
-		
+
+		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
+
 		Optional<Produto> produtos = produtoService.findById(id);
 		Produto produto = produtos.get();
+		
 		int controle = 0;
-		for(ItemPedidoDto it: itens) {
-			if(it.getProduto().getId().equals(produto.getId())) {
+		for (ItemPedidoDto it : itens) {
+			if (it.getProduto().getId().equals(produto.getId())) {
 				it.setQuantidade(it.getQuantidade() + 1);
 				controle = 1;
 				break;
 			}
 		}
-		if(controle == 0) {
+		if (controle == 0) {
 			ItemPedidoDto item = new ItemPedidoDto();
 			item.setProduto(produto);
 			item.setPrecoIten(produto.getValorSaida());
@@ -186,13 +199,49 @@ public class PedidoController {
 			item.setSubTotal(item.getQuantidade() * item.getPrecoIten());
 			item.setValorTotal(item.getValorTotal() * item.getPrecoIten());
 			itens.add(item);
-			
+
 			mv.addObject("listaItens", itens);
 		}
-		
+
 		return mv;
 	}
-	//=======================================================================================================
+	//=========================== Add incrementar quantidade de itens da lista==================================
+	@GetMapping("/alterarQuantidadeItens/{id}/{acao}")
+	public ModelAndView alterarQuantidadeItens(@PathVariable Long id, @PathVariable Integer acao) {
+		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
+		for (ItemPedidoDto it : itens) {
+			if (it.getProduto().getId().equals(id)) {
+				if (acao.equals(1)) {
+					it.setQuantidade(it.getQuantidade() + 1);
+					it.setSubTotal(it.getQuantidade() * it.getPrecoIten());
+				} else if (acao == 0) {
+					it.setQuantidade(it.getQuantidade() - 1);
+					if (it.getQuantidade() <= 1) {
+						it.setQuantidade(1);
+					}
+					it.setSubTotal(it.getQuantidade() * it.getPrecoIten());
+				}
+				break;
+			}
+		}
+		mv.addObject("listaItens", itens);
+		return mv;
+	}
+	//====================================Remover item da lista======================
+	@GetMapping("/removerItem/{id}")
+	public ModelAndView removerItem(@PathVariable Long id) {
+		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
+		for (ItemPedidoDto item : itens) {
+			if (item.getProduto().getId().equals(id)) {
+				itens.remove(item);
+				break;
+			}
+		}
+		mv.addObject("listaItens", itens);
+		return mv;
+	}
+	
+	// =======================================================================================================
 	@GetMapping(value = "buscarProdutoId")
 	@ResponseBody
 	public ResponseEntity<List<Produto>> buscarProdutoPorId(@RequestParam(name = "id") Long id) {
@@ -211,5 +260,12 @@ public class PedidoController {
 		mv.addObject("mensagem", msg);
 		mv.addObject("erro", true);
 		return mv;
+	}
+
+	private void calcularTotal() {
+		this.pedidoDto.setValorPedido(0.0);
+		for(ItemPedidoDto i: itens) {
+			pedidoDto.setValorPedido(pedidoDto.getValorPedido() + i.getSubTotal());
+		}
 	}
 }

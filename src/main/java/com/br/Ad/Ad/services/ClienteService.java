@@ -38,7 +38,7 @@ public class ClienteService {
 	public List<Cliente>  findByNameContaining(String nome){
 		return clienteRepository.findByNomeContaining(nome);
 	}
-	public List<Object[]> findClienteEndereco(Long id) {
+	public Optional<Cliente> findClienteEndereco(Long id) {
 		return clienteRepository.findClienteEnderecoById(id);
 	}
 	public List<Cliente> clienteProjecao(){

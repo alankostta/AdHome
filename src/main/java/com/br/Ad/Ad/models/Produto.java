@@ -33,10 +33,10 @@ public class Produto implements Serializable {
 	private String marca;
 	
 	@Column(name = "valor_Entrada",nullable = false)
-	private Double valorEntrada;
+	private Double valorEntrada = 0.0;
 	
 	@Column(name = "valor_saida", nullable = true)
-	private Double valorSaida;
+	private Double valorSaida = 0.0;
 	
 	@Column(name = "Qtd_estoque", nullable = false)
 	private Integer estoqueQtd = 0;

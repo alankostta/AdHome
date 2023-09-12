@@ -4,7 +4,7 @@
 <head th:replace="~{fragmentos/head :: head('Cadastro Pedido')}"></head>
 
 <body>
-	<script src="../js/scripts.js"></script>
+	<script src="../js/scripts.js" defer></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastrar Pedido')}"></header>
 	<main th:replace="~{fragmentos/fragmentos_pedido :: main}"></main>
@@ -55,7 +55,6 @@
 						<label class="col-form-label">Informe
 							o produto:</label> <input type="text" class="form-control" id="descricaoProduto">
 					</div>
-
 					<table class="table" id="tabDescricaoProduto">
 						<thead>
 							<tr>
@@ -65,11 +64,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="p : ${listaProdutos}">
+							<tr th:each="p : ${produtos}">
 								<td th:text="${p.id}"></td>
 								<td th:text="${p.descricao}"></td>
-								<td><a class="btn btn-primary"
-										th:href="@{/pedido/addListaIten/{id}(id=${p.id})}">Selecionar</a></td>
+								<td><a class="btn btn-primary" th:href="@{/pedido/addListaIten/{id}(id=${p.id})}">Selecionar</a></td>
 							</tr>
 						</tbody>
 

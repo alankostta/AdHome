@@ -2,6 +2,7 @@ package com.br.Ad.Ad.services;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.br.Ad.Ad.models.Pedido;
 import com.br.Ad.Ad.repositories.PedidoRepository;
@@ -17,10 +18,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class PedidoService {
-	final PedidoRepository pedidoRepository;
-	public PedidoService(PedidoRepository pedidoRepository) {
-		this.pedidoRepository = pedidoRepository;
-	}
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
 	public Pedido savePedido(Pedido pedido) {
 		return pedidoRepository.save(pedido);
 	}

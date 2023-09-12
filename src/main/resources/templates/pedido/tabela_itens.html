@@ -13,17 +13,36 @@
 			</tr>
 		</thead>
 		<tbody id="tbody">
-<!--			<tr th:each="item : ${listaItens}">-->
-<!--				<td th:text="${item.id}"></td>-->
-<!--				<td th:text="${item.descricao}"></td>-->
-<!--			</tr>-->
-		</tbody>
+			<tr th:each="i : ${listaItens}">
+				<td th:text="${i.produto.id}"></td>
+				<td th:text="${i.produto.nome}"></td>
+				<td th:text="${i.produto.descricao}"></td>
+				<td th:text="${i.produto.valorSaida}"></td>
+				<td>
+					<span th:text="${i.quantidade}"></span>&nbsp;&nbsp;
+						<a class="btn btn-success"
+							th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${i.produto.id}, acao=${1})}">
+							<i class="bi bi-plus"></i></i>
+						</a>&nbsp;&nbsp;
+						<a class="btn btn-success"
+							th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${i.produto.id}, acao=${0})}">
+							<i class="bi bi-dash"></i>
+						</a>
+				</td>
+				<td th:text="${i.subTotal}"></td>
+				<td> <a class="btn btn-danger"
+						th:href="@{/pedido/removerItem/{id}(id=${i.produto.id})}">
+						<i class="bi bi-trash3"></i>
+					</a>
+				</td>
+			</tr>
 		<tfoot>
-<!--			<tr>-->
-<!--				<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>-->
-<!--				<th th:text="*{item.valorPedido}" socpe="col">-->
-<!--				<th th:text="*{item.valorPedido}" style="background-color: #DCDCDC"></th>-->
-<!--			</tr>-->
+			<tr>
+				<th colspan="6" scope="col" class="text-rigth">TOTAL:</th>
+				<th th:text="${pedidoDto.valorPedido}" style="background-color: #DCDCDC"></th>
+			</tr>
 		</tfoot>
+		</tr>
+		</tbody>
 	</table>
 </div>

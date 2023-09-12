@@ -65,7 +65,7 @@
 								<select class="form-select form-select" th:field="*{aduser.nome}"
 									aria-label="Default select example" id="selectUsuarios">
 									<option value="">Selecione um Vendedor</option>
-									<option th:each="user : ${listaAduser}" th:value="${user.id}"
+									<option th:each="user : ${users}" th:value="${user.id}"
 										th:text="${user.nome}"></option>
 								</select>
 							</div>
@@ -127,8 +127,8 @@
 									Pedido</button>
 							</div>
 							<div class="col">
-								<button onClick="limparPedido()" class="btn btn-outline-danger">Cancelar
-									Pedido</button>
+								<a th:href="@{/pedido/cancelar}" class="btn btn-outline-danger">Cancelar
+									Pedido</a>
 							</div>
 						</div>
 					</form>

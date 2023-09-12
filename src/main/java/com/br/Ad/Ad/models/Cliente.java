@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -59,7 +60,8 @@ public class Cliente implements Serializable {
 	@JoinColumn(name="cliente_id")
 	private List<Contato> contato;
 	
-	@JsonIgnore
+	//@JsonIgnore
+	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinTable(name = "cliente_endereco", 
 	joinColumns = @JoinColumn(name = "cliente_fk"), 

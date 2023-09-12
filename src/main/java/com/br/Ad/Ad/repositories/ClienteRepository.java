@@ -1,9 +1,12 @@
 package com.br.Ad.Ad.repositories;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 import com.br.Ad.Ad.models.Cliente;
 
 /*
@@ -14,10 +17,9 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
 	List<Cliente> findByNomeContaining(String name);
 
-	@Query(value = "SELECT c.id, c.nome, " + "e.bairro, e.uf, e.localidade, e.id,"
-			+ " e.complemento, e.numero, e.cep, e.logradouro " + "FROM Cliente c JOIN c.endereco e "
-			+ "WHERE c.id = :id")
-	List<Object[]> findClienteEnderecoById(Long id);
+	@Query(value = "SELECT c FROM Cliente c JOIN FETCH c.endereco e WHERE c.id = :id")
+	Optional<Cliente> findClienteEnderecoById(Long id);
+
 
 	 @Query("SELECT "
 	 			+ "cl, co, en "

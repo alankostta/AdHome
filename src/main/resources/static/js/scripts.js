@@ -196,44 +196,34 @@ function carregarFornecedor(id) {
 	});
 }
 function carregarCliente(id) {
-	$.ajax({
-		method: "GET",
-		url: "/pedido/buscarPorIdCliente",
-		data: "id=" + id,
-		success: function(response) {
-			console.log("Success - Response:", response)
-			var id = response.id;
-			var nome = response.nome;
-			var bairro = response.bairro;
-			var uf = response.uf;
-			var localidade = response.localidade;
-			var complemento = response.complemento;
-			var numero = response.numero;
-			var cep = response.cep;
-			var logradouro = response.logradouro;
-			var enderecoId = response.endereco;
+    $.ajax({
+        method: "GET",
+        url: "/pedido/buscarPorIdCliente",
+        data: "id=" + id,
+        success: function(response) {
+		    
+		    console.log(response)
 
+            $("#idClie").val(response.id);
+            $("#nomeClie").val(response.nome);
+            $("#pedidoUf").val(response.endereco[0].uf);
+            $("#pedidoCidade").val(response.endereco[0].localidade);
+            $("#pedidoBairro").val(response.endereco[0].bairro);
+            $("#pedidoLogradouro").val(response.endereco[0].logradouro);
+            $("#pedidoNumero").val(response.endereco[0].numero);
+            $("#pedidoCep").val(response.endereco[0].cep);
+            $("#pedidoComplemento").val(response.endereco[0].complemento);
+            $("#codigoEndereco").val(response.endereco[0].id);
 
-
-			$("#idClie").val(id);
-			$("#nomeClie").val(nome);
-			$("#pedidoUf").val(uf);
-			$("#pedidoCidade").val(localidade);
-			$("#pedidoBairro").val(bairro);
-			$("#pedidoLogradouro").val(logradouro);
-			$("#pedidoNumero").val(numero);
-			$("#pedidoCep").val(cep);
-			$("#pedidoComplemento").val(complemento);
-			$("#codigoEndereco").val(enderecoId);
-
-			// Fechar o modal
-			$("#pesquisarClienteModal").modal('hide');
-		},
-		error: function(xhr, status, errorThrown) {
-			alert("Erro ao buscar fornecedor: " + xhr.responseText, status, errorThrown);
-		}
-	});
+            // Fechar o modal
+            $("#pesquisarClienteModal").modal('hide');
+        },
+        error: function(xhr, status, errorThrown) {
+            alert("Erro ao buscar cliente: " + xhr.responseText, status, errorThrown);
+        }
+    });
 }
+
 
 function addListaItensProduto(id) {
 	alert("entrou", id)
