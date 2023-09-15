@@ -1,10 +1,7 @@
 package com.br.Ad.Ad.dto;
 
-import java.math.BigInteger;
-
 import com.br.Ad.Ad.models.Endereco;
 import com.br.Ad.Ad.models.EnderecoEnum;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -18,34 +15,41 @@ import jakarta.validation.constraints.Size;
 
 public class EnderecoDto {
 
-	private BigInteger id;
+	private Long id;
 
 	@NotBlank
 	@Size(max = 2)
 	private String uf;
+	
 	@NotBlank
 	@Size(max = 255)
 	private String localidade;
+	
 	@NotBlank
 	@Size(max = 255)
 	private String bairro;
+	
 	@NotBlank(message = "cep é obrigatório")
 	@Pattern(regexp = "\\d{8}", message = "cep deve ter 8 dígitos numéricos")
 	private String cep;
+	
 	@NotBlank
 	@Size(max = 255)
 	private String logradouro;
+	
 	@Size(max = 255)
 	private String complemento;
+	
 	@Size(max = 10)
 	private String numero;
+	
 	private EnderecoEnum enderecoEnum;
 
-	public BigInteger getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setEnderecoId(BigInteger id) {
+	public void setEnderecoId(Long id) {
 		this.id = id;
 	}
 
@@ -118,6 +122,7 @@ public class EnderecoDto {
 
 	public Endereco toEndereco() {// Passsando os Obj para classe endereço sem parametros no metodo
 		Endereco endereco = new Endereco();
+		endereco.setId(this.id);
 		endereco.setUf(this.uf);
 		endereco.setLocalidade(this.localidade);
 		endereco.setBairro(this.bairro);
@@ -131,11 +136,7 @@ public class EnderecoDto {
 
 	public Endereco toEndereco(Endereco endereco) { // Passsando os Obj para classe endereço com parametros no metodo
 
-		if (getId() == null) {
-			
-			return toEndereco();
-		} else {
-			endereco.setId(getId().longValue());
+			endereco.setId(this.id);
 			endereco.setUf(this.uf);
 			endereco.setLocalidade(this.localidade);
 			endereco.setBairro(this.bairro);
@@ -145,11 +146,10 @@ public class EnderecoDto {
 			endereco.setNumero(this.numero);
 			endereco.setEnderecoEnum(enderecoEnum);
 			return endereco;
-		}
 	}
 
 	public void fromEndereco(Endereco endereco) { // Pegando da classe Endereco seus atributos.
-		this.id = BigInteger.valueOf(endereco.getId());
+		this.id = endereco.getId();
 		this.uf = endereco.getUf();
 		this.localidade = endereco.getLocalidade();
 		this.bairro = endereco.getBairro();

@@ -1,39 +1,43 @@
 <div th:fragment="dadosEntrega" class="row">
+
 	<div class="form-group col-md-3">
-        <label>Código Endereço</label>
-        <input type="number" class="form-control" id="codigoEndereco"
-        th:field="*{enderecoDto.id}" placeholder="Código Edereço">
-    </div>
-    <div class="form-group col-md-3">
-        <label>UF</label>
-        <input type="text" class="form-control" id="pedidoUf" placeholder="UF">
-    </div>
-    <div class="form-group col-md-6">
-        <label>Cidade</label>
-        <input type="text" class="form-control" id="pedidoCidade" placeholder="Cidade">
-    </div>
-    <div class="form-group col-md-5">
-        <label>Bairro</label>
-        <input type="text" class="form-control" id="pedidoBairro" placeholder="Bairro">
-    </div>
-    <div class="form-group col-md-7">
-        <label>Logradouro</label>
-        <input type="text" class="form-control" id="pedidoLogradouro" placeholder="Logradouro">
-    </div>
-    <div class="form-group col-md-2">
-        <label>Número:</label>
-        <input type="text" class="form-control" id="pedidoNumero" placeholder="Número">
-    </div>
-    <div class="form-group col-md-3">
-        <label>Cep</label>
-        <input type="text" class="form-control" id="pedidoCep" placeholder="Cep">
-    </div>
-      <div class="form-group col-md-3">
-        <label>Complemento</label>
-        <input type="text" class="form-control" id="pedidoComplemento" placeholder="Complemento">
-    </div>
+		<label>Código Endereço</label>
+		<input type="number" class="form-control" id="codigoEndereco" th:field="*{enderecoDto.id}">
+	</div>
+	<div class="form-group col-md-3">
+		<label>UF</label>
+		<input type="text" class="form-control" id="pedidoUf" th:field="*{enderecoDto.uf}" placeholder="UF">
+	</div>
+	<div class="form-group col-md-6">
+		<label>Cidade</label>
+		<input type="text" class="form-control" id="pedidoCidade" th:field="*{enderecoDto.localidade}"
+			placeholder="Cidade">
+	</div>
+	<div class="form-group col-md-5">
+		<label>Bairro</label>
+		<input type="text" class="form-control" id="pedidoBairro" th:field="*{enderecoDto.bairro}" placeholder="Bairro">
+	</div>
+	<div class="form-group col-md-7">
+		<label>Logradouro</label>
+		<input type="text" class="form-control" id="pedidoLogradouro" th:field="*{enderecoDto.logradouro}"
+			placeholder="Logradouro">
+	</div>
+	<div class="form-group col-md-2">
+		<label>Número:</label>
+		<input type="text" class="form-control" id="pedidoNumero" th:field="*{enderecoDto.numero}" placeholder="Número">
+	</div>
+	<div class="form-group col-md-3">
+		<label>Cep</label>
+		<input type="text" class="form-control" id="pedidoCep" th:field="*{enderecoDto.cep}" placeholder="Cep">
+	</div>
+	<div class="form-group col-md-3">
+		<label>Complemento</label>
+		<input type="text" class="form-control" id="pedidoComplemento" th:field="*{enderecoDto.complemento}"
+			placeholder="Complemento">
+	</div>
+	<div class="form-group col-md-4">
+		<label>Tipo do Endereço</label>
+		<input type="text" class="form-control" id="pedidoEndEnum" th:field="*{enderecoDto.enderecoEnum}"
+			placeholder="Complemento">
+	</div>
 </div>
-
-
-
-

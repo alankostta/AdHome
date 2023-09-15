@@ -62,8 +62,8 @@ public class Pedido implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private BandeiraCartao enumCartao;
 	
-	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name = "pedido_id")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "iten_id")
     private List<ItemPedido> itens =  new ArrayList<>();
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval =  true)

@@ -6,19 +6,15 @@ import com.br.Ad.Ad.models.Produto;
 
 public class ItemPedidoDto {
 	
-	private Integer quantidade;
-	private Double precoIten;
-	private Double subTotal;
-	private Double valorTotal;
+	private Integer quantidade = 0;
+	private Double precoIten = 0.0;
+	private Double subTotal = 0.0;
+	private Double valorTotal = 0.0;
 	private Produto produto;
 	private Pedido pedido;
 		
 
 	public Integer getQuantidade() {
-		if(quantidade == null) {
-			quantidade = 0;
-			return quantidade;
-		}
 		return quantidade;
 	}
 	

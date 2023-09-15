@@ -4,7 +4,7 @@
 			<legend>Menu</legend>
 			<div class="row mt-3">
 				<div class="col">
-					<form class="formulario" th:object="${pedidoDto}" th:action="${action}" method="POST">
+					<form class="formulario" th:object="${pedidoDto}" th:action="@{/pedido/aplicar}" method="POST">
 						<div class="row">
 							<div class="col">
 								<label class="form-label">Status do Pedido</label>
@@ -62,7 +62,7 @@
 							</div>
 							<div class="col">
 								<label class="form-label">Vendedor:</label>
-								<select class="form-select form-select" th:field="*{aduser.nome}"
+								<select class="form-select form-select" th:field="*{aduser}"
 									aria-label="Default select example" id="selectUsuarios">
 									<option value="">Selecione um Vendedor</option>
 									<option th:each="user : ${users}" th:value="${user.id}"

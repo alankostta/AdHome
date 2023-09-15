@@ -1,6 +1,7 @@
 package com.br.Ad.Ad.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -78,9 +79,10 @@ public class PedidoController {
 		mv.addObject("listaItens", itens);
 		mv.addObject("users", userDetailsServiceImpl.findAllUser());
 		mv.addObject("produtos", produtoService.findAll());
-		
+
 		return mv;
 	}
+
 	@GetMapping("/cancelar")
 	public ModelAndView cancelarPedido() {
 
@@ -95,25 +97,40 @@ public class PedidoController {
 		mv.addObject("listaItens", itens);
 		mv.addObject("users", userDetailsServiceImpl.findAllUser());
 		mv.addObject("produtos", produtoService.findAll());
-	
+
 		return mv;
 	}
 
-	@PostMapping("")
+	@PostMapping("/aplicar")
 	public ModelAndView savePedido(@Valid PedidoDto pedidoDto, BindingResult resultPedido) {
 
-		ModelAndView mv = new ModelAndView("pedido/pedido");
+		ModelAndView mv = new ModelAndView("/pedido/pedido");
 
 		if (resultPedido.hasErrors()) {
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
+
+			LocalDateTime dataHoraAtual = LocalDateTime.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+			String dataHoraFormatada = dataHoraAtual.format(formatter);
+			LocalDateTime dataHoraConvertida = LocalDateTime.parse(dataHoraFormatada, formatter);
+			pedidoDto.setItens(itens);
+
 			Pedido pedido = pedidoDto.toPedido();
+			for (ItemPedidoDto it : itens) {
+				it.setPedido(pedido);
+				pedido.setValorPedido(it.getValorTotal() * it.getQuantidade());
+			}
+
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
-			pedido.setDataAlteraPedido(LocalDateTime.now());
-			pedido.setItens(pedido.getItens());
+			pedido.setDataAlteraPedido(dataHoraConvertida);
+
+			pedido.setDescontoPedido(0.0);
 			pedidoService.savePedido(pedido);
+			itens.clear();
+			pedido = new Pedido();
 
 			return new ModelAndView("redirect:/pedido/listarPed");
 		}
@@ -174,7 +191,8 @@ public class PedidoController {
 		return new ResponseEntity<List<Produto>>(produto, HttpStatus.OK);
 	}
 
-	// ======================Add produto na lista de intens===================================================
+	// ======================Add produto na lista de
+	// intens===================================================
 	@GetMapping("/addListaIten/{id}")
 	public ModelAndView addListaIten(@PathVariable(name = "id") Long id) {
 
@@ -182,7 +200,7 @@ public class PedidoController {
 
 		Optional<Produto> produtos = produtoService.findById(id);
 		Produto produto = produtos.get();
-		
+
 		int controle = 0;
 		for (ItemPedidoDto it : itens) {
 			if (it.getProduto().getId().equals(produto.getId())) {
@@ -205,7 +223,9 @@ public class PedidoController {
 
 		return mv;
 	}
-	//=========================== Add incrementar quantidade de itens da lista==================================
+
+	// =========================== Add incrementar quantidade de itens da
+	// lista==================================
 	@GetMapping("/alterarQuantidadeItens/{id}/{acao}")
 	public ModelAndView alterarQuantidadeItens(@PathVariable Long id, @PathVariable Integer acao) {
 		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
@@ -227,7 +247,9 @@ public class PedidoController {
 		mv.addObject("listaItens", itens);
 		return mv;
 	}
-	//====================================Remover item da lista======================
+
+	// ====================================Remover item da
+	// lista======================
 	@GetMapping("/removerItem/{id}")
 	public ModelAndView removerItem(@PathVariable Long id) {
 		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
@@ -240,7 +262,7 @@ public class PedidoController {
 		mv.addObject("listaItens", itens);
 		return mv;
 	}
-	
+
 	// =======================================================================================================
 	@GetMapping(value = "buscarProdutoId")
 	@ResponseBody
@@ -264,7 +286,7 @@ public class PedidoController {
 
 	private void calcularTotal() {
 		this.pedidoDto.setValorPedido(0.0);
-		for(ItemPedidoDto i: itens) {
+		for (ItemPedidoDto i : itens) {
 			pedidoDto.setValorPedido(pedidoDto.getValorPedido() + i.getSubTotal());
 		}
 	}

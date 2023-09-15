@@ -201,7 +201,6 @@ public class ProdutoController {
 	@GetMapping(value="buscarPorNomeFornecedor")
 	@ResponseBody//Retorna os dados para o corpo da resposta.
 	public ResponseEntity<List<Fornecedor>> buscarPorNome(@RequestParam(name="name") String name) {
-		//List<Fornecedor> fornecedor = fornecedorService.findByName(name.trim().toLowerCase());
 		List<Fornecedor> fornecedor = fornecedorService.findByName(name);//Execeuta a consulta no banco de dados ao qual está sendo por nome
 	
 		return new ResponseEntity<List<Fornecedor>>(fornecedor,HttpStatus.OK);//Retorna uma lista de nomes em formato JSON

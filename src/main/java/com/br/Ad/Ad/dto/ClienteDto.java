@@ -27,8 +27,8 @@ public class ClienteDto {
     private Integer anoRef;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAltera;
-    private List<ContatoDto> contato;
-    private List<EnderecoDto> endereco;
+    private List<ContatoDto> contato = new ArrayList<>();
+    private List<EnderecoDto> endereco = new ArrayList<>();
  
     public ClienteDto() {
         super();
@@ -94,13 +94,17 @@ public class ClienteDto {
         cliente.setAnoRef(this.anoRef);
         cliente.setDataCadastro(this.dataCadastro);
         cliente.setDataAltera(this.dataAltera);
-
-        // Mapear contatos
-        List<Contato> contatos = new ArrayList<>();
-        for (ContatoDto contatoDto : this.contato) {
-            contatos.add(contatoDto.toContato());
+          
+        if (this.contato != null) {
+            // Mapear contatos
+            List<Contato> contatos = new ArrayList<>();
+            for (ContatoDto contatoDto : this.contato) {
+                contatos.add(contatoDto.toContato());
+            }
+            cliente.setContato(contatos);
+        } else {
+            cliente.setContato(new ArrayList<>()); // Inicialize como uma lista vazia
         }
-        cliente.setContato(contatos);
 
         // Mapear endereços
         List<Endereco> enderecos = new ArrayList<>();

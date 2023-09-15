@@ -11,9 +11,11 @@ function pesquisarFornecedor() {
 			url: "/produto/buscarPorNomeFornecedor",
 			data: "name=" + nome,
 			success: function(response) {
+				
 				$('#tabelaresultados > tbody > tr').remove();
 				for (let i = 0; i < response.length; i++) {
-					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
+					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].nomeEmpresa + '</td> <td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
+					alert("nome empresa", response[i].nomeEmpresa)
 				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
@@ -28,8 +30,7 @@ function pesquisarFornecedor() {
 			success: function(response) {
 				$('#tabelaresultados > tbody > tr').remove();
 				for (let i = 0; i < response.length; i++) {
-					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
-				}
+					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].nomeEmpresa + '</td> <td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			console.log(status, errorThrown)
@@ -214,6 +215,8 @@ function carregarCliente(id) {
             $("#pedidoCep").val(response.endereco[0].cep);
             $("#pedidoComplemento").val(response.endereco[0].complemento);
             $("#codigoEndereco").val(response.endereco[0].id);
+            $("#pedidoEndEnum").val(response.endereco[0].enderecoEnum);
+         
 
             // Fechar o modal
             $("#pesquisarClienteModal").modal('hide');
