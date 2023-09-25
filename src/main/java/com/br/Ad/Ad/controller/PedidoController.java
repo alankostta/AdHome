@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +17,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.br.Ad.Ad.configs.UserDetailsServiceImpl;
-import com.br.Ad.Ad.dto.ItemPedidoDto;
+import com.br.Ad.Ad.dto.ClienteDto;
 import com.br.Ad.Ad.dto.PedidoDto;
 import com.br.Ad.Ad.models.BandeiraCartao;
 import com.br.Ad.Ad.models.Cliente;
 import com.br.Ad.Ad.models.Fornecedor;
+import com.br.Ad.Ad.models.ItemPedido;
 import com.br.Ad.Ad.models.Pedido;
 import com.br.Ad.Ad.models.PedidoEnumStatus;
 import com.br.Ad.Ad.models.PedidoEnumTipoPagamento;
@@ -45,7 +46,7 @@ import jakarta.validation.Valid;
  * 2º service envia a solicitação para o repository
  * 3º repository envia para o banco
  */
-@Controller
+@RestController
 @RequestMapping("/pedido")
 public class PedidoController {
 
@@ -64,8 +65,17 @@ public class PedidoController {
 	@Autowired
 	private FornecedorService fornecedorService;
 
-	private List<ItemPedidoDto> itens = new ArrayList<ItemPedidoDto>();
+	private List<ItemPedido> itens = new ArrayList<ItemPedido>();
 	private PedidoDto pedidoDto = new PedidoDto();
+	private ClienteDto clienteDto = new ClienteDto();
+	
+	private void calcularTotal() {
+		this.pedidoDto.setValorPedido(0.0);
+		for (ItemPedido i : itens) {
+			pedidoDto.setValorPedido(pedidoDto.getValorPedido() + i.getSubTotal());
+		}
+		
+	}
 
 	@GetMapping("/pedido")
 	public ModelAndView exibirPedido() {
@@ -76,6 +86,7 @@ public class PedidoController {
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		mv.addObject("listaCartao", BandeiraCartao.values());
 		mv.addObject("pedidoDto", pedidoDto);
+		mv.addObject("clienteDto", clienteDto);
 		mv.addObject("listaItens", itens);
 		mv.addObject("users", userDetailsServiceImpl.findAllUser());
 		mv.addObject("produtos", produtoService.findAll());
@@ -94,6 +105,7 @@ public class PedidoController {
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		mv.addObject("listaCartao", BandeiraCartao.values());
 		mv.addObject("pedidoDto", pedidoDto);
+		mv.addObject("clienteDto", clienteDto);
 		mv.addObject("listaItens", itens);
 		mv.addObject("users", userDetailsServiceImpl.findAllUser());
 		mv.addObject("produtos", produtoService.findAll());
@@ -103,31 +115,35 @@ public class PedidoController {
 
 	@PostMapping("/aplicar")
 	public ModelAndView savePedido(@Valid PedidoDto pedidoDto, BindingResult resultPedido) {
-
+		
 		ModelAndView mv = new ModelAndView("/pedido/pedido");
 
 		if (resultPedido.hasErrors()) {
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
-
+			
 			LocalDateTime dataHoraAtual = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 			String dataHoraFormatada = dataHoraAtual.format(formatter);
 			LocalDateTime dataHoraConvertida = LocalDateTime.parse(dataHoraFormatada, formatter);
+			System.out.println(pedidoDto.getValorPedido());
 			pedidoDto.setItens(itens);
-
-			Pedido pedido = pedidoDto.toPedido();
-			for (ItemPedidoDto it : itens) {
+			Pedido pedido = new Pedido();
+			pedido = pedidoDto.toPedido();
+			
+			
+			for (ItemPedido it : itens) {
 				it.setPedido(pedido);
-				pedido.setValorPedido(it.getValorTotal() * it.getQuantidade());
+				//pedido.getItens().add(it);
+				//pedido.setValorPedido(it.getValorTotal() * it.getQuantidade());
 			}
-
+			pedido.setValorPedido(this.pedidoDto.getValorPedido());
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(dataHoraConvertida);
-
 			pedido.setDescontoPedido(0.0);
+			System.out.println(pedidoDto.getValorPedido());
 			pedidoService.savePedido(pedido);
 			itens.clear();
 			pedido = new Pedido();
@@ -138,9 +154,10 @@ public class PedidoController {
 
 	@GetMapping("/listarPed")
 	public ModelAndView findAllPedidos() {
-		var mv = new ModelAndView("pedido/listarPed");
+		
+		ModelAndView mv = new ModelAndView("pedido/listarPed");
 		List<Pedido> pedidos = pedidoService.findAll();
-		mv.addObject("listaPedidos", pedidos);
+		mv.addObject("listarPedidos", pedidos);
 		return mv;
 	}
 
@@ -170,13 +187,12 @@ public class PedidoController {
 	}
 
 	@GetMapping(value = "buscarPorIdCliente")
-	@ResponseBody
 	public ResponseEntity<Cliente> buscarPorIdCliente(@RequestParam(name = "id") Long id) {
 		Optional<Cliente> clienteOptional = clienteService.findClienteEndereco(id);
 
 		if (clienteOptional.isPresent()) {
 			Cliente cliente = clienteOptional.get();
-
+			clienteDto.fromClienteDto(cliente);
 			return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 		} else {
 			// Retorna uma lista vazia se o Optional estiver vazio
@@ -202,7 +218,7 @@ public class PedidoController {
 		Produto produto = produtos.get();
 
 		int controle = 0;
-		for (ItemPedidoDto it : itens) {
+		for (ItemPedido it : itens) {
 			if (it.getProduto().getId().equals(produto.getId())) {
 				it.setQuantidade(it.getQuantidade() + 1);
 				controle = 1;
@@ -210,7 +226,7 @@ public class PedidoController {
 			}
 		}
 		if (controle == 0) {
-			ItemPedidoDto item = new ItemPedidoDto();
+			ItemPedido item = new ItemPedido();
 			item.setProduto(produto);
 			item.setPrecoIten(produto.getValorSaida());
 			item.setQuantidade(item.getQuantidade() + 1);
@@ -229,7 +245,7 @@ public class PedidoController {
 	@GetMapping("/alterarQuantidadeItens/{id}/{acao}")
 	public ModelAndView alterarQuantidadeItens(@PathVariable Long id, @PathVariable Integer acao) {
 		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
-		for (ItemPedidoDto it : itens) {
+		for (ItemPedido it : itens) {
 			if (it.getProduto().getId().equals(id)) {
 				if (acao.equals(1)) {
 					it.setQuantidade(it.getQuantidade() + 1);
@@ -253,7 +269,7 @@ public class PedidoController {
 	@GetMapping("/removerItem/{id}")
 	public ModelAndView removerItem(@PathVariable Long id) {
 		ModelAndView mv = new ModelAndView("redirect:/pedido/pedido");
-		for (ItemPedidoDto item : itens) {
+		for (ItemPedido item : itens) {
 			if (item.getProduto().getId().equals(id)) {
 				itens.remove(item);
 				break;
@@ -282,12 +298,5 @@ public class PedidoController {
 		mv.addObject("mensagem", msg);
 		mv.addObject("erro", true);
 		return mv;
-	}
-
-	private void calcularTotal() {
-		this.pedidoDto.setValorPedido(0.0);
-		for (ItemPedidoDto i : itens) {
-			pedidoDto.setValorPedido(pedidoDto.getValorPedido() + i.getSubTotal());
-		}
 	}
 }

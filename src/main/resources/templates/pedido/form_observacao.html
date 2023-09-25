@@ -1,7 +1,25 @@
 <div th:fragment="observacao">
 	<div class="form-group">
+		<div class="row">
+			<div class="col">
+				<label class="form-label">Id</label>
+				<input type="number" class="form-control" id="idContato" th:field="*{clienteDto.contato.id}" readonly="readonly" />
+			</div>
+			<div class="col">
+				<label class="form-label">E-mail</label>
+				<input type="text" class="form-control" id="emailContato" th:field="*{clienteDto.contato.email}"  />
+			</div>
+			<div class="col">
+				<label class="form-label">Telefone</label>
+				<input type="text" class="form-control" id="telefoneContato" th:field="*{clienteDto.contato.telefone}" />
+			</div>
+			<div class="col">
+				<label class="form-label">Tipo</label>
+				<input type="text" class="form-control" id="enumContato" th:field="*{clienteDto.contato.contatoEnum}" />
+			</div>
+		</div>
 		<label>Observações:</label>
-		<textarea class="form-control" id="observacoes" name="observacoes"
-			th:field="*{observacaoPedido}" rows="3"></textarea>
+		<textarea class="form-control" id="observacoes" name="observacoes" th:field="*{observacaoPedido}"
+			rows="3"></textarea>
 	</div>
 </div>

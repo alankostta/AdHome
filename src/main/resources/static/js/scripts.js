@@ -216,6 +216,10 @@ function carregarCliente(id) {
             $("#pedidoComplemento").val(response.endereco[0].complemento);
             $("#codigoEndereco").val(response.endereco[0].id);
             $("#pedidoEndEnum").val(response.endereco[0].enderecoEnum);
+           	$("#idContato").val(response.contato.id);
+            $("#emailContato").val(response.contato.email);
+            $("#telefoneContato").val(response.contato.telefone);
+         	$("#enumContato").val(response.contato.contatoEnum);
          
 
             // Fechar o modal

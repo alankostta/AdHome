@@ -4,7 +4,7 @@
 			<legend>Menu</legend>
 			<div class="row mt-3">
 				<div class="col">
-					<form class="formulario" th:object="${pedidoDto}" th:action="@{/pedido/aplicar}" method="POST">
+					<form class="formulario" th:object="${pedidoDto}" th:action="@{'/pedido/aplicar'}" method="POST">
 						<div class="row">
 							<div class="col">
 								<label class="form-label">Status do Pedido</label>
@@ -56,7 +56,7 @@
 										<button class="btn btn-outline-primary btn" type="button" data-bs-toggle="modal"
 											data-bs-target="#pesquisarClienteModal">Pesquisar</button>
 									</div>
-									<input type="text" class="form-control" id="nomeClie" th:field="*{clienteDto.id}"
+									<input type="text" class="form-control" id="nomeClie" th:field="*{clienteDto.nome}"
 										placeholder="Digite o nome do cliente">
 								</div>
 							</div>
@@ -96,8 +96,7 @@
 											data-bs-target="#entrega">Dados da
 											entrega</a></li>
 									<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
-											data-bs-target="#observacao">Observação
-											do Pedido</a></li>
+											data-bs-target="#observacao">Contato</a></li>
 								</ul>
 								<div class="tab-content">
 									<div id="itens" class="tab-pane fade show active">

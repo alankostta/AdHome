@@ -23,21 +23,21 @@
 							<th class="table-active">Nome Clien.</th>
 							<th class="table-active">Cont.</th>
 							<th class="table-active">End.</th>
-							<th class="table-active">Itens.</th>
-							<th class="table-active"></th>
-							<th class="table-active"></th>
-							<th class="table-active"></th>
+							<th class="table-active">Status</th>
+							<th class="table-active">Forma de Pg.</th>
+							<th class="table-active">Data</th>
+							<th class="table-active">Vendedor</th>
+							<th class="table-active">Itens</th>
+							<th class="table-active">Valor</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="p : ${listaPedidos}">
+						<tr th:each="p : ${listarPedidos}">
 							<td th:text="${p.id}"></td>
 							<td th:text="${p.cliente.nome}"></td>
-							<td th:each="p : ${p.cliente.contato}">
+							<td th:each="cont : ${p.cliente.contato}">
 								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
-									th:attr="data-bs-content=${#strings.concat(
-									      contato.email, ' - ',
-									      contato.telefone, ' ',)}">
+									th:attr="data-bs-content=${#strings.concat(cont.cliente.contato.email, ' - ', cont.cliente.contato.telefone, ' ',)}">
 									<span class="bi bi-eye"></span>
 								</button>
 							</td>

@@ -45,16 +45,21 @@ public class AdUser implements UserDetails {
 	@JoinColumn(name = "role_id")
 	private List<RoleModel> roles;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "pedido_id")
+	private List<Pedido> pedido;
+	
 	public AdUser() {
 		
 	}
-	public AdUser(Long id, String nome, String nomeUser, String emailUser, String password, List<RoleModel> roles) {
+	public AdUser(Long id, String nome, String nomeUser, String emailUser, String password, List<RoleModel> roles, List<Pedido> pedido) {
 		this.id = id;
 		this.nome = nome;
 		this.nomeUser = nomeUser;
 		this.emailUser = emailUser;
 		this.password = password;
 		this.roles = roles;
+		this.pedido = pedido;
 	}
 	
 	public Long getId() {
@@ -94,6 +99,12 @@ public class AdUser implements UserDetails {
 		this.roles = roles;
 	}
 	
+	public List<Pedido> getPedido() {
+		return pedido;
+	}
+	public void setPedido(List<Pedido> pedido) {
+		this.pedido = pedido;
+	}
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub

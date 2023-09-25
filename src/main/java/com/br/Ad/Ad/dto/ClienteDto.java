@@ -27,7 +27,7 @@ public class ClienteDto {
     private Integer anoRef;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAltera;
-    private List<ContatoDto> contato = new ArrayList<>();
+    private ContatoDto contato;
     private List<EnderecoDto> endereco = new ArrayList<>();
  
     public ClienteDto() {
@@ -43,12 +43,7 @@ public class ClienteDto {
         cliente.setAnoRef(this.anoRef);
         cliente.setDataCadastro(this.dataCadastro);
         cliente.setDataAltera(this.dataAltera);
-        // Mapear contatos
-        List<Contato> contatos = new ArrayList<>();
-        for (ContatoDto contatoDto : this.contato) {
-            contatos.add(contatoDto.toContato());
-        }
-        cliente.setContato(contatos);
+        cliente.setContato(this.contato.toContato());
 
         // Mapear endereços
         List<Endereco> enderecos = new ArrayList<>();
@@ -68,42 +63,8 @@ public class ClienteDto {
         cliente.setAnoRef(this.anoRef);
         cliente.setDataCadastro(this.dataCadastro);
         cliente.setDataAltera(this.dataAltera);
-
-        // Mapear contatos
-        List<Contato> contatos = new ArrayList<>();
-        for (ContatoDto contatoDto : this.contato) {
-            contatos.add(contatoDto.toContato());
-        }
-        cliente.setContato(contatos);
-
-        // Mapear endereços
-        List<Endereco> enderecos = new ArrayList<>();
-        for (EnderecoDto enderecoDto : this.endereco) {
-            enderecos.add(enderecoDto.toEndereco());
-        }
-        cliente.setEndereco(enderecos);
-
-        return cliente;
-    }
-    public Cliente toClienteDto() {
-        Cliente cliente = new Cliente();
-        cliente.setId(this.id);
-        cliente.setNome(this.nome);
-        cliente.setSexo(this.sexo);
-        cliente.setDataNasci(this.dataNasci);
-        cliente.setAnoRef(this.anoRef);
-        cliente.setDataCadastro(this.dataCadastro);
-        cliente.setDataAltera(this.dataAltera);
-          
         if (this.contato != null) {
-            // Mapear contatos
-            List<Contato> contatos = new ArrayList<>();
-            for (ContatoDto contatoDto : this.contato) {
-                contatos.add(contatoDto.toContato());
-            }
-            cliente.setContato(contatos);
-        } else {
-            cliente.setContato(new ArrayList<>()); // Inicialize como uma lista vazia
+            cliente.setContato(this.contato.toContato());
         }
 
         // Mapear endereços
@@ -115,7 +76,28 @@ public class ClienteDto {
 
         return cliente;
     }
+    public void fromClienteDto(Cliente cliente) {
+    	
+        this.id =  cliente.getId();
+        this.nome = cliente.getNome();
+        this.sexo = cliente.getSexo();
+        this.anoRef = cliente.getAnoRef();
+        this.dataAltera = cliente.getDataAltera();
+        this.dataCadastro = cliente.getDataCadastro();
+        this.dataNasci =  cliente.getDataNasci();
+        Contato contato = new Contato();
+        contato = cliente.getContato();
+        this.contato.fromContatoDto(contato);
+         
+		
+		 List<Endereco> enderecos = new ArrayList<>();
+		 for (EnderecoDto enderecoDto : this.endereco) { 
+			 enderecos.add(enderecoDto.toEndereco()); 
+			 }
 
+        cliente.setEndereco(enderecos);
+
+    }
 	public Long getId() {
 		return id;
 	}
@@ -172,11 +154,11 @@ public class ClienteDto {
 		this.dataAltera = dataAltera;
 	}
 
-	public List<ContatoDto> getContato() {
+	public ContatoDto getContato() {
 		return contato;
 	}
 
-	public void setContato(List<ContatoDto> contato) {
+	public void setContato(ContatoDto contato) {
 		this.contato = contato;
 	}
 

@@ -20,7 +20,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -65,16 +64,11 @@ public class Pedido implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "iten_id")
     private List<ItemPedido> itens =  new ArrayList<>();
-	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval =  true)
-	@JoinColumn(name = "endereco_id", unique = true)
-	private Endereco endereco;
-	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval =  true)
-	@JoinColumn(name = "user_id", unique = true)
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private AdUser user;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Cliente cliente;
 
 	public Pedido() {
@@ -83,7 +77,7 @@ public class Pedido implements Serializable {
 
 	public Pedido(Long id, LocalDateTime dataAlteraPedido, Integer anoRef, Double valorPedido, Double descontoPedido,
 			String observacaoPedido, Date dataCadastro, PedidoEnumStatus enumStatus,
-			PedidoEnumTipoPagamento enumPagamento, BandeiraCartao enumCartao, List<ItemPedido> itens, Endereco endereco,
+			PedidoEnumTipoPagamento enumPagamento, BandeiraCartao enumCartao, List<ItemPedido> itens,
 			AdUser user, Cliente cliente) {
 		super();
 		this.id = id;
@@ -97,9 +91,9 @@ public class Pedido implements Serializable {
 		this.enumPagamento = enumPagamento;
 		this.enumCartao = enumCartao;
 		this.itens = itens;
-		this.endereco = endereco;
 		this.user = user;
 		this.cliente = cliente;
+		
 	}
 
 	public Long getId() {
@@ -190,14 +184,6 @@ public class Pedido implements Serializable {
 		this.itens = itens;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
-	}
-
 	public AdUser getUser() {
 		return user;
 	}
@@ -212,5 +198,5 @@ public class Pedido implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}	
+	}
 }

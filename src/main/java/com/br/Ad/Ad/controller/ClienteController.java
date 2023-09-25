@@ -65,10 +65,8 @@ public class ClienteController {
 	public ModelAndView exibirCliente() {
 		ClienteDto clienteDto = new ClienteDto();
 		
-		clienteDto.setContato(new ArrayList<>());
 		clienteDto.setEndereco(new ArrayList<>());
 		
-		clienteDto.getContato().add(new ContatoDto());
 		clienteDto.getEndereco().add(new EnderecoDto());
 		
 		var mv = new ModelAndView("cliente/cliente");

@@ -3,9 +3,13 @@ package com.br.Ad.Ad.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
 import com.br.Ad.Ad.models.AdUser;
 import com.br.Ad.Ad.models.BandeiraCartao;
+import com.br.Ad.Ad.models.Cliente;
+import com.br.Ad.Ad.models.ItemPedido;
 import com.br.Ad.Ad.models.Pedido;
 import com.br.Ad.Ad.models.PedidoEnumStatus;
 import com.br.Ad.Ad.models.PedidoEnumTipoPagamento;
@@ -18,15 +22,14 @@ import com.br.Ad.Ad.models.PedidoEnumTipoPagamento;
 public class PedidoDto {
 
 	private ClienteDto clienteDto;
-	private EnderecoDto enderecoDto;
 	private AdUser aduser;
-	private Double valorPedido;
-	private Double descontoPedido;
+	private Double valorPedido = 0.0;
+	private Double descontoPedido = 0.0;
 	private String observacaoPedido;
 	private PedidoEnumStatus enumStatus;
 	private PedidoEnumTipoPagamento enumPagamento;
 	private BandeiraCartao enumCartao;
-	private List<ItemPedidoDto> itens = new ArrayList<>();
+	private List<ItemPedido> itens;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dataCadastro;
 
@@ -38,11 +41,11 @@ public class PedidoDto {
 		this.enumCartao = enumcartao;
 	}
 
-	public List<ItemPedidoDto> getItens() {
+	public List<ItemPedido> getItens() {
 		return itens;
 	}
 
-	public void setItens(List<ItemPedidoDto> itens) {
+	public void setItens(List<ItemPedido> itens) {
 		this.itens = itens;
 	}
 
@@ -101,15 +104,7 @@ public class PedidoDto {
 	public void setClienteDto(ClienteDto clienteDto) {
 		this.clienteDto = clienteDto;
 	}
-
-	public EnderecoDto getEnderecoDto() {
-		return enderecoDto;
-	}
-
-	public void setEnderecoDto(EnderecoDto enderecoDto) {
-		this.enderecoDto = enderecoDto;
-	}
-
+	
 	public AdUser getAduser() {
 		return aduser;
 	}
@@ -127,8 +122,12 @@ public class PedidoDto {
 		pedido.setValorPedido(this.valorPedido);
 		pedido.setObservacaoPedido(this.observacaoPedido);
 		pedido.setUser(this.aduser);
-		pedido.setEndereco(this.enderecoDto.toEndereco());
-		pedido.setCliente(this.clienteDto.toCliente());
+		Cliente cliente = new Cliente();
+		cliente = clienteDto.toCliente();
+		pedido.setCliente(cliente);
+		
+		pedido.setItens(itens);
+
 		return pedido;
 	}
 
@@ -140,8 +139,11 @@ public class PedidoDto {
 		pedido.setValorPedido(this.valorPedido);
 		pedido.setObservacaoPedido(this.observacaoPedido);
 		pedido.setUser(this.aduser);
-		pedido.setEndereco(this.enderecoDto.toEndereco());
-		pedido.setCliente(this.clienteDto.toCliente());
+		Cliente cliente = new Cliente();
+		cliente = clienteDto.toCliente();
+		pedido.setCliente(cliente);
+		pedido.setItens(itens);
+
 		return pedido;
 	}
 
@@ -153,16 +155,15 @@ public class PedidoDto {
 		this.valorPedido = pedido.getValorPedido();
 		this.descontoPedido = pedido.getDescontoPedido();
 		this.observacaoPedido = pedido.getObservacaoPedido();
-
 		this.aduser = pedido.getUser();
+		List<ItemPedidoDto> itemPedidoDtos = new ArrayList<>();
+		for (ItemPedido itemPedido : pedido.getItens()) {
+			ItemPedidoDto itemPedidoDto = new ItemPedidoDto();
+			itemPedidoDto.setQuantidade(itemPedido.getQuantidade());
+			itemPedidoDto.setPrecoIten(itemPedido.getPrecoIten());
+			itemPedidoDto.setProduto(itemPedido.getProduto());
+			// Mapeie outros atributos, se necessário
+			itemPedidoDtos.add(itemPedidoDto);
+		}
 	}
-
-	public void addItem(ItemPedidoDto item) {
-		this.itens.add(item);
-	}
-
-	public void removeItem(ItemPedidoDto item) {
-		this.itens.remove(item);
-	}
-
 }

@@ -21,13 +21,16 @@ public class ItemPedido implements Serializable{
 	private Long id;
 	
     @Column(name="qtd_itens")
-    private Integer quantidade;
+    private Integer quantidade = 0;
     
     @Column(name="preco_iten")
-    private Double precoIten;
+    private Double precoIten = 0.0;
     
     @Column(name="sub_total")
-    private Double subTotal;
+    private Double subTotal = 0.0;
+    
+    @Column(name="valor_total")
+    private Double valorTotal = 0.0;
         
     @ManyToOne
     private Produto produto;
@@ -75,6 +78,14 @@ public class ItemPedido implements Serializable{
 
 	public void setSubTotal(Double subTotal) {
 		this.subTotal = subTotal;
+	}
+
+	public Double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(Double valorTotal) {
+		this.valorTotal = valorTotal;
 	}
 
 	public Double getPrecoIten() {

@@ -31,7 +31,7 @@ public class FornecedorDto{
 	private EnderecoEnum enderecoEnum;
 	private ContatoEnum contatoEnum;
 	private List<Endereco> endereco;
-	private List<Contato> contatos;
+	private Contato contato;
 	
 	public FornecedorDto() {
 		super();
@@ -77,11 +77,11 @@ public class FornecedorDto{
 	public void setEndereco(List<Endereco> endereco) {
 		this.endereco = endereco;
 	}
-	public List<Contato> getContato() {
-		return contatos;
+	public Contato getContato() {
+		return contato;
 	}
-	public void setContato(List<Contato> contatos) {
-		this.contatos = contatos;
+	public void setContato(Contato contato) {
+		this.contato = contato;
 	}
 public Fornecedor toFornecedor() {
 		
@@ -90,7 +90,7 @@ public Fornecedor toFornecedor() {
 		fornecedor.setNome(this.nome);
 		fornecedor.setNomeEmpresa(nomeEmpresa);
 		fornecedor.setEndereco(this.endereco);
-		fornecedor.setContatos(this.contatos);
+		fornecedor.setContatos(this.contato);
 		return fornecedor;
 	}
 	public Fornecedor toFornecedor(Fornecedor fornecedor) {
@@ -98,7 +98,7 @@ public Fornecedor toFornecedor() {
 		fornecedor.setNome(this.nome);
 		fornecedor.setNomeEmpresa(nomeEmpresa);
 		fornecedor.setEndereco(this.endereco);
-		fornecedor.setContatos(this.contatos);
+		fornecedor.setContatos(this.contato);
 		return fornecedor;
 		
 	}
@@ -108,6 +108,6 @@ public Fornecedor toFornecedor() {
 		this.nome = fornecedor.getNome();
 		this.nomeEmpresa = fornecedor.getNomeEmpresa();
 		this.endereco = fornecedor.getEndereco();
-		this.contatos = fornecedor.getContatos(); 
+		this.contato = fornecedor.getContatos(); 
 	}
 }

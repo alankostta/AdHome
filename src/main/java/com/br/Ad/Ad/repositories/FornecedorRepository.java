@@ -15,7 +15,7 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long>{
 	 @Query("SELECT "
 	 			+ "fr, co, en "
 	            + "FROM Fornecedor fr "
-	            + "JOIN fr.contatos co "
+	            + "JOIN fr.contato co "
 	            + "JOIN fr.endereco en")
 	List<Fornecedor> projecaoFornecedor();
 	 

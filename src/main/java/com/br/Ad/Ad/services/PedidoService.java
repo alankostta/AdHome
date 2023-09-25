@@ -33,4 +33,5 @@ public class PedidoService {
 	public void deletePedido(Pedido pedido) {
 		pedidoRepository.delete(pedido);
 	}
+
 }

@@ -22,6 +22,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -61,12 +62,12 @@ public class Fornecedor implements Serializable {
 	 * objeto
 	 */
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="fornecedor_id")
-	private List<Contato> contatos = new ArrayList<>();
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "contato_id")
+	private Contato contato;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="fornecedor_id")
 	private Set<Produto> produtos = new HashSet<>();
 
@@ -75,7 +76,7 @@ public class Fornecedor implements Serializable {
 	}
 
 	public Fornecedor(Long id, String nome, String nomeEmpresa, LocalDateTime dataCadastroForne, Integer anoRef,
-			LocalDateTime dataAlteraForne, List<Endereco> endereco, List<Contato> contatos, Set<Produto> produtos) {
+			LocalDateTime dataAlteraForne, List<Endereco> endereco, Contato contato, Set<Produto> produtos) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -84,7 +85,7 @@ public class Fornecedor implements Serializable {
 		this.anoRef = anoRef;
 		this.dataAlteraForne = dataAlteraForne;
 		this.endereco = endereco;
-		this.contatos = contatos;
+		this.contato = contato;
 		this.produtos = produtos;
 	}
 
@@ -144,12 +145,12 @@ public class Fornecedor implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public List<Contato> getContatos() {
-		return contatos;
+	public Contato getContatos() {
+		return contato;
 	}
 
-	public void setContatos(List<Contato> contatos) {
-		this.contatos = contatos;
+	public void setContatos(Contato contato) {
+		this.contato = contato;
 	}
 
 	public Set<Produto> getProdutos() {

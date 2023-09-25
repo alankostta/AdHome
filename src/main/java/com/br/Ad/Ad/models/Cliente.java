@@ -22,6 +22,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -55,12 +56,10 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-	@JoinColumn(name="cliente_id")
-	private List<Contato> contato;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "contato_id")
+	private Contato contato;
 	
-	//@JsonIgnore
 	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinTable(name = "cliente_endereco", 
@@ -78,7 +77,7 @@ public class Cliente implements Serializable {
 	}
 
 	public Cliente(Long id, String nome, String sexo, Date dataNasci, Integer anoRef, LocalDateTime dataCadastro,
-			LocalDateTime dataAltera, List<Contato> contato, List<Endereco> endereco, Set<Pedido> pedido) {
+			LocalDateTime dataAltera, Contato contato, List<Endereco> endereco, Set<Pedido> pedido) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -148,11 +147,11 @@ public class Cliente implements Serializable {
 		this.dataAltera = dataAltera;
 	}
 
-	public List<Contato> getContato() {
+	public Contato getContato() {
 		return contato;
 	}
 
-	public void setContato(List<Contato> contato) {
+	public void setContato(Contato contato) {
 		this.contato = contato;
 	}
 

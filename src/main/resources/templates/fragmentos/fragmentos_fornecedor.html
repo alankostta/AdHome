@@ -17,19 +17,19 @@
 			<br>
 			<div class="row">
 			<div class="col">
-				<select class="form-select" th:field="*{contato[0].contatoEnum}">
+				<select class="form-select" th:field="*{contato.contatoEnum}">
 					<option th:each="contato : ${listaContato}" th:value="${contato}" th:text="${contato}"></option>
 				</select>
 			</div>
 				<div class="col">
-					<input class="form-control" th:errorclass="is-invalid" th:field="*{contato[0].telefone}" type="text"
+					<input class="form-control" th:errorclass="is-invalid" th:field="*{contato.telefone}" type="text"
 						 placeholder="Digite seu Telefone" />
-					<div class="invalid-feedback" th:errors="*{contato[0].telefone}"></div>
+					<div class="invalid-feedback" th:errors="*{contato.telefone}"></div>
 				</div>
 				<div class="col">
-					<input class="form-control" th:errorclass="is-invalid" type="text" th:field="*{contato[0].email}"
+					<input class="form-control" th:errorclass="is-invalid" type="text" th:field="*{contato.email}"
 						placeholder="Digite seu e-mail" />
-					<div class="invalid-feedback" th:errors="*{contato[0].email}"></div>
+					<div class="invalid-feedback" th:errors="*{contato.email}"></div>
 				</div>
 			</div>
 			<br>

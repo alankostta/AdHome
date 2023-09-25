@@ -22,18 +22,18 @@
 				<br>
 				<div class="row">
 					<div class="col">
-						<select class="form-select" th:field="*{contato[0].contatoEnum}">
+						<select class="form-select" th:field="*{contato.contatoEnum}">
 							<option th:each="contatoEnum : ${listaContato}" th:value="${contatoEnum}"
 								th:text="${contatoEnum}">
 							</option>
 						</select>
 					</div>
 					<div class="col">
-						<input class="form-control" type="text" th:field="*{contato[0].telefone}"
+						<input class="form-control" type="text" th:field="*{contato.telefone}"
 							placeholder="Digite seu Telefone" />
 					</div>
 					<div class="col">
-						<input class="form-control" type="text" th:field="*{contato[0].email}"
+						<input class="form-control" type="text" th:field="*{contato.email}"
 							placeholder="Digite seu e-mail" />
 					</div>
 				</div>

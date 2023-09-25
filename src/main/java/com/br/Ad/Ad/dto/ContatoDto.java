@@ -12,6 +12,9 @@ import jakarta.validation.constraints.Size;
  * onde serão introduzidos os dados entre outras anotações como @email @Cpf @NotNull @Empty}
  */
 public class ContatoDto {
+	
+	private Long id;
+	
     @NotBlank
     @Size(max = 30)
     private String telefone;
@@ -46,19 +49,43 @@ public class ContatoDto {
         this.email = email;
     }
 
-    public Contato toContato() {
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Contato toContato() {
         Contato contato = new Contato();
+        contato.setId(this.id);
         contato.setEmail(this.email);
         contato.setTelefone(this.telefone);
-        contato.setContatoEnum(contatoEnum);
+        contato.setContatoEnum(this.contatoEnum);
         return contato;
     }
-
-    public static ContatoDto fromContato(Contato contato) {
+	public Contato toContato(Contato contato) {
+        contato.setId(this.id);
+        contato.setEmail(this.email);
+        contato.setTelefone(this.telefone);
+        contato.setContatoEnum(this.contatoEnum);
+        return contato;
+    }
+    public void fromContato(Contato contato) {
         ContatoDto contatoDto = new ContatoDto();
+        contatoDto.setId(contato.getId());
         contatoDto.setEmail(contato.getEmail());
         contatoDto.setTelefone(contato.getTelefone());
         contatoDto.setContatoEnum(contato.getContatoEnum());
-        return contatoDto;
+    }
+    public Contato fromContatoDto(Contato contato) {
+        ContatoDto contatoDto = new ContatoDto();
+        contatoDto.setId(contato.getId());
+        contatoDto.setEmail(contato.getEmail());
+        contatoDto.setTelefone(contato.getTelefone());
+        contatoDto.setContatoEnum(contato.getContatoEnum());
+        
+        return contato;
     }
 }
