@@ -61,6 +61,33 @@
 								</div>
 							</div>
 							<div class="col">
+								<label class="form-label">Data de Nascimento</label>
+								<input type="date" class="form-control" id="dataNasci" th:field="*{clienteDto.dataNasci}">
+							</div>
+							<div class="col">
+								<label class="form-label">Sexo</label>
+								<input type="text" class="form-control" id="sexo" th:field="*{clienteDto.sexo}">
+							</div>
+					
+						</div>
+						<br>
+						<div>
+							<div class="row">
+								<div class="col">
+									<label class="form-label">Valor/Desconto:</label>
+									<div class="input-group">
+										<span class="input-group-text" id="basic-addon1">R$</span>
+										<input id="porcentagem" th:field="*{descontoPedido}" type="number"
+											class="form-control form-control-sm" aria-describedby="basic-addon1">
+										<button type="button" class="btn btn-warning"
+											onClick="calcularDescontoPedido()">Calcular</button>
+									</div>
+								</div>
+										<div class="col">
+								<label class="form-label">Ano do Padido</label>
+								<input type="number" class="form-control" id="anoRef" th:field="*{clienteDto.anoRef}">
+							</div>
+							<div class="col">
 								<label class="form-label">Vendedor:</label>
 								<select class="form-select form-select" th:field="*{aduser}"
 									aria-label="Default select example" id="selectUsuarios">
@@ -69,21 +96,6 @@
 										th:text="${user.nome}"></option>
 								</select>
 							</div>
-						</div>
-						<br>
-						<div>
-							<div class="row">
-								<div class="col-3">
-									<label class="col-md-2 col-form-label">Valor/Desconto:</label>
-									<div class="input-group">
-										<span class="input-group-text" id="basic-addon1">R$</span>
-										<input id="porcentagem" th:field="*{descontoPedido}" type="number"
-											class="form-control form-control-sm" aria-describedby="basic-addon1">
-										<button type="button" class="btn btn-warning"
-											onClick="calcularDescontoPedido()">Calcular</button>
-									</div>
-
-								</div>
 							</div>
 						</div>
 						<br />

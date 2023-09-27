@@ -19,25 +19,27 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class="table-active">Id.</th>
+							<th class="table-active">Id Pedido</th>
 							<th class="table-active">Nome Clien.</th>
-							<th class="table-active">Cont.</th>
-							<th class="table-active">End.</th>
-							<th class="table-active">Status</th>
+							<th class="table-active">Contato do clien.</th>
+							<th class="table-active">Endereço do clien.</th>
+							<th class="table-active">Status pedido</th>
 							<th class="table-active">Forma de Pg.</th>
 							<th class="table-active">Data</th>
 							<th class="table-active">Vendedor</th>
-							<th class="table-active">Itens</th>
 							<th class="table-active">Valor</th>
+							<td class="table-active"></td>
+							<td class="table-active"></td>
+							<td class="table-active"></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="p : ${listarPedidos}">
 							<td th:text="${p.id}"></td>
 							<td th:text="${p.cliente.nome}"></td>
-							<td th:each="cont : ${p.cliente.contato}">
+							<td th:each="c : ${p.cliente.contato}">
 								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
-									th:attr="data-bs-content=${#strings.concat(cont.cliente.contato.email, ' - ', cont.cliente.contato.telefone, ' ',)}">
+									th:attr="data-bs-content=${#strings.concat(c.email, ' - ', c.telefone, ' ',)}">
 									<span class="bi bi-eye"></span>
 								</button>
 							</td>
@@ -47,13 +49,20 @@
 									      end.uf, ' - ',
 									      end.localidade, ' ',
 									      end.bairro, ' - [Cep',
-									      end.cep, '], ',
+									      end.cep, '] - ',
 									      end.logradouro, '-',
 									      end.complemento, ' - ',
 									      end.numero)}">
 									<span class="bi bi-eye"></span>
 								</button>
 							</td>
+							<td th:text="${p.enumStatus}"></td>
+							<td th:text="${p.enumPagamento}"></td>
+							<td th:text="${p.dataCadastro}"></td>
+							<td th:each="a : ${p.user}">
+								<span th:text="${a.nome}"></span>
+							</td>
+							<td th:text="${p.valorPedido}">
 							<td><a class="btn btn-outline-info btn-sm"
 									th:href="@{/pedido/{p.id}(p.id=${p.id})}">Detalhes</a></td>
 							<td><a class="btn btn-outline-primary btn-sm"

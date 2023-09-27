@@ -3,9 +3,7 @@ package com.br.Ad.Ad.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.springframework.format.annotation.DateTimeFormat;
-
 import com.br.Ad.Ad.models.AdUser;
 import com.br.Ad.Ad.models.BandeiraCartao;
 import com.br.Ad.Ad.models.Cliente;

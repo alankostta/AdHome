@@ -61,14 +61,14 @@ public class Pedido implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private BandeiraCartao enumCartao;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "iten_id")
     private List<ItemPedido> itens =  new ArrayList<>();
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private AdUser user;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Cliente cliente;
 
 	public Pedido() {

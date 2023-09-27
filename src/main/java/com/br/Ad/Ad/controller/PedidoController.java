@@ -36,6 +36,7 @@ import com.br.Ad.Ad.services.FornecedorService;
 import com.br.Ad.Ad.services.PedidoService;
 import com.br.Ad.Ad.services.ProdutoService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 /*
@@ -69,6 +70,7 @@ public class PedidoController {
 	private PedidoDto pedidoDto = new PedidoDto();
 	private ClienteDto clienteDto = new ClienteDto();
 	
+	
 	private void calcularTotal() {
 		this.pedidoDto.setValorPedido(0.0);
 		for (ItemPedido i : itens) {
@@ -86,7 +88,6 @@ public class PedidoController {
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		mv.addObject("listaCartao", BandeiraCartao.values());
 		mv.addObject("pedidoDto", pedidoDto);
-		mv.addObject("clienteDto", clienteDto);
 		mv.addObject("listaItens", itens);
 		mv.addObject("users", userDetailsServiceImpl.findAllUser());
 		mv.addObject("produtos", produtoService.findAll());
@@ -105,14 +106,13 @@ public class PedidoController {
 		mv.addObject("listaPagamento", PedidoEnumTipoPagamento.values());
 		mv.addObject("listaCartao", BandeiraCartao.values());
 		mv.addObject("pedidoDto", pedidoDto);
-		mv.addObject("clienteDto", clienteDto);
 		mv.addObject("listaItens", itens);
 		mv.addObject("users", userDetailsServiceImpl.findAllUser());
 		mv.addObject("produtos", produtoService.findAll());
 
 		return mv;
 	}
-
+	@Transactional
 	@PostMapping("/aplicar")
 	public ModelAndView savePedido(@Valid PedidoDto pedidoDto, BindingResult resultPedido) {
 		
@@ -122,21 +122,27 @@ public class PedidoController {
 			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
 			return mv;
 		} else {
+			this.clienteDto.setDataAltera(this.clienteDto.getDataAltera());
+			this.clienteDto.setDataCadastro(this.clienteDto.getDataCadastro());
+			this.pedidoDto.setDataCadastro(pedidoDto.getDataCadastro());
+			this.pedidoDto.setAduser(pedidoDto.getAduser());
+			this.pedidoDto.setEnumCartao(pedidoDto.getEnumCartao());
+			this.pedidoDto.setEnumPagamento(pedidoDto.getEnumPagamento());
+			this.pedidoDto.setEnumStatus(pedidoDto.getEnumStatus());
+			this.pedidoDto.setObservacaoPedido(pedidoDto.getObservacaoPedido());
+			//this.pedidoDto.setValorPedido(pedidoDto.getValorPedido());
 			
 			LocalDateTime dataHoraAtual = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 			String dataHoraFormatada = dataHoraAtual.format(formatter);
 			LocalDateTime dataHoraConvertida = LocalDateTime.parse(dataHoraFormatada, formatter);
 			System.out.println(pedidoDto.getValorPedido());
-			pedidoDto.setItens(itens);
+			this.pedidoDto.setItens(itens);
 			Pedido pedido = new Pedido();
-			pedido = pedidoDto.toPedido();
-			
+			pedido = this.pedidoDto.toPedido();
 			
 			for (ItemPedido it : itens) {
 				it.setPedido(pedido);
-				//pedido.getItens().add(it);
-				//pedido.setValorPedido(it.getValorTotal() * it.getQuantidade());
 			}
 			pedido.setValorPedido(this.pedidoDto.getValorPedido());
 			Calendar cal = Calendar.getInstance();
@@ -193,6 +199,8 @@ public class PedidoController {
 		if (clienteOptional.isPresent()) {
 			Cliente cliente = clienteOptional.get();
 			clienteDto.fromClienteDto(cliente);
+			this.pedidoDto.setClienteDto(clienteDto);
+			
 			return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 		} else {
 			// Retorna uma lista vazia se o Optional estiver vazio

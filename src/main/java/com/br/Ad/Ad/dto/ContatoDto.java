@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
  */
 public class ContatoDto {
 	
-	private Long id;
+	private Long id = 0L;
 	
     @NotBlank
     @Size(max = 30)

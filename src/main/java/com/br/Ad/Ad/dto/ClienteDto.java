@@ -27,7 +27,7 @@ public class ClienteDto {
     private Integer anoRef;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAltera;
-    private ContatoDto contato;
+    private ContatoDto contato = new ContatoDto();
     private List<EnderecoDto> endereco = new ArrayList<>();
  
     public ClienteDto() {
@@ -87,16 +87,27 @@ public class ClienteDto {
         this.dataNasci =  cliente.getDataNasci();
         Contato contato = new Contato();
         contato = cliente.getContato();
-        this.contato.fromContatoDto(contato);
+        this.contato.setId(contato.getId());
+        this.contato.setEmail(contato.getEmail());
+        this.contato.setTelefone(contato.getTelefone());
+        this.contato.setContatoEnum(contato.getContatoEnum());
          
-		
-		 List<Endereco> enderecos = new ArrayList<>();
-		 for (EnderecoDto enderecoDto : this.endereco) { 
-			 enderecos.add(enderecoDto.toEndereco()); 
-			 }
-
-        cliente.setEndereco(enderecos);
-
+        List<EnderecoDto> enderecoDtos = new ArrayList<>();
+        for (Endereco endereco : cliente.getEndereco()) {
+            EnderecoDto enderecoDto = new EnderecoDto();
+            enderecoDto.setEnderecoId(endereco.getId());
+            enderecoDto.setUf(endereco.getUf());
+            enderecoDto.setBairro(endereco.getBairro());
+            enderecoDto.setLocalidade(endereco.getLocalidade());
+            enderecoDto.setCep(endereco.getCep());
+            enderecoDto.setLogradouro(endereco.getLogradouro());
+            enderecoDto.setComplemento(endereco.getComplemento());
+            enderecoDto.setNumero(endereco.getNumero());
+            enderecoDto.setEnderecoEnum(endereco.getEnderecoEnum());
+            // Suponha que haja um método de conversão.
+            enderecoDtos.add(enderecoDto);
+        }
+        this.endereco = enderecoDtos;
     }
 	public Long getId() {
 		return id;

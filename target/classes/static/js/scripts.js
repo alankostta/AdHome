@@ -207,6 +207,9 @@ function carregarCliente(id) {
 
             $("#idClie").val(response.id);
             $("#nomeClie").val(response.nome);
+            $("#sexo").val(response.sexo);
+            $("#dataNasci").val(response.dataNasci);
+            $("#anoRef").val(response.anoRef);
             $("#pedidoUf").val(response.endereco[0].uf);
             $("#pedidoCidade").val(response.endereco[0].localidade);
             $("#pedidoBairro").val(response.endereco[0].bairro);
