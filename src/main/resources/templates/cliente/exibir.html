@@ -1,113 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head th:replace="~{fragmentos/head :: head('Dados Registrados')}"></head>
+
 <body>
-		<script src="js/scripts.js"></script>
+	<script src="js/scripts.js"></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
-	<header th:replace="~{fragmentos/header :: header('Detalhes do Cliente: ' + ${cliente.id})}"></header>
+	<header th:replace="~{fragmentos/header :: header('Cliente ID: ' + ${cliente.id})}"></header>
 	<main>
 		<div class="col-12">
 			<fieldset class="fieldset text-left mb-5">
 				<legend>Dados Cliente</legend>
-				<form th:action="${action}" method="POST">
-					<div class="row mb-3">
-						<label for="nome" class="col-sm-1 col-form-label">Nome</label>
-						<div class="col-sm-3">
-							<input class="form-control" type="text"
-								placeholder="Digite seu nome" />
+				<form th:action="${action}" th:object="${cliente}" method="POST">
+					<div class="row">
+						<div class="col">
+							<label class="form-label">Nome</label>
+							<input class="form-control" type="text" th:value="${cliente.nome}" />
 						</div>
-						<div class="invalid-feedback"></div>
-
-						<label for="dataNasci" class="col-sm-2 col-form-label">Data
-							de Nascimento</label>
-						<div class="col-sm-2">
-							<input type="date" class="form-control" />
+						<div class="col">
+							<label for="dataNasci" class="form-label">Data
+								de Nascimento</label>
+							<input type="date" class="form-control" th:value="${cliente.dataNasci}" />
 						</div>
-						<div class="invalid-feedback"></div>
-
-						<div class="col-sm-4">
-							<div class="form-check form-check-inline">
-								<input type="radio" class="form-check-input" value="Feminino">
-								<label for="Feminino" class="form-check-label col-sm-offset-1">Feminino</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input type="radio" class="form-check-input" value="Masculino">
-								<label for="Masculino" class="form-check-label col-sm-offset-1">Masculino</label>
-							</div>
+						<div class="col">
+							<label for="Feminino" class="form-label">Sexo</label>
+							<input type="text" class="form-control" th:value="${cliente.sexo}">
 						</div>
 					</div>
-					<label class="col-sm-3 form-select-label">Escolha o Tipo de
-						Contato</label>
-					<div class="mb-3 ">
-						<select class="form-select">
-							<option></option>
-						</select>
-					</div>
-					<div class="row mb-3 align-items-center">
-						<label for="telefone" class="col-sm-2 form-label">Telefone
-							de Contato</label>
-						<div class="col-sm-3">
-							<input class="form-control" type="text"
-								placeholder="Digite seu Telefone" />
+					<div class="row">
+						<div class="col">
+							<label class="form-label">Contato</label>
+							<input type="text" class="form-control" th:value="${cliente.contato.contatoEnum}">
 						</div>
-						<div class="invalid-feedback"></div>
-						<label for="email" class="col-sm-1 form-label">E-mail</label>
-						<div class="col-sm-3">
-							<input class="form-control" type="text"
-								placeholder="Digite seu e-mail" />
+						<div class="col">
+							<label class="form-label">Telefone</label>
+							<input class="form-control" type="text" th:value="${cliente.contato.telefone}" />
 						</div>
-						<div class="invalid-feedback"></div>
-					</div>
-					<div class="mb-3">
-						<label for="endereco" class="form-label">Escolha o tipo de
-							Endereço</label> <select class="form-select">
-							<option></option>
-						</select>
-					</div>
-					</br>
-					<div class="row mb-3">
-						<div class="col-md-2">
-							<input id="uf" class="form-control" type="text"
-								placeholder="Digite seu UF" />
-							<div class="invalid-feedback"></div>
+						<div class="col">
+							<label class="form-label">E-mail</label>
+							<input class="form-control" type="text" th:value="${cliente.contato.email}" />
 						</div>
-						<div class="col-md-4">
+					</div>
+					<div class="row">
+						<div class="col">
+							<label for="endereco" class="form-label">Tipo deEndereço</label>
+							<input class="form-control" type="text" th:value="${cliente.endereco[0].enderecoEnum}" />
+						</div>
+						<div class="col">
+							<label for="endereco" class="form-label">Estado</label>
+							<input id="uf" class="form-control" type="text" th:value="${cliente.endereco[0].uf}" />
+						</div>
+						<div class="col">
+							<label for="endereco" class="form-label">Cidade</label>
 							<input id="cidade" class="form-control" type="text"
-								placeholder="Digite sua Cidade" />
-							<div class="invalid-feedback"></div>
+								th:value="${cliente.endereco[0].localidade}" />
 						</div>
-						<div class="col-md-3">
+					 </div>
+					 <div class="row">
+						 <div class="col">
+							 <label for="endereco" class="form-label">Bairro</label>
 							<input id="bairro" class="form-control" type="text"
-								placeholder="Digite seu Bairro" />
-							<div class="invalid-feedback"></div>
+								th:value="${cliente.endereco[0].bairro}" />
 						</div>
-						<div class="col-md-3">
-							<input placeholder="Complemento" class="form-control" type="text" />
+						<div class="col">
+							<label for="endereco" class="form-label">Complemento</label>
+							<input placeholder="Complemento" class="form-control" type="text"
+								th:value="${cliente.endereco[0].complemento}" />
 						</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-3">
-							<div class="input-group">
-								<input id="cep" type="text" class="form-control"
-									placeholder="Digite seu CEP" />
-								<button class="btn btn-outline-secondary" type="button"
-									onClick="buscarCep()">Pesquisar</button>
-								<div class="invalid-feedback"></div>
-							</div>
+						<div class="col">
+							<label for="endereco" class="form-label">Cep</label>
+							<input id="cep" type="text" class="form-control" th:value="${cliente.endereco[0].cep}" />
 						</div>
-						<div class="col-md-6">
+						<div class="col">
+							<label for="endereco" class="form-label">Rua</label>
 							<input id="logradouro" class="form-control" type="text"
-								placeholder="Digite rua, av..." />
-							<div class="invalid-feedback"></div>
+								th:value="${cliente.endereco[0].logradouro}" />
 						</div>
-						<div class="col-md-3">
-							<input class="form-control" type="text"
-								placeholder="Informe número da residencia" />
+						<div class="col">
+							<label for="endereco" class="form-label">Número</label>
+							<input class="form-control" type="text" th:value="${cliente.endereco[0].numero}" />
 						</div>
-					</div>
-					<a href="javascript:history.back()-1"
-						class="btn btn-outline-warning btn-sm">Voltar</a>
+					 </div>
+					<a href="javascript:history.back()-1" class="btn btn-outline-warning btn-sm">Voltar</a>
 					<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
 				</form>
 			</fieldset>
@@ -115,8 +90,7 @@
 		</div>
 		<div class="row">
 			<div class="col-12">
-				<a class="btn btn-primary"
-					th:href="@{/cliente/{id}/editar(id = ${cliente.id})}">Editar</a>
+				<a class="btn btn-primary" th:href="@{/cliente/{id}/editar(id = ${cliente.id})}">Editar</a>
 				<a href="../cliente/listar" class="btn btn-primary">Voltar</a>
 			</div>
 		</div>
@@ -126,4 +100,5 @@
 		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
 		</script>
 </body>
+
 </html>

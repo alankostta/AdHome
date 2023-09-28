@@ -94,12 +94,6 @@ public class ClienteController {
 			return mv;
 		} else {
 			Calendar cal = Calendar.getInstance();
-			// int day = cal.get(Calendar.DATE);
-			// int month = cal.get(Calendar.MONTH) + 1;
-			// int year = cal.get(Calendar.YEAR);
-			// int dow = cal.get(Calendar.DAY_OF_WEEK);
-			// int dom = cal.get(Calendar.DAY_OF_MONTH);
-			// int doy = cal.get(Calendar.DAY_OF_YEAR);
 			Cliente cliente = clienDto.toCliente();
 			cliente.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
 			cliente.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
@@ -126,9 +120,9 @@ public class ClienteController {
 		return mv;
 	}
 
-	@GetMapping("cliente/{clienteId}")
+	@GetMapping("exibir/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
-	public ModelAndView getOneCliente(@PathVariable(value = "clienteId") Long id) {
+	public ModelAndView getOneCliente(@PathVariable(value = "id") Long id) {
 
 		Optional<Cliente> clienteOptional = clienteService.findById(id);
 		var mv = new ModelAndView("cliente/exibir");
@@ -181,25 +175,23 @@ public class ClienteController {
 		}
 	}
 	// para testar no postman precisa usar o Id
-	@GetMapping("cliente/{clienteId}/editar")
+	@GetMapping("cliente/{id}/editar")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ModelAndView upClinte(@PathVariable(value = "clienteId") Long id, ClienteDto clienteDto,
-			ContatoDto contatoDto, EnderecoDto enderecoDto) {
+	public ModelAndView upClinte(@PathVariable(value = "id") Long id, ClienteDto clienteDto) {
 
 		ModelAndView mv = new ModelAndView("cliente/editar");
 		mv.addObject("listaContato", ContatoEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
 		Optional<Cliente> clienteOptional = this.clienteService.findById(id);
-		Optional<Contato> contatoOptional = this.contatoService.findById(id);
-		Optional<Endereco> enderecoOptional = this.enderecoService.findByIdEndereco(id);
 
-		if (clienteOptional.isPresent() && contatoOptional.isPresent() && enderecoOptional.isPresent()) {
+		if (clienteOptional.isPresent()) {
 			Cliente cliente = clienteOptional.get();
-			
-			mv.addObject("clienteId", cliente.getId());
+			clienteDto.fromClienteDto(cliente);
+			mv.addObject("id", cliente.getId());
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
+			mv.addObject("clienteDto", clienteDto);
 			mv.addObject("mensagem", "CLIENTE ISCRIÇÃO COM " + id + " encontrado!");
 			mv.addObject("erro", false);
 			return mv;
@@ -208,11 +200,10 @@ public class ClienteController {
 		}
 	}
 
-	@PostMapping("cliente/{clienteId}")
+	@PostMapping("cliente/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ModelAndView updateCliente(@PathVariable(value = "clienteId") Long id, @Valid ClienteDto clienteDto,
-			BindingResult resultCliente, @Valid ContatoDto contatoDto, BindingResult resultContato,
-			@Valid EnderecoDto enderecoDto, BindingResult resultEndereco) {
+	public ModelAndView updateCliente(@PathVariable(value = "id") Long id, @Valid ClienteDto clienteDto,
+			BindingResult resultCliente) {
 
 		ModelAndView mv = new ModelAndView("redirect:/cliente/listar");
 
@@ -222,29 +213,14 @@ public class ClienteController {
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			this.retornaErroCliente("ERRO AO SALVAR!!! PREENCHA OS CAMPOS NOME, SEXO, DATA DE NASCIMENTO!");
 			return mv;
-		} else if (resultContato.hasErrors()) {
-			mv.addObject("clienteId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
-			mv.addObject("listaEndereco", EnderecoEnum.values());
-			this.retornaErroCliente("ERRO AO SALVAR!! PREENCHA OS CAMPOS TELEFONE E EMAIL");
-			return mv;
-		} else if (resultEndereco.hasErrors()) {
-			mv.addObject("clienteId", id);
-			mv.addObject("listaContato", ContatoEnum.values());
-			mv.addObject("listaEndereco", EnderecoEnum.values());
-			this.retornaErroCliente("ERRO AO SALVAR!! PREENCHA OS CAMPOS UF, CIDADE, BAIRRO, CEP, LOGRADOURO");
-			return mv;
 		} else {
 			Optional<Cliente> clienteOptional = this.clienteService.findById(id);
 			
-
 			if (clienteOptional.isPresent()) {
 				Cliente cliente = clienteDto.toCliente(clienteOptional.get());
-			
-
+		
 				cliente.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
 
-			
 				this.clienteService.saveCliente(cliente);
 				mv.addObject("mensagem", "Cliente com inscrição " + id + " editado com sucesso!");
 				mv.addObject("erro", false);

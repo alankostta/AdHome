@@ -1,7 +1,7 @@
 <div class="container" th:fragment="form(clienteDto, action)">
 	<fieldset class="fieldset text-left mb-5">
 		<legend>Dados Cliente</legend>
-		<form th:action="${action}" method="POST" action="#">
+		<form th:action="${action}" method="POST">
 			<div class="row mb-3">
 				<div class="col-sm-5">
 					<input class="form-control" th:errorclass="is-invalid" type="text"
