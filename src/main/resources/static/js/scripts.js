@@ -202,28 +202,36 @@ function carregarCliente(id) {
         url: "/pedido/buscarPorIdCliente",
         data: "id=" + id,
         success: function(response) {
-		    
-		    console.log(response)
+            console.log(response);
 
-            $("#idClie").val(response.id);
-            $("#nomeClie").val(response.nome);
-            $("#sexo").val(response.sexo);
-            $("#dataNasci").val(response.dataNasci);
-            $("#anoRef").val(response.anoRef);
-            $("#pedidoUf").val(response.endereco[0].uf);
-            $("#pedidoCidade").val(response.endereco[0].localidade);
-            $("#pedidoBairro").val(response.endereco[0].bairro);
-            $("#pedidoLogradouro").val(response.endereco[0].logradouro);
-            $("#pedidoNumero").val(response.endereco[0].numero);
-            $("#pedidoCep").val(response.endereco[0].cep);
-            $("#pedidoComplemento").val(response.endereco[0].complemento);
-            $("#codigoEndereco").val(response.endereco[0].id);
-            $("#pedidoEndEnum").val(response.endereco[0].enderecoEnum);
-           	$("#idContato").val(response.contato.id);
-            $("#emailContato").val(response.contato.email);
-            $("#telefoneContato").val(response.contato.telefone);
-         	$("#enumContato").val(response.contato.contatoEnum);
-         
+            if (response && response.id) {
+                $("#idClie").val(response.id);
+                $("#nomeClie").val(response.nome);
+                $("#sexo").val(response.sexo);
+                $("#dataNasci").val(response.dataNasci);
+                $("#anoRef").val(response.anoRef);
+
+                if (response.endereco && response.endereco.length > 0) {
+                    $("#pedidoUf").val(response.endereco[0].uf);
+                    $("#pedidoCidade").val(response.endereco[0].localidade);
+                    $("#pedidoBairro").val(response.endereco[0].bairro);
+                    $("#pedidoLogradouro").val(response.endereco[0].logradouro);
+                    $("#pedidoNumero").val(response.endereco[0].numero);
+                    $("#pedidoCep").val(response.endereco[0].cep);
+                    $("#pedidoComplemento").val(response.endereco[0].complemento);
+                    $("#codigoEndereco").val(response.endereco[0].id);
+                    $("#pedidoEndEnum").val(response.endereco[0].enderecoEnum);
+                }
+
+                if (response.contato && response.contato.id) {
+                    $("#idContato").val(response.contato.id);
+                    $("#emailContato").val(response.contato.email);
+                    $("#telefoneContato").val(response.contato.telefone);
+                    $("#enumContato").val(response.contato.contatoEnum);
+                }
+            } else {
+                console.error("O objeto 'response' não está definido ou não possui uma propriedade 'id'.");
+            }
 
             // Fechar o modal
             $("#pesquisarClienteModal").modal('hide');
@@ -233,6 +241,7 @@ function carregarCliente(id) {
         }
     });
 }
+
 
 
 function addListaItensProduto(id) {

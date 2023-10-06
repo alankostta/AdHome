@@ -1,4 +1,4 @@
-<div class="col-12" th:fragment="cliente()">
+<div class="col-12" th:fragment="cliente(clienteDto, action)">
 	<fieldset class="fieldset text-left mb-6">
 		<legend>Dados Cliente</legend>
 		<form th:action="${action}" th:object="${clienteDto}" method="POST">
