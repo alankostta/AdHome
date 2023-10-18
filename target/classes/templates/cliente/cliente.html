@@ -3,9 +3,9 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="~{fragmentos/head :: head('Cadastro Cliente')}"></head>
 <body>
-	<script src="js/scripts.js"></script>
+	<script src="js/script.js"></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastrar Cliente')}"></header>
-	<div th:replace="~{fragmentos/fragmentos_cliente :: cliente(clienteDto, '/cliente/aplicar')}">Cadastrar Cliente</div>	
+	<div th:replace="~{fragmentos/fragmentos_cliente :: cliente(cliente, '/cliente/aplicar')}">Cadastrar Cliente</div>	
 </body>
 </html>

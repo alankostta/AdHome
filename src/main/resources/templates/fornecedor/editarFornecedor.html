@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="~{fragmentos/head :: head('Dados Registrados')}"></head>
+
+<body>
+	<script src="js/script.js"></script>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Fornecedor ID: ' + ${fornecedor.id})}"></header>
+	<div class="col-12">
+		<fieldset class="fieldset text-left mb-6">
+			<legend>Dados Fornecedor</legend>
+			<form th:action="@{'/fornecedor/fornecedor/' + ${id}}" th:object="${fornecedor}"method="POST">
+				<div class="row">
+					<div class="col">
+						<label class="form-label">Código Fornecedor</label>
+						<input class="form-control" type="text" th:field="*{id}" readonly />
+					</div>
+					<div class="col">
+						<label class="form-label">Nome</label>
+						<input class="form-control" type="text" th:field="*{nome}" />
+					</div>
+					<div class="col">
+						<label class="form-label">Empresa</label>
+						<input class="form-control" type="text" th:field="*{nomeEmpresa}" />
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col">
+						<label class="form-label">Código Contato</label>
+						<input class="form-control" type="text" th:field="*{contato.id}" readonly />
+					</div>
+					<div class="col">
+						<label class="form-label">Tipo Contato</label>
+						<select class="form-select" th:field="*{contato.contatoEnum}">
+							<option th:each="contato : ${listaContato}" th:value="${contato}" th:text="${contato}">
+							</option>
+						</select>
+					</div>
+					<div class="col">
+						<label class="form-label">Telefone</label>
+						<input class="form-control" th:field="*{contato.telefone}" type="text"
+							placeholder="Digite seu Telefone" />
+
+					</div>
+					<div class="col">
+						<label class="form-label">Email</label>
+						<input class="form-control" type="text" th:field="*{contato.email}"
+							placeholder="Digite seu e-mail" />
+
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col">
+						<label class="form-label">Código Endereço</label>
+						<input class="form-control" type="text" th:field="*{endereco[0].id}" readonly />
+					</div>
+					<div class="col">
+						<label class="form-label">Tipo Endereco</label>
+						<select class="form-select col" th:field="*{endereco[0].enderecoEnum}">
+							<option th:each="endereco : ${listaEndereco}" th:value="${endereco}" th:text="${endereco}">
+							</option>
+						</select>
+					</div>
+					<div class="col">
+						<label class="form-label">Uf</label>
+						<input class="form-control" id="uf" type="text" placeholder="Digite seu UF"
+							th:field="*{endereco[0].uf}" />
+					</div>
+					<div class="col">
+						<label class="form-label">Cidade</label>
+						<input class="form-control" id="cidade" type="text" placeholder="Digite sua Cidade"
+							th:field="*{endereco[0].localidade}" />
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col">
+						<label class="form-label">Bairro</label>
+						<input class="form-control" id="bairro" type="text" placeholder="Digite seu Bairro"
+							th:field="*{endereco[0].bairro}" />
+					</div>
+					<div class="col">
+						<label class="form-label">Cep</label>
+						<div class="input-group">
+							<input id="cep" class="form-control" type="text" placeholder="Digite seu CEP"
+								th:field="*{endereco[0].cep}" />
+							<button class="btn btn-outline-secondary" type="button"
+								onClick="buscarCep()">Pesquisar</button>
+						</div>
+					</div>
+					<div class="col">
+						<label class="form-label">Rua</label>
+						<input class="form-control" type="text" id="logradouro" placeholder="Digite rua, av..."
+							th:field="*{endereco[0].logradouro}" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<label class="form-label">Número</label>
+						<input class="form-control" type="text" placeholder="Nº Residencial"
+							th:field="*{endereco[0].numero}" />
+					</div>
+					<div class="col">
+						<label class="form-label">Completo</label>
+						<input class="form-control" type="text" placeholder="Complemento"
+							th:field="*{endereco[0].complemento}" />
+					</div>
+				</div>
+				<br>
+				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+				<a href="javascript:history.back()" class="btn btn-warning ">Voltar</a>
+			</form>
+		</fieldset>
+	</div>
+</body>
+
+</html>

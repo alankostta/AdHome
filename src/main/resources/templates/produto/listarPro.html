@@ -41,11 +41,11 @@
 							<td th:text="${p.dataCadastro}"></td>
 							<td th:text="${p.estoqueQtd}"></td>
 							<td><a class="btn btn-outline-info btn-sm"
-									th:href="@{/produto/{p.id}(p.id=${p.id})}">Detalhes</a></td>
+									th:href="@{/produto/produto/{p.id}(p.id=${p.id})}">Detalhes</a></td>
 							<td><a class="btn btn-outline-primary btn-sm"
-									th:href="@{/produto/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
+									th:href="@{/produto/produto/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
 							<td><a class="btn btn-outline-danger btn-sm"
-									th:href="@{/produto/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
+									th:href="@{/produto/produto/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
 						</tr>
 					</tbody>
 				</table>

@@ -4,7 +4,7 @@
 			<legend>Menu</legend>
 			<div class="row mt-3">
 				<div class="col">
-					<form class="formulario" th:object="${pedidoDto}" th:action="@{'/pedido/aplicar'}" method="POST">
+					<form class="formulario" th:object="${pedido}" th:action="@{'/pedido/aplicar'}" method="POST">
 						<div class="row">
 							<div class="col">
 								<label class="form-label">Status do Pedido</label>
@@ -45,7 +45,7 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text" id="basic-addon1">Id:</span>
 									</div>
-									<input type="number" class="form-control" id="idClie" th:field="*{clienteDto.id}"
+									<input type="number" class="form-control" id="idClie" th:field="*{cliente.id}"
 										readonly="readonly">
 								</div>
 							</div>
@@ -56,19 +56,18 @@
 										<button class="btn btn-outline-primary btn" type="button" data-bs-toggle="modal"
 											data-bs-target="#pesquisarClienteModal">Pesquisar</button>
 									</div>
-									<input type="text" class="form-control" id="nomeClie" th:field="*{clienteDto.nome}"
+									<input type="text" class="form-control" id="nomeClie" th:field="*{cliente.nome}"
 										placeholder="Digite o nome do cliente">
 								</div>
 							</div>
 							<div class="col">
 								<label class="form-label">Data de Nascimento</label>
-								<input type="date" class="form-control" id="dataNasci" th:field="*{clienteDto.dataNasci}">
+								<input type="date" class="form-control" id="dataNasci" th:field="*{cliente.dataNasci}">
 							</div>
 							<div class="col">
 								<label class="form-label">Sexo</label>
-								<input type="text" class="form-control" id="sexo" th:field="*{clienteDto.sexo}">
+								<input type="text" class="form-control" id="sexo" th:field="*{cliente.sexo}">
 							</div>
-					
 						</div>
 						<br>
 						<div>
@@ -83,19 +82,19 @@
 											onClick="calcularDescontoPedido()">Calcular</button>
 									</div>
 								</div>
-										<div class="col">
-								<label class="form-label">Ano do Padido</label>
-								<input type="number" class="form-control" id="anoRef" th:field="*{clienteDto.anoRef}">
-							</div>
-							<div class="col">
-								<label class="form-label">Vendedor:</label>
-								<select class="form-select form-select" th:field="*{aduser}"
-									aria-label="Default select example" id="selectUsuarios">
-									<option value="">Selecione um Vendedor</option>
-									<option th:each="user : ${users}" th:value="${user.id}"
-										th:text="${user.nome}"></option>
-								</select>
-							</div>
+								<div class="col">
+									<label class="form-label">Ano do Padido</label>
+									<input type="number" class="form-control" id="anoRef" th:field="*{cliente.anoRef}">
+								</div>
+								<div class="col">
+									<label class="form-label">Vendedor:</label>
+									<select class="form-select"  id="selectUsuarios" th:field="*{user}"
+										aria-label="Default select example">
+										<option value="">Selecione um Vendedor</option>
+										<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nome}">
+										</option>
+									</select>
+								</div>
 							</div>
 						</div>
 						<br />

@@ -9,7 +9,7 @@
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastro de Despesas')}"></header>
 	<fieldset class="fieldset text-left mb-6">
-		<form action="/controleCaixa/salvarDespesas" th:object="${despesasDto}" method="POST">
+		<form action="/controleCaixa/salvarDespesas" th:object="${despesas}" method="POST">
 			<div class="text-center">
 				<div class="row">
 					<div class="col">
@@ -126,8 +126,6 @@
 		</div>
 	</fieldset>
 	<!-- Adicione essas linhas no final do seu arquivo HTML, antes de </body> -->
-
-	
 </body>
 
 </html>

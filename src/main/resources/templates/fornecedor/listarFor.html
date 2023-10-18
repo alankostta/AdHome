@@ -22,7 +22,7 @@
 							<th class="table-active">Empre.</th>
 							<th class="table-active">Cont.</th>
 							<th class="table-active">End.</th>
-							<th class="table-active"></th>
+							<th class="table-active">Ação</th>
 							<th class="table-active"></th>
 							<th class="table-active"></th>
 						</tr>
@@ -32,14 +32,14 @@
 							<td th:text="${f.id}"></td>
 							<td th:text="${f.nome}"></td>
 							<td th:text="${f.nomeEmpresa}"></td>
-							<td th:each="contato : ${f.contatos}">
+							<td th:each="contato : ${f.contato}">
 								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
 									th:attr="data-bs-content=${#strings.concat(
 									      contato.email, ' - ',
 									      contato.telefone, ' ',)}">
 									<span class="bi bi-eye"></span>
 								</button>
-								<span th:each="contato : ${f.contatos}" th:text="${contato.contatoEnum}"></span><br>
+								<span th:each="contato : ${f.contato}" th:text="${contato.contatoEnum}"></span><br>
 							</td>
 							<td th:each="end : ${f.endereco}">
 								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
@@ -56,9 +56,9 @@
 								<span th:text="${end.enderecoEnum}"></span>
 							</td>
 							<td><a class="btn btn-outline-info btn-sm"
-									th:href="@{/fornecedor/{f.id}(f.id=${f.id})}">Detalhes</a></td>
+									th:href="@{/exibirFornecedor/{f.id}(f.id=${f.id})}">Detalhes</a></td>
 							<td><a class="btn btn-outline-primary btn-sm"
-									th:href="@{/fornecedor/{f.id}/editar(f.id=${f.id})}">Editar</a></td>
+									th:href="@{/fornecedorEditar/{f.id}/editar (f.id=${f.id})}">Editar</a></td>
 							<td><a class="btn btn-outline-danger btn-sm"
 									th:href="@{/fornecedor/{f.id}/excluir(f.id=${f.id})}">Excluir</a></td>
 						</tr>

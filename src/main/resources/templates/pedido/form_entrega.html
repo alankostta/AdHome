@@ -2,42 +2,42 @@
 
 	<div class="form-group col-md-3">
 		<label>Código Endereço</label>
-		<input type="number" class="form-control" id="codigoEndereco" th:field="*{clienteDto.endereco[0].id}">
+		<input type="number" class="form-control" id="codigoEndereco" th:field="*{cliente.endereco[0].id}">
 	</div>
 	<div class="form-group col-md-3">
 		<label>UF</label>
-		<input type="text" class="form-control" id="pedidoUf" th:field="*{clienteDto.endereco[0].uf}" placeholder="UF">
+		<input type="text" class="form-control" id="pedidoUf" th:field="*{cliente.endereco[0].uf}" placeholder="UF">
 	</div>
 	<div class="form-group col-md-6">
 		<label>Cidade</label>
-		<input type="text" class="form-control" id="pedidoCidade" th:field="*{clienteDto.endereco[0].localidade}"
+		<input type="text" class="form-control" id="pedidoCidade" th:field="*{cliente.endereco[0].localidade}"
 			placeholder="Cidade">
 	</div>
 	<div class="form-group col-md-5">
 		<label>Bairro</label>
-		<input type="text" class="form-control" id="pedidoBairro" th:field="*{clienteDto.endereco[0].bairro}" placeholder="Bairro">
+		<input type="text" class="form-control" id="pedidoBairro" th:field="*{cliente.endereco[0].bairro}" placeholder="Bairro">
 	</div>
 	<div class="form-group col-md-7">
 		<label>Logradouro</label>
-		<input type="text" class="form-control" id="pedidoLogradouro" th:field="*{clienteDto.endereco[0].logradouro}"
+		<input type="text" class="form-control" id="pedidoLogradouro" th:field="*{cliente.endereco[0].logradouro}"
 			placeholder="Logradouro">
 	</div>
 	<div class="form-group col-md-2">
 		<label>Número:</label>
-		<input type="text" class="form-control" id="pedidoNumero" th:field="*{clienteDto.endereco[0].numero}" placeholder="Número">
+		<input type="text" class="form-control" id="pedidoNumero" th:field="*{cliente.endereco[0].numero}" placeholder="Número">
 	</div>
 	<div class="form-group col-md-3">
 		<label>Cep</label>
-		<input type="text" class="form-control" id="pedidoCep" th:field="*{clienteDto.endereco[0].cep}" placeholder="Cep">
+		<input type="text" class="form-control" id="pedidoCep" th:field="*{cliente.endereco[0].cep}" placeholder="Cep">
 	</div>
 	<div class="form-group col-md-3">
 		<label>Complemento</label>
-		<input type="text" class="form-control" id="pedidoComplemento" th:field="*{clienteDto.endereco[0].complemento}"
+		<input type="text" class="form-control" id="pedidoComplemento" th:field="*{cliente.endereco[0].complemento}"
 			placeholder="Complemento">
 	</div>
 	<div class="form-group col-md-4">
 		<label>Tipo do Endereço</label>
-		<input type="text" class="form-control" id="pedidoEndEnum" th:field="*{clienteDto.endereco[0].enderecoEnum}"
+		<input type="text" class="form-control" id="pedidoEndEnum" th:field="*{cliente.endereco[0].enderecoEnum}"
 			placeholder="Complemento">
 	</div>
 </div>

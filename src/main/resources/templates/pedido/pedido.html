@@ -4,7 +4,7 @@
 <head th:replace="~{fragmentos/head :: head('Cadastro Pedido')}"></head>
 
 <body>
-	<script src="../js/scripts.js" defer></script>
+	<script src="/js/script.js" defer></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastrar Pedido')}"></header>
 	<main th:replace="~{fragmentos/fragmentos_pedido :: main}"></main>
@@ -70,7 +70,6 @@
 								<td><a class="btn btn-primary" th:href="@{/pedido/addListaIten/{id}(id=${p.id})}">Selecionar</a></td>
 							</tr>
 						</tbody>
-
 					</table>
 				</div>
 				<div class="modal-footer">
@@ -80,5 +79,4 @@
 		</div>
 	</div>
 </body>
-
 </html>

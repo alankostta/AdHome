@@ -1,14 +1,16 @@
 <div class="col-12" th:fragment="formFor">
 	<fieldset class="fieldset text-left mb-6">
-		<legend>Menu</legend>
-		<form th:action="${action}" th:object="${fornecedorDto}" method="POST">
+		<legend>Dados Fornecedor</legend>
+		<form th:action="${action}" th:object="${fornecedor}" method="POST">
 			<div class="row">
 				<div class="col">
+					<label class="form-label">Nome</label>
 					<input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nome}"
 						placeholder="Nome do fornecedor"/>
 					<div class="invalid-feedback" th:errors="*{nome}"></div>
 				</div>
 				<div class="col">
+					<label class="form-label">Empresa</label>
 					<input class="form-control" type="text" th:errorclass="is-invalid"
 						th:field="*{nomeEmpresa}" placeholder="Nome da Empresa"/>
 					<div class="invalid-feedback" th:errors="*{nomeEmpresa}"></div>
@@ -17,16 +19,19 @@
 			<br>
 			<div class="row">
 			<div class="col">
+				<label class="form-label">Tipo Contato</label>
 				<select class="form-select" th:field="*{contato.contatoEnum}">
 					<option th:each="contato : ${listaContato}" th:value="${contato}" th:text="${contato}"></option>
 				</select>
 			</div>
 				<div class="col">
+					<label class="form-label">Telefone</label>
 					<input class="form-control" th:errorclass="is-invalid" th:field="*{contato.telefone}" type="text"
 						 placeholder="Digite seu Telefone" />
 					<div class="invalid-feedback" th:errors="*{contato.telefone}"></div>
 				</div>
 				<div class="col">
+					<label class="form-label">Email</label>
 					<input class="form-control" th:errorclass="is-invalid" type="text" th:field="*{contato.email}"
 						placeholder="Digite seu e-mail" />
 					<div class="invalid-feedback" th:errors="*{contato.email}"></div>
@@ -35,22 +40,26 @@
 			<br>
 			<div class="row">
 				<div class="col">
+					<label class="form-label">Tipo Endereco</label>
 				<select class="form-select col" th:field="*{endereco[0].enderecoEnum}">
 					<option th:each="endereco : ${listaEndereco}" th:value="${endereco}" th:text="${endereco}">
 					</option>
 				</select>
 				</div>
 				<div class="col">
+					<label class="form-label">Uf</label>
 					<input class="form-control" id="uf" type="text" placeholder="Digite seu UF"
 						th:errorclass="is-invalid" th:field="*{endereco[0].uf}"/>
 					<div class="invalid-feedback" th:errors="*{endereco[0].uf}"></div>
 				</div>
 				<div class="col">
+					<label class="form-label">Cidade</label>
 					<input class="form-control" id="cidade" type="text" placeholder="Digite sua Cidade"
 						th:errorclass="is-invalid" th:field="*{endereco[0].localidade}" />
 					<div class="invalid-feedback" th:errors="*{endereco[0].localidade}"></div>
 				</div>
 				<div class="col">
+					<label class="form-label">Bairro</label>
 					<input class="form-control" id="bairro" type="text"
 						placeholder="Digite seu Bairro" th:errorclass="is-invalid" th:field="*{endereco[0].bairro}" />
 					<div class="invalid-feedback" th:errors="*{endereco[0].bairro}"></div>
@@ -59,6 +68,7 @@
 			<br>
 			<div class="row">
 				<div class="col">
+					<label class="form-label">Cep</label>
 					<div class="input-group">
 						<input style="max-width: 250px" id="cep" class="form-control" type="text"
 							placeholder="Digite seu CEP" th:errorclass="is-invalid" th:field="*{endereco[0].cep}" />
@@ -68,23 +78,26 @@
 					</div>
 				</div>
 				<div class="col">
+					<label class="form-label">Rua</label>
 					<input class="form-control" type="text" id="logradouro" placeholder="Digite rua, av..."
 						th:errorclass="is-invalid" th:field="*{endereco[0].logradouro}" />
 					<div class="invalid-feedback" th:errors="*{endereco[0].logradouro}"></div>
 				</div>
 				<div class="col">
+					<label class="form-label">Número</label>
 					<input class="form-control" type="text" placeholder="Nº Residencial"
 						th:field="*{endereco[0].numero}" />
 				</div>
 				<div class="col">
+					<label class="form-label">Completo</label>
 					<input class="form-control" type="text" placeholder="Complemento"
 						th:field="*{endereco[0].complemento}" />
 				</div>
 			</div>
 			<br>
-			<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
-			<a href="javascript:history.back()" class="btn btn-outline-warning btn-sm">Voltar</a>
-			<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
+			<button type="submit" class="btn btn-primary">Salvar</button>
+			<a href="javascript:history.back()" class="btn btn-warning ">Voltar</a>
+			
 		</form>
 	</fieldset>
 </div>
