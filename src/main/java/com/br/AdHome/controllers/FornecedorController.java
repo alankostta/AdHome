@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.br.AdHome.models.Contato;
 import com.br.AdHome.models.ContatoEnum;
@@ -48,26 +49,25 @@ public class FornecedorController {
 	}
 
 	@PostMapping(value = "/fornecedor")
-	public ModelAndView saveFornecedor(@Valid Fornecedor fornecedor, BindingResult resultFornecedor) {
+	public ModelAndView saveFornecedor(@Valid Fornecedor fornecedor, BindingResult errors, RedirectAttributes attr) {
 
 		ModelAndView mv = new ModelAndView("fornecedor/fornecedor");
 		mv.addObject("listaContato", ContatoEnum.values());
 		mv.addObject("listaEndereco", EnderecoEnum.values());
 
-		if (resultFornecedor.hasErrors()) {
+		if (errors.hasErrors()) {
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
-			this.retornaErroFornecedor("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
+			mv.addObject("errors", errors);
+			mv.addObject("fail", "ERRO AO TENTAR SALVAR O FORNECEDOR!");
 			return mv;
 		} else {
 			Calendar cal = Calendar.getInstance();
-
 			fornecedor.setDataCadastroForne(LocalDateTime.now(ZoneId.of("UTC")));
 			fornecedor.setDataAlteraForne(LocalDateTime.now(ZoneId.of("UTC")));
 			fornecedor.setAnoRef(cal.get(Calendar.YEAR));
-
 			fornecedorService.saveFornecedor(fornecedor);
-
+			attr.addFlashAttribute("success", "FORNECEDOR SALVO COM SUCESSO!");
 			return new ModelAndView("redirect:/fornecedor/listarFor");
 		}
 		// método BeanUtils está sendo usado para realizar um cast de clienteDto para

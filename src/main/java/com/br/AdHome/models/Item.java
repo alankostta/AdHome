@@ -2,6 +2,8 @@ package com.br.AdHome.models;
 
 import java.io.Serializable;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 
 @Entity
 @Table(name="tb_item")
@@ -23,18 +28,29 @@ public class Item implements Serializable{
     @Column(name="qtd_itens")
     private Integer quantidade = 0;
     
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    @DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
     @Column(name="preco_iten")
     private Double precoIten = 0.0;
     
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    @DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
     @Column(name="sub_total")
     private Double subTotal = 0.0;
     
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    @DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
     @Column(name="valor_total")
     private Double valorTotal = 0.0;
-        
+      
+    @Valid
     @ManyToOne
     private Produto produto;
     
+    @Valid
     @ManyToOne
     private Pedido pedido;
 

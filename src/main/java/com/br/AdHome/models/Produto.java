@@ -2,7 +2,9 @@ package com.br.AdHome.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_produto")
@@ -21,12 +26,18 @@ public class Produto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Informe o nome do produto")
+	@Size(min = 1, max = 255, message = "O campo produto precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "nome_prod",nullable = false, length = 255)
 	private String nome;
 	
+	@NotBlank(message = "Informe a descrição")
+	@Size(min = 1, max = 255, message = "O campo produto precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "descricao",nullable = false, length = 255)
 	private String descricao;
 	
+	@NotBlank(message = "Informe a marca do produto")
+	@Size(min = 1, max = 255, message = "O campo produto precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "marca",nullable = false, length = 255)
 	private String marca;
 	
@@ -50,9 +61,11 @@ public class Produto implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime dataAltera;
 	
+	@Valid
 	@ManyToOne
 	private Fornecedor fornecedor;
 	
+	@Valid
 	@ManyToOne
 	private Categoria categoria;
 

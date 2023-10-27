@@ -2,6 +2,7 @@
 	<fieldset class="fieldset text-left mb-6">
 		<legend>Dados Fornecedor</legend>
 		<form th:action="${action}" th:object="${fornecedor}" method="POST">
+			<div th:replace="~{fragmentos/alert}"></div>
 			<div class="row">
 				<div class="col">
 					<label class="form-label">Nome</label>

@@ -16,7 +16,7 @@
 .thead {
 	color: #fff;
 }
-body{
+.body{
 	background: #F0F8FF;
 	color: #000;
 } 
@@ -26,11 +26,11 @@ body{
 .fieldset {
   width: 100%; /* Definir a largura desejada */
   margin: 0 auto; /* Centralizar o fieldset */
-  border: 3px solid #288ba8;
+ border: 3px solid #288ba8;
   padding: 10px;
   margin-bottom: 20px;
   /*background-color: #f2f2f2;*/
-  background-color: #ADD8E6;
+ background-color: #ADD8E6;
 }
 
 .fieldset legend {
@@ -55,7 +55,8 @@ body{
 	color: rgb(255, 255, 255);
 }
 .h1{
-	border: solid #288ba8;
+	/*border: solid #288ba8;*/
+	border: solid rgb(0, 0, 0);
 	margin: 0%;
 	background-color: #ADD8E6;
 	text-align: center;

@@ -5,71 +5,8 @@
 			<div class="row mt-3">
 				<div class="col">
 					<form class="formulario" th:object="${pedido}" th:action="@{'/pedido/aplicar'}" method="POST">
-						<div class="row">
-							<div class="col">
-								<label class="form-label">Status do Pedido</label>
-								<select class="form-select form-select" aria-label="Default select example"
-									th:field="*{enumStatus}">
-									<option th:each="pedido : ${listaStatus}" th:value="${pedido}" th:text="${pedido}">
-									</option>
-								</select>
-							</div>
-							<div class="col">
-								<label class="form-label">Tipo de pagamento</label>
-								<select class="form-select form-select" aria-label="Default select example"
-									th:field="*{enumPagamento}">
-									<option th:each="pedido : ${listaPagamento}" th:value="${pedido}"
-										th:text="${pedido}"></option>
-								</select>
-							</div>
-							<div class="col">
-								<label class="form-label">Data de geração
-									do pedido</label>
-								<input type="date" class="form-control" th:field="*{dataCadastro}" />
-
-							</div>
-							<div class="col">
-								<label class="form-label">Bandeira doCartão</label>
-								<select class="form-select form-select col-sm-3" aria-label="Default select example"
-									th:field="*{enumCartao}">
-									<option th:each="pedido : ${listaCartao}" th:value="${pedido}" th:text="${pedido}">
-									</option>
-								</select>
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col">
-								<label class="form-label">Código do cliente:</label>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text" id="basic-addon1">Id:</span>
-									</div>
-									<input type="number" class="form-control" id="idClie" th:field="*{cliente.id}"
-										readonly="readonly">
-								</div>
-							</div>
-							<div class="col">
-								<label class="form-label">Cliente:</label>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<button class="btn btn-outline-primary btn" type="button" data-bs-toggle="modal"
-											data-bs-target="#pesquisarClienteModal">Pesquisar</button>
-									</div>
-									<input type="text" class="form-control" id="nomeClie" th:field="*{cliente.nome}"
-										placeholder="Digite o nome do cliente">
-								</div>
-							</div>
-							<div class="col">
-								<label class="form-label">Data de Nascimento</label>
-								<input type="date" class="form-control" id="dataNasci" th:field="*{cliente.dataNasci}">
-							</div>
-							<div class="col">
-								<label class="form-label">Sexo</label>
-								<input type="text" class="form-control" id="sexo" th:field="*{cliente.sexo}">
-							</div>
-						</div>
-						<br>
+						<div th:replace="~{fragmentos/alert}"></div>
+						<div th:replace="~{pedido/cadasPedido}"></div>					
 						<div>
 							<div class="row">
 								<div class="col">
@@ -83,12 +20,12 @@
 									</div>
 								</div>
 								<div class="col">
-									<label class="form-label">Ano do Padido</label>
+									<label class="form-label">Ano do Pedido</label>
 									<input type="number" class="form-control" id="anoRef" th:field="*{cliente.anoRef}">
 								</div>
 								<div class="col">
 									<label class="form-label">Vendedor:</label>
-									<select class="form-select"  id="selectUsuarios" th:field="*{user}"
+									<select class="form-select" id="selectUsuarios" th:field="*{user}"
 										aria-label="Default select example">
 										<option value="">Selecione um Vendedor</option>
 										<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nome}">

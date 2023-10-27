@@ -21,6 +21,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_fornecedor")
@@ -30,9 +34,15 @@ public class Fornecedor implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "nome_fornecedor", nullable = false, length = 60)
+	
+	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ']+$", message = "O nome não pode conter números ou símbolos")
+	@NotBlank(message = "Informe o nome")
+	@Size(min = 3, max = 70, message = "O campo nome precisa ter no minimo {min} digitos ou no maxímo {max}")
+	@Column(name = "nome_fornecedor", nullable = false, length = 70)
 	private String nome;
 	
+	@NotBlank(message = "Informe o nome da empresa")
+	@Size(min = 1, max = 70, message = "O campo empresa precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "empresa_fornecedor", nullable = false, length = 80)
 	private String nomeEmpresa;
 	
@@ -47,6 +57,7 @@ public class Fornecedor implements Serializable {
 	@Column(name = "data_altera", nullable = false, length = 60)
 	private LocalDateTime dataAlteraForne;
 	
+	@Valid
 	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinTable(name = "fornecedor_endereco", 
@@ -58,11 +69,13 @@ public class Fornecedor implements Serializable {
 	 * um grupo único de objetos evitando ser criado várias instancias do mesmo
 	 * objeto
 	 */
+	@Valid
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "contato_id")
 	private Contato contato;
-
+	
+	@Valid
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="fornecedor_id")

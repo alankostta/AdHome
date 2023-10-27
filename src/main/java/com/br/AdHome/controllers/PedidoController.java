@@ -5,10 +5,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.br.AdHome.configs.UserDetailsServiceImpl;
 import com.br.AdHome.models.BandeiraCartaoEnum;
 import com.br.AdHome.models.Cliente;
@@ -27,16 +31,22 @@ import com.br.AdHome.models.Pedido;
 import com.br.AdHome.models.PedidoStatusEnum;
 import com.br.AdHome.models.PedidoTipoPagamentoEnum;
 import com.br.AdHome.models.Produto;
+import com.br.AdHome.repositories.PedidoRepository;
 import com.br.AdHome.services.ClienteService;
 import com.br.AdHome.services.FornecedorService;
 import com.br.AdHome.services.PedidoService;
 import com.br.AdHome.services.ProdutoService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
-@RestController
+@Controller
 @RequestMapping("/pedido")
 public class PedidoController {
+	
+	@Autowired
+	PedidoRepository pedidoRespository;
 
 	@Autowired
 	private PedidoService pedidoService;
@@ -79,6 +89,31 @@ public class PedidoController {
 
 		return mv;
 	}
+	
+	@GetMapping("/exibirPedido/{id}")
+	public ModelAndView exibirPedido(@PathVariable(value = "id") Long id) {
+		
+		var mv = new ModelAndView("pedido/exibirPedido");
+		Optional<Pedido> pedidoOptional = pedidoService.findById(id);
+		
+		if (!pedidoOptional.isPresent()) {
+			mv.addObject("listaStatus", PedidoStatusEnum.values());
+			mv.addObject("listaPagamento", PedidoTipoPagamentoEnum.values());
+			mv.addObject("listaCartao", BandeiraCartaoEnum.values());
+			mv.addObject("users", userDetailsServiceImpl.findAllUser());
+			mv.addObject("produtos", produtoService.findAll());
+			return mv;
+		} else {
+			Pedido pedido = pedidoOptional.get();
+			mv.addObject("pedido", pedido);
+			mv.addObject("listaStatus", PedidoStatusEnum.values());
+			mv.addObject("listaPagamento", PedidoTipoPagamentoEnum.values());
+			mv.addObject("listaCartao", BandeiraCartaoEnum.values());
+			mv.addObject("users", userDetailsServiceImpl.findAllUser());
+			mv.addObject("produtos", produtoService.findAll());
+			return mv;
+		}
+	}
 
 	@GetMapping("/cancelar")
 	public ModelAndView cancelarPedido() {
@@ -98,36 +133,44 @@ public class PedidoController {
 	}
 	@Transactional
 	@PostMapping("/aplicar")
-	public ModelAndView savePedido(@Valid Pedido pedido, BindingResult resultPedido) {
+	public ModelAndView savePedido(@Valid Pedido pedido, BindingResult errors, RedirectAttributes attr) {
 		
 		ModelAndView mv = new ModelAndView("/pedido/pedido");
 
-		if (resultPedido.hasErrors()) {
-			this.retornaErroPedido("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
+		if (errors.hasErrors()) {
+			pedido = new Pedido();
+			itens.clear();
+			mv.addObject("listaStatus", PedidoStatusEnum.values());
+			mv.addObject("listaPagamento", PedidoTipoPagamentoEnum.values());
+			mv.addObject("listaCartao", BandeiraCartaoEnum.values());
+			mv.addObject("listaItens", itens);
+			mv.addObject("users", userDetailsServiceImpl.findAllUser());
+			mv.addObject("produtos", produtoService.findAll());
+			mv.addObject("errors", errors);
+			mv.addObject("fail", "ERRO AO TENTAR SALVAR PEDIDO! POR FAVOR VERIFIQUE OS CAMPOS OBRIGATORIOS");
 			return mv;
 		} else {
-			
+
 			LocalDateTime dataHoraAtual = LocalDateTime.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 			String dataHoraFormatada = dataHoraAtual.format(formatter);
 			LocalDateTime dataHoraConvertida = LocalDateTime.parse(dataHoraFormatada, formatter);
-			System.out.println(pedido.getValorPedido());
-			this.pedido.setItens(itens);
 			
 			
 			for (Item it : itens) {
 				it.setPedido(pedido);
+				pedido.getItens().add(it);
 			}
 			pedido.setValorPedido(this.pedido.getValorPedido());
 			Calendar cal = Calendar.getInstance();
 			pedido.setAnoRef(cal.get(Calendar.YEAR));
 			pedido.setDataAlteraPedido(dataHoraConvertida);
-			pedido.setDescontoPedido(0.0);
+			//pedido.setDescontoPedido(0.0);
 			
 			pedidoService.savePedido(pedido);
 			itens.clear();
 			pedido = new Pedido();
-
+			attr.addFlashAttribute("success", "PEDIDO GERADO COM SUCESSO!");
 			return new ModelAndView("redirect:/pedido/listarPed");
 		}
 	}
@@ -210,7 +253,7 @@ public class PedidoController {
 			item.setPrecoIten(produto.getValorSaida());
 			item.setQuantidade(item.getQuantidade() + 1);
 			item.setSubTotal(item.getQuantidade() * item.getPrecoIten());
-			item.setValorTotal(item.getValorTotal() * item.getPrecoIten());
+			item.setValorTotal(item.getValorTotal() + item.getSubTotal());
 			itens.add(item);
 
 			mv.addObject("listaItens", itens);
@@ -271,11 +314,22 @@ public class PedidoController {
 		}
 		return new ResponseEntity<List<Produto>>(HttpStatus.BAD_REQUEST);
 	}
-
-	public ModelAndView retornaErroPedido(String msg) {
-		ModelAndView mv = new ModelAndView("redirect:/pedido/listar");
-		mv.addObject("mensagem", msg);
-		mv.addObject("erro", true);
-		return mv;
+	//===============================================DATATABLES==================================================
+	@GetMapping("/table")
+	public String showTable() {	
+		return "pedido/pedido-table";
+	}
+	//@GetMapping("/datatables")
+	@GetMapping(value = "datatables")
+	@ResponseBody
+	public ResponseEntity<?> datatables(HttpServletRequest request){
+		Map<String, Object> data = new PedidoService().execute(this.pedidoRespository, request);
+		return ResponseEntity.ok(data);
+	}
+	@GetMapping(value = "todosPedidos")
+	@ResponseBody
+	public ResponseEntity<List<Pedido>> todosPedidos() {
+		List<Pedido> pedidos = pedidoService.findAll();
+		return new ResponseEntity<List<Pedido>>(pedidos, HttpStatus.OK);
 	}
 }

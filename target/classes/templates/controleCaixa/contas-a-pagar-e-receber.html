@@ -4,61 +4,64 @@
 <head th:replace="~{fragmentos/head :: head('Controle de Despesas')}"></head>
 
 <body>
-	<script src="/js/scripts.js"></script>
+	<script src="/js/script.js"></script>
 	<script src="/js/util.js"></script>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Cadastro de Despesas')}"></header>
 	<fieldset class="fieldset text-left mb-6">
 		<form action="/controleCaixa/salvarDespesas" th:object="${despesas}" method="POST">
-			<div class="text-center">
-				<div class="row">
-					<div class="col">
-						<label class="col-form-label">Descrição do débito</label>
-						<input class="form-control" type="text" th:field="*{descDebito}" />
+			<div th:replace="~{fragmentos/alert}"></div>
+			<div class="row">
+				<div class="col">
+					<label class="col-form-label">Descrição do débito</label>
+					<input class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('descDebito')}? 'is-invalid'" th:field="*{descDebito}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{descDebito}"></span>
 					</div>
-					<div class="col">
-						<br>
-						<div class="d-flex flex-column align-items-center">
-							<label class="form-check-label">Tem Parcela</label>
-							<input type="radio" class="form-check-input" id="simRadio" name="temParcelas" value="true" th:field="*{parcela}">
-						</div>
+				</div>
+				<div class="col">
+					<br>
+					<div class="d-flex flex-column align-items-center">
+						<label class="form-check-label">Tem Parcela</label>
+						<input type="radio" class="form-check-input" id="simRadio" name="temParcelas" value="true"
+							th:field="*{parcela}">
 					</div>
-					<div class="col">
-						<br>
-						<div class="d-flex flex-column align-items-center">
-							<label class="form-check-label">Não Tem Parcela</label>
-							<input type="radio" class="form-check-input" id="naoRadio" name="temParcelas" value="false" th:field="*{parcela}">
-						</div>
+				</div>
+				<div class="col">
+					<br>
+					<div class="d-flex flex-column align-items-center">
+						<label class="form-check-label">Não Tem Parcela</label>
+						<input type="radio" class="form-check-input" id="naoRadio" name="temParcelas" value="false"
+							th:field="*{parcela}">
 					</div>
-					<div class="col">
-						<div class="d-flex flex-column align-items-center">
-							<label class="col-form-label">Numero de Parcelas</label>
-							<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-								<div class="btn-group" role="group">
-									<button type="button" class="btn btn-outline-primary dropdown-toggle"
-										data-bs-toggle="dropdown" id="btParce" aria-expanded="false" disabled>
-										Nº
-									</button>
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item"><input class="form-control" type="number" th:field="*{numeroPercelas}" /></a>
-										</li>
-									</ul>
-								</div>
+				</div>
+				<div class="col">
+					<div class="d-flex flex-column align-items-center">
+						<label class="col-form-label">Numero de Parcelas</label>
+						<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+							<div class="btn-group" role="group">
+								<button type="button" class="btn btn-outline-primary dropdown-toggle"
+									data-bs-toggle="dropdown" id="btParce" aria-expanded="false" disabled>
+									Nº
+								</button>
+								<ul class="dropdown-menu">
+									<li><a class="dropdown-item"><input class="form-control" type="number"
+												th:field="*{numeroPercelas}" /></a>
+									</li>
+								</ul>
 							</div>
 						</div>
 					</div>
-					<div class="col">
-						<div class="d-flex flex-column align-items-center">
-							<label class="col-form-label">Valor do débito</label>
-							<input id="valDebitoInput" class="form-control" type="text" th:field="*{valDebito}" />
-						</div>
-					</div>
-					<div class="col">
-						<div class="d-flex flex-column align-items-center">
-							<label class="col-form-label">Data de vencimento</label>
-							<input class="form-control" id="dat" type="date" th:field="*{dtVencimento}" />
-						</div>
-					</div>
+				</div>
+				<div class="col">
+					<label class="col-form-label">Valor do débito</label>
+					<input id="valDebitoInput" class="form-control" type="text" th:field="*{valDebito}" />
+				</div>
+				<div class="col">
+
+					<label class="col-form-label">Data de vencimento</label>
+					<input class="form-control" id="dat" type="date" th:field="*{dtVencimento}" />
 				</div>
 			</div>
 			<div class="row">
@@ -78,13 +81,11 @@
 					<label class="col-form-label">Forma de pagamanto</label>
 					<select class="form-select" aria-label="Default select example" th:field="*{enumPagamento}">
 						<option value="">Selecione</option>
-						<option th:each="d : ${listaPagamento}" th:value="${d}" th:text="${d}">One</option>
-
+						<option th:each="d : ${listaPagamento}" th:value="${d}" th:text="${d}"></option>
 					</select>
 				</div>
 			</div>
 			<div>
-
 				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
 		</form>
 		<table class="table table-hover">

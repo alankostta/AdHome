@@ -2,12 +2,17 @@ package com.br.AdHome.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,52 +28,63 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_cliente")
 public class Cliente implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Size(min = 3, max = 70, message = "Nome inválido")
+
+	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ']+$", message = "O nome não pode conter números ou símbolos")
+	@NotBlank(message = "Informe o nome")
+	@Size(min = 3, max = 70, message = "O campo nome precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "nome_clie", nullable = false, length = 70)
 	private String nome;
-	
-	@Size(min = 3, max = 30, message = "Sexo invalido")
+
+	@NotNull(message = "Selecione o sexo")
+	@Size(min = 1, max = 30, message = "Sexo invalido")
 	@Column(name = "sexo_clie", nullable = false, length = 30)
 	private String sexo;
-	
+
+	@NotNull(message = "Informe a data de nascimento")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "dataNasci_clie", nullable = false, length = 30)
 	@Temporal(TemporalType.DATE)
 	private Date dataNasci;
 
+	// @NotNull(message = "Atributo é obrigatório")
 	@Column(name = "ano_ref", nullable = false)
 	private Integer anoRef;
 
+	// @NotNull(message = "Atributo data de cadastro é obrigatório")
 	@Column(name = "data_Cadastro", nullable = false, length = 30)
 	private LocalDateTime dataCadastro;
 
+	// @NotNull(message = "Campo data de alterção é obrigatório")
 	@Column(name = "data_Altera", length = 30, nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAltera;
-	
+
+	@Valid
 	@JsonManagedReference
-	@OneToOne(cascade = CascadeType.ALL,targetEntity = Contato.class, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, targetEntity = Contato.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "contato_id")
 	private Contato contato;
-	
+
+	@Valid
 	@JsonManagedReference
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-	@JoinTable(name = "cliente_endereco", 
-	joinColumns = @JoinColumn(name = "cliente_fk"), 
-	inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
+	@JoinTable(name = "cliente_endereco", joinColumns = @JoinColumn(name = "cliente_fk"), inverseJoinColumns = @JoinColumn(name = "endereco_fk"))
 	private List<Endereco> endereco;
-	
+
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "cliente_id")
@@ -122,6 +138,7 @@ public class Cliente implements Serializable {
 	}
 
 	public void setDataNasci(Date dataNasci) {
+
 		this.dataNasci = dataNasci;
 	}
 
@@ -130,6 +147,10 @@ public class Cliente implements Serializable {
 	}
 
 	public void setAnoRef(Integer anoRef) {
+		if (anoRef == null) {
+			Calendar cal = Calendar.getInstance();
+			anoRef = cal.get(Calendar.YEAR);
+		}
 		this.anoRef = anoRef;
 	}
 
@@ -138,6 +159,9 @@ public class Cliente implements Serializable {
 	}
 
 	public void setDataCadastro(LocalDateTime dataCadastro) {
+		if (dataCadastro == null) {
+			dataCadastro = LocalDateTime.now(ZoneId.of("UTC"));
+		}
 		this.dataCadastro = dataCadastro;
 	}
 
@@ -146,6 +170,9 @@ public class Cliente implements Serializable {
 	}
 
 	public void setDataAltera(LocalDateTime dataAltera) {
+		if (dataAltera == null) {
+			dataAltera = LocalDateTime.now(ZoneId.of("UTC"));
+		}
 		this.dataAltera = dataAltera;
 	}
 

@@ -7,6 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,7 +27,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_pedido")
@@ -33,40 +40,51 @@ public class Pedido implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	@Column(name = "data_altera", nullable = false)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDateTime dataAlteraPedido;
-	
-	@Column(name = "ano_ref",nullable = false)
+
+	@Column(name = "ano_ref", nullable = false)
 	private Integer anoRef;
-	
+
+	@NumberFormat(style = NumberFormat.Style.CURRENCY)
+	@DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
 	@Column(name = "valor_pedido", nullable = false)
 	private Double valorPedido;
-	
+
+	@NumberFormat(style = NumberFormat.Style.CURRENCY)
+	@DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
 	@Column(name = "desconto_pedido", nullable = false)
-	private Double descontoPedido;
-	
+	private Double descontoPedido = 0.0;
+
 	@Column(name = "observa_pedido")
 	private String observacaoPedido;
 	
+	@NotNull(message = "Insira uma data")
 	@Column(name = "data_cadastro", nullable = false)
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dataCadastro;
-	
+
 	@Enumerated(EnumType.STRING)
 	private PedidoStatusEnum enumStatus;
-	
+
 	@Enumerated(EnumType.STRING)
 	private PedidoTipoPagamentoEnum enumPagamento;
-	
+
 	@Enumerated(EnumType.STRING)
 	private BandeiraCartaoEnum enumCartao;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Valid
+	@JsonIgnore
+	@JsonManagedReference
+	@OneToMany(cascade = CascadeType.ALL, targetEntity = Item.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "iten_id")
-    private List<Item> itens =  new ArrayList<>();
-
+	private List<Item> itens = new ArrayList<>();
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private AdUser user;
 	
@@ -79,8 +97,8 @@ public class Pedido implements Serializable {
 
 	public Pedido(Long id, LocalDateTime dataAlteraPedido, Integer anoRef, Double valorPedido, Double descontoPedido,
 			String observacaoPedido, Date dataCadastro, PedidoStatusEnum enumStatus,
-			PedidoTipoPagamentoEnum enumPagamento, BandeiraCartaoEnum enumCartao, List<Item> itens,
-			AdUser user, Cliente cliente) {
+			PedidoTipoPagamentoEnum enumPagamento, BandeiraCartaoEnum enumCartao, List<Item> itens, AdUser user,
+			Cliente cliente) {
 		super();
 		this.id = id;
 		this.dataAlteraPedido = dataAlteraPedido;
@@ -95,7 +113,7 @@ public class Pedido implements Serializable {
 		this.itens = itens;
 		this.user = user;
 		this.cliente = cliente;
-		
+
 	}
 
 	public Long getId() {

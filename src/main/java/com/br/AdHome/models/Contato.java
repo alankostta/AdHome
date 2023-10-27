@@ -2,6 +2,7 @@ package com.br.AdHome.models;
 
 import java.io.Serializable;
 import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +11,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "tb_contato")
@@ -19,9 +23,14 @@ public class Contato implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank(message = "Informe o telefone")
+	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ']+$", message = "O número de telefone não deve conter simbolos")
 	@Column(name = "tele_contato", nullable = false, length = 30)
 	private String telefone;
 	
+	@NotBlank(message = "Informe o email")
+	@Email(message = "Email invalido")
 	@Column(name = "email_contato", nullable = true, length = 150)
 	private String email;
 	

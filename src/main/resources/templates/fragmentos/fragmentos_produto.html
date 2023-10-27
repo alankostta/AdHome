@@ -4,6 +4,7 @@
 			<legend>Menu</legend>
 			<div class="row">
 				<form th:action="${action}" th:object="${produto}" method="POST">
+					<div th:replace="~{fragmentos/alert}"></div>
 					<div class="row">
 						<div class="col">
 							<label>Código do Fornecedor:</label>
@@ -23,21 +24,29 @@
 										data-bs-target="#pesquisarModal">Pesquisar</button>
 								</div>
 								<input type="text" class="form-control" id="nomeFor" readonly="readonly"
+									th:classappend="${#fields.hasErrors('fornecedor.nome')}? 'is-invalid'"
 									th:field="*{fornecedor.nome}"
 									placeholder="Pesquise a empresa para encontrar o fornecedor">
+								<div class="invalid-feedback">
+									<span th:errors="*{fornecedor.nome}"></span>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col">
 							<label>Produto:</label>
-							<input class="form-control" type="text" th:field="*{nome}" th:errorclass="is-invalid"
-								placeholder="Informe o nome do produto">
-							<div class="invalid-feedback" th:errors="*{nome}"></div>
+							<input class="form-control" type="text"
+								th:classappend="${#fields.hasErrors('nome')}? 'is-invalid'" th:field="*{nome}"
+								th:errorclass="is-invalid" placeholder="Informe o nome do produto">
+							<div class="invalid-feedback">
+								<span th:errors="*{nome}"></span>
+							</div>
 						</div>
 						<div class="col">
 							<label>Descrição do Produto:</label>
-							<input class="form-control" type="text" th:field="*{descricao}" th:errorclass="is-invalid"
+							<input class="form-control" type="text" th:field="*{descricao}"
+								th:classappend="${#fields.hasErrors('nome')}? 'is-invalid'"
 								placeholder="Informe a descrição do produto">
 							<div class="invalid-feedback" th:errors="*{descricao}"></div>
 						</div>
@@ -57,8 +66,8 @@
 						</div>
 						<div class="col">
 							<label>Valor para vendas:</label>
-							<input class="form-control" type="text" th:field="*{valorSaida}"
-								th:errorclass="is-invalid" placeholder="Valor de entrada do produto">
+							<input class="form-control" type="text" th:field="*{valorSaida}" th:errorclass="is-invalid"
+								placeholder="Valor de entrada do produto">
 						</div>
 						<div class="invalid-feedback" th:errors="*{valorSaida}">
 						</div>
@@ -75,9 +84,8 @@
 							<label>Categoria do Produto:</label>
 							<select class="form-select" aria-label="Default select example" th:field="*{categoria}">
 								<option value="">Selecione</option>
-								<option th:each="c : ${categorias}" 
-									th:value="${c.id}"
-									th:text="${c.nomeCategoria}">Selecione</option>	
+								<option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nomeCategoria}">
+									Selecione</option>
 							</select>
 						</div>
 						<div class="invalid-feedback" th:errors="*{categoria}"></div>

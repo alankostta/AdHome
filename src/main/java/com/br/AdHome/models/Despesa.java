@@ -3,6 +3,9 @@ package com.br.AdHome.models;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import org.springframework.format.annotation.NumberFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +15,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_despesas")
@@ -23,21 +30,29 @@ public class Despesa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	
+	@NotBlank(message = "Informe a descrição")
 	@Column(name = "descricao_debito")
 	private String descDebito;
 	
+	@NumberFormat(style = NumberFormat.Style.CURRENCY)
+	@DecimalMin(value = "0.0", inclusive = false)
+	@DecimalMax(value = "1000000", inclusive = false)
 	@Column(name = "valor_debito")
 	private BigDecimal valDebito;
 	
+	@NotNull(message = "Informe a data de vencimento")
 	@Column(name = "data_vencimento")
 	private LocalDate dtVencimento;
 	
-	
+	@NotNull(message = "Informe a data de cadastro")
 	@Column(name = "data_cadastro")
 	private LocalDate dtCadastro;
 	
+	
 	@ManyToOne
 	private Categoria categoria;
+	
 	
 	@Enumerated(EnumType.STRING)
 	private PedidoTipoPagamentoEnum enumPagamento;

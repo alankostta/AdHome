@@ -3,12 +3,13 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link rel="stylesheet" href="/css/style.css">
 
-<head th:replace="~{fragmentos/head :: head('Editar Fornecedor')}"></head>
+<head th:replace="~{fragmentos/head :: head('Listar Pedidos')}"></head>
 
 <body>
 	<header th:replace="~{fragmentos/navBar :: nav}"></header>
 	<header th:replace="~{fragmentos/header :: header('Lista de Pedidos')}"></header>
 	<fieldset class="fieldset text-left mb-5">
+		<div th:replace="~{fragmentos/alert}"></div>
 		<div class="row">
 			<div class="col-12">
 				<div>
@@ -19,13 +20,13 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class="table-active">Id Pedido</th>
-							<th class="table-active">Nome Clien.</th>
-							<th class="table-active">Contato do clien.</th>
-							<th class="table-active">Endereço do clien.</th>
-							<th class="table-active">Status pedido</th>
+							<th class="table-active">Código.</th>
+							<th class="table-active">Nome.</th>
+							<th class="table-active">Contato.</th>
+							<th class="table-active">Endereço.</th>
+							<th class="table-active">Status.</th>
 							<th class="table-active">Forma de Pg.</th>
-							<th class="table-active">Data</th>
+							<th class="table-active">Data da Geração</th>
 							<th class="table-active">Vendedor</th>
 							<th class="table-active">Valor</th>
 							<td class="table-active"></td>
@@ -42,6 +43,7 @@
 									th:attr="data-bs-content=${#strings.concat(c.email, ' - ', c.telefone, ' ',)}">
 									<span class="bi bi-eye"></span>
 								</button>
+								<span th:text="${c.contatoEnum}"></span><br>
 							</td>
 							<td th:each="end : ${p.cliente.endereco}">
 								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
@@ -55,6 +57,7 @@
 									      end.numero)}">
 									<span class="bi bi-eye"></span>
 								</button>
+								<span th:text="${end.enderecoEnum}"></span>
 							</td>
 							<td th:text="${p.enumStatus}"></td>
 							<td th:text="${p.enumPagamento}"></td>
@@ -64,7 +67,7 @@
 							</td>
 							<td th:text="${p.valorPedido}">
 							<td><a class="btn btn-outline-info btn-sm"
-									th:href="@{/pedido/{p.id}(p.id=${p.id})}">Detalhes</a></td>
+									th:href="@{/pedido/exibirPedido/{p.id}(p.id=${p.id})}">Detalhes</a></td>
 							<td><a class="btn btn-outline-primary btn-sm"
 									th:href="@{/pedido/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
 							<td><a class="btn btn-outline-danger btn-sm"

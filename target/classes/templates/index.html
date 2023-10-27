@@ -6,41 +6,7 @@
 </head>
 <body>
 	<header th:replace="~{fragmentos/navBar :: nav}" ></header>
-	<div class="fluid">
-    <div class="row">
-        <div class="col-sm-auto bg-light sticky-top">
-            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-dark align-items-center sticky-top">              
-                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center align-items-center">
-                    <li class="nav-item">
-                        <a href="../controleCaixa/contas-a-pagar-e-receber" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                            <i class="bi-house fs-1"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Dashboard">
-                            <i class="bi-speedometer2 fs-1"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Orders">
-                            <i class="bi-table fs-1"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Products">
-                            <i class="bi-heart fs-1"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a th:href="@{/usuario/cadastrar-user}" class="nav-link py-3 px-2" title="" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Customers">
-                            <i class="bi-people fs-1"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<footer th:replace="~{fragmentos/footer :: rodape}"></footer>
+	<div th:replace="~{fragmentos/fragmento_menu_lateral_esq :: menu_esq}"></div>	
+	<footer th:replace="~{fragmentos/footer :: rodape}"></footer>
 </body>
 </html>

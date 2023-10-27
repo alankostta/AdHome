@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.br.AdHome.models.Cliente;
 import com.br.AdHome.models.Contato;
@@ -59,30 +60,25 @@ public class ClienteController {
 	@Transactional
 	@PostMapping(value = "cliente/aplicar")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ModelAndView saveCliente(@Valid Cliente cliente, BindingResult resultCliente) {
+	public ModelAndView saveCliente(@Valid Cliente cliente, BindingResult errors, RedirectAttributes attr) {
 
-		ModelAndView mv = new ModelAndView("cliente/cliente");
-		mv.addObject("listaContato", ContatoEnum.values());
-		mv.addObject("listaEndereco", EnderecoEnum.values());
-
-		if (resultCliente.hasErrors()) {
+		if (errors.hasErrors()) {
+			ModelAndView mv = new ModelAndView("cliente/cliente");
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
-			this.retornaErroCliente("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
+			mv.addObject("errors", errors);
+			mv.addObject("fail", "ERRO AO TENTAR SALVAR CLIENTE!");
 			return mv;
 		} else {
+			ModelAndView mv = new ModelAndView("redirect:/cliente/listar");
 			Calendar cal = Calendar.getInstance();
 			cliente.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
 			cliente.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
 			cliente.setAnoRef(cal.get(Calendar.YEAR));
-			// Salva o contato no banco de dados
-
 			clienteService.saveCliente(cliente);
-
-			return new ModelAndView("redirect:/cliente/listar");
+			attr.addFlashAttribute("success", "CLIENTE SALVO COM SUCESSO!");
+			return mv;
 		}
-		// método BeanUtils está sendo usado para realizar um cast de clienteDto para
-		// cliente
 	}
 
 	@GetMapping("cliente/listar")
@@ -92,28 +88,28 @@ public class ClienteController {
 		var mv = new ModelAndView("cliente/listar");
 		Iterable<Cliente> cliente = clienteService.clienteProjecao();
 		mv.addObject("cliente", cliente);
-
-		mv.addObject("mensagem", "PESQUISA REALIZADA COM SUCESSO!");
+		
 		return mv;
 	}
 
 	@GetMapping("exibir/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_USER')")
 	public ModelAndView getOneCliente(@PathVariable(value = "id") Long id) {
-
-		Optional<Cliente> clienteOptional = clienteService.findById(id);
+		
 		var mv = new ModelAndView("cliente/exibir");
+		Optional<Cliente> clienteOptional = clienteService.findById(id);
+		
 		if (!clienteOptional.isPresent()) {
-			return this.retornaErroCliente(
-					"ERRO AO EXIBIR: a inscrição " + "(" + id + ") Motivo, não foi encontrado no banco esse cadastro!");
-
+			mv.addObject("listaContato", ContatoEnum.values());
+			mv.addObject("listaEndereco", EnderecoEnum.values());
+			mv.addObject("fail", "ERRO AO EXIBIR: a inscrição [*" + id + "*] Motivo, não foi encontrado no banco esse cadastro!");
+			return mv;
 		} else {
 			Cliente cliente = clienteOptional.get();
 			mv.addObject("cliente", cliente);
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
-			mv.addObject("mensagem", "CLIENTE COM INSCRIÇÃO" + id + " ENCONTRADO COM SUCESSO!");
-			mv.addObject("erro", false);
+			mv.addObject("success", "CLIENTE COM INSCRIÇÃO [* " + id + " *] ENCONTRADO COM SUCESSO!");
 			return mv;
 		}
 	}
@@ -121,16 +117,17 @@ public class ClienteController {
 	@Transactional
 	@GetMapping("/cliente/{id}/excluir")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public ModelAndView deleteCliente(@PathVariable(value = "id") Long id) {
-
+	public ModelAndView deleteCliente(@PathVariable(value = "id") Long id, RedirectAttributes attr ) {
+		ModelAndView mv = new ModelAndView("redirect:/cliente/listar");
 		Optional<Cliente> clienteOptional = clienteService.findById(id);
 
 		if (!clienteOptional.isPresent()) {
-			return this.retornaErroCliente(
-					"ERRO AO EXCLUIR: Cliente com inscrição (" + id + ") não foi encontrado no banco!");
+			attr.addFlashAttribute("fail", "ERRO AO EXCLUIR: CLIENTE COM INSCRIÇÃO [* " + id + " *] NÃO FOI ENCONTRADO NO BANCO!");
+			
+			return mv;
 		} else {
+		
 			Cliente cliente = clienteOptional.get();
-
 			// Remove o cliente de cada endereço associado
 			List<Endereco> enderecos = cliente.getEndereco();
 			cliente.setEndereco(null);
@@ -145,10 +142,8 @@ public class ClienteController {
 			cliente.setEndereco(null);
 			clienteService.saveCliente(cliente);
 			clienteService.deleteCliente(cliente);
-
-			ModelAndView mv = new ModelAndView("redirect:/cliente/listar");
-			mv.addObject("mensagem", "INSCRIÇÃO DO CLIENTE " + id + " EXCLUIDO COM SUCESSO!");
-			mv.addObject("erro", false);
+			attr.addFlashAttribute("success", "INSCRIÇÃO DO CLIENTE [* " + id + " *] EXCLUIDO COM SUCESSO!");
+			
 			return mv;
 		}
 	}
@@ -170,11 +165,12 @@ public class ClienteController {
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
 			mv.addObject("cliente", clien);
-			mv.addObject("mensagem", "CLIENTE ISCRIÇÃO COM " + id + " encontrado!");
-			mv.addObject("erro", false);
+			mv.addObject("success", "CLIENTE COM ISCRIÇÃO [* " + id + " *] ENCONTRADO!");
+			
 			return mv;
 		} else {
-			return this.retornaErroCliente("ERRO AO EDITAR: Cliente com inscrição (" + id + ")");
+			mv.addObject("fail", "ERRO AO BUSCAR: CLIENTE COM INSCRIÇÃO [* " + id + " *]");
+			return mv;
 		}
 	}
 
@@ -182,23 +178,20 @@ public class ClienteController {
 	@PostMapping(value = "cliente/aplicar/{id}")
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public ModelAndView updateCliente(@PathVariable(value = "id") Long id, @Valid Cliente client,
-			BindingResult resultCliente) {
+			BindingResult errors, RedirectAttributes attr ) {
 
-		ModelAndView mv = new ModelAndView("redirect:/exibir/" + id);
-
-		if (resultCliente.hasErrors()) {
-			
+		if (errors.hasErrors()) {
+			ModelAndView mv = new ModelAndView("redirect:/cliente/{id}/editar");
+			mv.addObject("id", id);
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
-			this.retornaErroCliente("ERRO AO SALVAR!!! PREENCHA OS CAMPOS NOME, SEXO, DATA DE NASCIMENTO!");
+			
+			attr.addFlashAttribute("fail", "ERRO AO SALVAR CLIENTE!");
 			return mv;
 		} else {
 			// Busque o cliente existente no repositório
 			Cliente cliente = clienteService.findById(id)
-					.orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado com o ID: " + id));
-
-			// Atualize os campos do objeto Cliente a partir do ClienteDto usando o Mapper
-			// ClienteDtoMappers.INSTANCE.updateClienteFromDto(clienteDto, cliente);
+					.orElseThrow(() -> new EntityNotFoundException("CLIENTE COM ID: [* " +id+" *] NÃO LOCALIZADO"));
 
 			// Atualize a data de alteração
 			client.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
@@ -206,19 +199,12 @@ public class ClienteController {
 			client.setDataCadastro(cliente.getDataCadastro());
 			// Salve o cliente atualizado no repositório
 			clienteService.saveCliente(client);
-			
+			ModelAndView mv = new ModelAndView("redirect: exibir/{id}");
 			mv.addObject("listaContato", ContatoEnum.values());
 			mv.addObject("listaEndereco", EnderecoEnum.values());
-			mv.addObject("mensagem", "Cliente com inscrição " + id + " editado com sucesso!");
-			mv.addObject("erro", false);
+			attr.addFlashAttribute("success", "CLIENTE COM INSCRIÇÃO [* "+id+" *] EDITADO COM SUCESSO!");
+			
 			return mv;
 		}
-	}
-
-	private ModelAndView retornaErroCliente(String msg) {
-		ModelAndView mv = new ModelAndView("redirect:/cliente/listar");
-		mv.addObject("mensagem", msg);
-		mv.addObject("erro", true);
-		return mv;
 	}
 }

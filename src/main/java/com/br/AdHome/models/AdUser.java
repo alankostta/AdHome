@@ -13,6 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -24,17 +27,24 @@ public class AdUser implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	@NotBlank(message = "Informe o nome de usuário")
+	@Size(min = 3, max = 60, message = "O campo nome precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "nome_user", nullable = false, length = 60)
-	@Size(min = 3)
 	private String nomeUser;
-
+	
+	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ']+$", message = "O nome não pode conter números ou símbolos")
+	@NotBlank(message = "Informe o nome")
+	@Size(min = 3, max = 60, message = "O campo nome precisa ter no minimo {min} digitos ou no maxímo {max}")
 	@Column(name = "nome", nullable = true, length = 60)
 	private String nome;
 
+	@NotBlank(message = "Informe o email")
+	@Email(message = "Email invalido")
 	@Column(name = "email_user", nullable = false, length = 60)
 	private String emailUser;
 
+	@NotBlank(message = "Informe a senha")
 	@Column(name = "senha_user", nullable = false, length = 60)
 	private String password;
 
@@ -47,7 +57,6 @@ public class AdUser implements UserDetails {
 	private List<Pedido> pedido;
 
 	public AdUser() {
-
 	}
 
 	public AdUser(Long id, String nome, String nomeUser, String emailUser, String password, List<RoleModel> roles,

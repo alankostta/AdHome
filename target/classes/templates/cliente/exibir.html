@@ -11,6 +11,7 @@
 	<main>
 		<div class="col-12">
 			<fieldset class="fieldset text-left mb-5">
+				<div th:replace="~{fragmentos/alert}"></div>
 				<legend>Dados Cliente</legend>
 				<form th:action="${action}" th:object="${cliente}" method="POST">
 					<div class="row">
@@ -82,8 +83,6 @@
 							<input class="form-control" type="text" th:value="${cliente.endereco[0].numero}" />
 						</div>
 					 </div>
-					<a href="javascript:history.back()-1" class="btn btn-outline-warning btn-sm">Voltar</a>
-					<button type="button" class="btn btn-outline-danger btn-sm">Pesquisar</button>
 				</form>
 			</fieldset>
 		</div>

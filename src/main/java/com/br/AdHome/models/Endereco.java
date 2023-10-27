@@ -18,6 +18,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "tb_endereco")
@@ -28,22 +30,28 @@ public class Endereco implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Informe a Uf")
 	@SerializedName("uf")
 	@Column(name = "uf",nullable = false, length = 2)
 	private String uf;
 	
-	 @SerializedName("localidade")
+	@NotBlank(message = "Informe a cidade")
+	@SerializedName("localidade")
 	@Column(name = "cidade",nullable = false, length = 255)
 	private String localidade;
 	
-	 @SerializedName("bairro")
+	@NotBlank(message = "Informe o bairro")
+	@SerializedName("bairro")
 	@Column(name = "bairro",nullable = false, length = 255)
 	private String bairro;
 	
+	@Pattern(regexp = "^\\d{5}-\\d{3}$", message = "Insira um cep valido!")
+	@NotBlank(message = "Informe o cep")
 	@SerializedName("cep")
 	@Column(name = "cep",nullable = false, length = 30)
 	private String cep;
 	
+	@NotBlank(message = "Informe a rua ou av...")
 	@SerializedName("logradouro")
 	@Column(name = "logradouro", nullable = false, length = 255)
 	private String logradouro;
