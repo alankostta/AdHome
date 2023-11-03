@@ -15,7 +15,7 @@
 								class="bi bi-plus-circle-fill"></i> Novo Cliente</a>
 					</div>
 					<br>
-					<table class="table table-hover">
+					<table class="table table-hover text-center">
 						<thead>
 							<tr>
 								<th class="table-active">Id.</th>
@@ -30,7 +30,7 @@
 								<th class="table-active"></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="text-center">
 							<tr th:each="c : ${cliente}">
 								<td th:text="${c.id}"></td>
 								<td th:text="${c.nome}"></td>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<script src="/js/script.js" defer></script>
 <head th:replace="~{fragmentos/head :: head('Exibir Pedido')}"></head>
 
 <body>
@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<fieldset class="fieldset text-left mb-5">
 		<div th:replace="~{fragmentos/alert}"></div>
-		<form class="" th:object="${pedido}">
+		<form class="" th:object="${pedido}" method="POST">
 			<div class="row">
 				<div class="col">
 					<label class="form-label">Status do Pedido</label>
@@ -118,6 +118,8 @@
 							<th class="table-active">Quantidade.</th>
 							<th class="table-active">Preço.</th>
 							<th class="table-active">Sub-Total.</th>
+							<td class="table-active"></td>
+							<td class="table-active"></td>
 						</tr>
 					</thead>
 					<tbody>
@@ -127,29 +129,28 @@
 							<td th:text="${item.produto.descricao}"></td>
 							<td th:text="${item.produto.categoria.nomeCategoria}"></td>
 							<td th:text="${item.quantidade}"></td>
-							<td th:text="${item.produto.valorSaida}"></td>
-							<td th:text="${item.subTotal}"></td>
-						</tr>
-						<tr>
-							<td colspan="4" ><strong>TOTAL:</strong></td>
-							<td colspan="2"></td>
-							<td th:text="${pedido.valorPedido}" 
-								style="background-color: #DCDCDC; text-align: right; font-weight: bold;">
+							<td th:text="${item.produto.valorSaida}"></td>		
+							<td>
+								<span th:text="${item.quantidade}"></span>&nbsp;&nbsp;
+								<a class="btn btn-success" th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${1})}">
+									<i class="bi bi-plus"></i></i>
+								</a>&nbsp;&nbsp;
+								<a class="btn btn-success" th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${0})}">
+									<i class="bi bi-dash"></i>
+								</a>
 							</td>
-
+							<td th:text="${item.subTotal}"></td>
+							<td>
+								<a class="btn btn-outline-danger btn-sm"
+									th:href="@{/pedido/{p.id}/excluir(p.id=${item.produto.id})}">Remover</a>
+							</td>
 						</tr>
-
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</fieldset>
-	<div class="row">
-		<div class="col-12">
-			<a class="btn btn-primary" th:href="@{/pedido/editarPedido/{id}/editar(id = ${pedido.id})}">Editar</a>
-			<a href="/pedido/listarPed" class="btn btn-primary">Voltar</a>
-		</div>
-	</div>
+	<div th:replace="~{pedido/modal-pesquisar-cliente :: modal-cliente}"></div>
 </body>
 <script th:type="@{text/javascript}">
 	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')

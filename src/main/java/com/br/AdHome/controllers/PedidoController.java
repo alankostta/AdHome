@@ -34,6 +34,7 @@ import com.br.AdHome.models.Produto;
 import com.br.AdHome.repositories.PedidoRepository;
 import com.br.AdHome.services.ClienteService;
 import com.br.AdHome.services.FornecedorService;
+import com.br.AdHome.services.ItemService;
 import com.br.AdHome.services.PedidoService;
 import com.br.AdHome.services.ProdutoService;
 
@@ -62,6 +63,9 @@ public class PedidoController {
 
 	@Autowired
 	private FornecedorService fornecedorService;
+	
+	@Autowired
+	private ItemService itemService;
 
 	private List<Item> itens = new ArrayList<Item>();
 	private Pedido pedido = new Pedido();
@@ -114,6 +118,32 @@ public class PedidoController {
 			return mv;
 		}
 	}
+	@GetMapping("/editarPedido/{id}/editar")
+	public ModelAndView upPedido(@PathVariable(value = "id") Long id, Pedido pedido) {
+
+		ModelAndView mv = new ModelAndView("pedido/editarPedido");
+		mv.addObject("pedido", pedido);
+		mv.addObject("listaStatus", PedidoStatusEnum.values());
+		mv.addObject("listaPagamento", PedidoTipoPagamentoEnum.values());
+		mv.addObject("listaCartao", BandeiraCartaoEnum.values());
+		mv.addObject("users", userDetailsServiceImpl.findAllUser());
+		mv.addObject("produtos", produtoService.findAll());
+
+		Optional<Pedido> pedidoOptional = pedidoService.findById(id);
+		
+
+		if (pedidoOptional.isPresent()) {
+			Pedido pedi = pedidoOptional.get();
+			mv.addObject("id", pedi.getId());
+			mv.addObject("pedido", pedi);
+			mv.addObject("success", "PEDIDO ALTERADO [* " + id + " *] COM SUCESSO!");
+			
+			return mv;
+		} else {
+			mv.addObject("fail", "ERRO AO BUSCAR: PEDIDO COM INSCRIÇÃO [* " + id + " *]");
+			return mv;
+		}
+	}
 
 	@GetMapping("/cancelar")
 	public ModelAndView cancelarPedido() {
@@ -131,6 +161,37 @@ public class PedidoController {
 
 		return mv;
 	}
+	@Transactional
+	@GetMapping("/pedido/{id}/excluir")
+	public ModelAndView deletePedido(@PathVariable(value = "id") Long id, RedirectAttributes attr) {
+	    ModelAndView mv = new ModelAndView("redirect:/pedido/listarPed");
+	    Optional<Pedido> pedidoOptional = pedidoService.findById(id);
+
+	    if (!pedidoOptional.isPresent()) {
+	        attr.addFlashAttribute("fail", "ERRO AO EXCLUIR: PEDIDO COM ID [" + id + "] NÃO FOI ENCONTRADO NO BANCO!");
+	        return mv;
+	    } else {
+	        Pedido pedido = pedidoOptional.get();
+
+	        // Verifique se existem itens de pedido associados a este pedido
+	        List<Item> itensPedido = itemService.findByPedido(pedido);
+
+	        if (!itensPedido.isEmpty()) {
+	            // Exclua todos os itens de pedido associados a este pedido
+	        	itemService.deleteItens(pedido);
+	        	pedido.setUser(null);
+	        }
+
+	        // Agora, você pode excluir o pedido
+	        pedidoService.deletePedido(pedido);
+
+	        attr.addFlashAttribute("success", "PEDIDO COM ID [" + id + "] EXCLUÍDO COM SUCESSO!");
+
+	        return mv;
+	    }
+	}
+
+
 	@Transactional
 	@PostMapping("/aplicar")
 	public ModelAndView savePedido(@Valid Pedido pedido, BindingResult errors, RedirectAttributes attr) {
@@ -261,7 +322,51 @@ public class PedidoController {
 
 		return mv;
 	}
+	@GetMapping("/editarIten/{id}")
+	public ModelAndView editarListaIten(@PathVariable(name = "id") Long id, Pedido pedido, BindingResult errors, RedirectAttributes attr) {
+		
+	    ModelAndView mv = new ModelAndView("redirect:/pedido/liestarPed");
+	    List<Item> itensEditado = pedido.getItens();
+	    
+	    Optional<Produto> produtos = produtoService.findById(id);
+	    Produto produto = new Produto();
+	    
+	    if(produtos.isPresent()) {	    	
+	    	produto = produtos.get();
+	    }else {
+	    	mv.addObject("errors", errors);
+			mv.addObject("fail", "ERRO AO TENTAR EDITAR PEDIDO! PRODUTO DE ID: "+id+" NÃO ENCONTRADO" );
+	    	return mv;
+	    }
+	    
+	    // Verifique se o item já existe na lista
+	    boolean itemExistente = false;
+	    
+	    for (Item it : itensEditado) {
+	        if (it.getProduto().getId().equals(produto.getId())) {
+	            it.setQuantidade(it.getQuantidade() + 1);
+	            it.setSubTotal(it.getQuantidade() * it.getPrecoIten());
+	            itemExistente = true;
+	            break;
+	        }
+	    }
+	    
+	    if (!itemExistente) {
+	        // O item não existe na lista, adicione um novo item
+	        Item newItem = new Item();
+	        newItem.setProduto(produto);
+	        newItem.setPrecoIten(produto.getValorSaida());
+	        newItem.setQuantidade(1);
+	        newItem.setSubTotal(newItem.getQuantidade() * newItem.getPrecoIten());
+	        newItem.setValorTotal(newItem.getSubTotal());
 
+	        itensEditado.add(newItem);
+	    }
+	    
+	    mv.addObject("listaItensEditado", itensEditado);
+	    
+	    return mv;
+	}
 	// =========================== Add incrementar quantidade de itens da
 	// lista==================================
 	@GetMapping("/alterarQuantidadeItens/{id}/{acao}")

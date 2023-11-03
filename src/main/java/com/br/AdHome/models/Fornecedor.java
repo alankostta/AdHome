@@ -53,7 +53,7 @@ public class Fornecedor implements Serializable {
 	@Column(name = "ano_ref", nullable = false)
 	private Integer anoRef;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "data_altera", nullable = false, length = 60)
 	private LocalDateTime dataAlteraForne;
 	
@@ -77,7 +77,7 @@ public class Fornecedor implements Serializable {
 	
 	@Valid
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="fornecedor_id")
 	private Set<Produto> produtos = new HashSet<>();
 

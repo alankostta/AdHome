@@ -69,9 +69,9 @@
 							<td><a class="btn btn-outline-info btn-sm"
 									th:href="@{/pedido/exibirPedido/{p.id}(p.id=${p.id})}">Detalhes</a></td>
 							<td><a class="btn btn-outline-primary btn-sm"
-									th:href="@{/pedido/{p.id}/editar(p.id=${p.id})}">Editar</a></td>
+									th:href="@{/pedido/editarPedido/{p.id}/editar(p.id = ${p.id})}">Editar</a></td>
 							<td><a class="btn btn-outline-danger btn-sm"
-									th:href="@{/pedido/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
+									th:href="@{/pedido/pedido/{p.id}/excluir(p.id=${p.id})}">Excluir</a></td>
 						</tr>
 					</tbody>
 				</table>

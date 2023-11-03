@@ -33,12 +33,12 @@ public class Categoria implements Serializable {
 	private String nomeCategoria;
 	
 	@Valid
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="produto_id")
 	private List<Produto> produtos;
 	
 	@Valid
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="despesas_id")
 	private List<Despesa> despesas;
 

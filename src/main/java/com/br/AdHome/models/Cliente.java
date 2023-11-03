@@ -1,10 +1,10 @@
 package com.br.AdHome.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +58,7 @@ public class Cliente implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "dataNasci_clie", nullable = false, length = 30)
 	@Temporal(TemporalType.DATE)
-	private Date dataNasci;
+	private LocalDate dataNasci;
 
 	// @NotNull(message = "Atributo é obrigatório")
 	@Column(name = "ano_ref", nullable = false)
@@ -70,7 +70,7 @@ public class Cliente implements Serializable {
 
 	// @NotNull(message = "Campo data de alterção é obrigatório")
 	@Column(name = "data_Altera", length = 30, nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataAltera;
 
 	@Valid
@@ -86,7 +86,7 @@ public class Cliente implements Serializable {
 	private List<Endereco> endereco;
 
 	@JsonIgnore
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
 	@JoinColumn(name = "cliente_id")
 	private Set<Pedido> pedido;
 
@@ -94,7 +94,7 @@ public class Cliente implements Serializable {
 		super();
 	}
 
-	public Cliente(Long id, String nome, String sexo, Date dataNasci, Integer anoRef, LocalDateTime dataCadastro,
+	public Cliente(Long id, String nome, String sexo, LocalDate dataNasci, Integer anoRef, LocalDateTime dataCadastro,
 			LocalDateTime dataAltera, Contato contato, List<Endereco> endereco, Set<Pedido> pedido) {
 		super();
 		this.id = id;
@@ -133,11 +133,11 @@ public class Cliente implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public Date getDataNasci() {
+	public LocalDate getDataNasci() {
 		return dataNasci;
 	}
 
-	public void setDataNasci(Date dataNasci) {
+	public void setDataNasci(LocalDate dataNasci) {
 
 		this.dataNasci = dataNasci;
 	}

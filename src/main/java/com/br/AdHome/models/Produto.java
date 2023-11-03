@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+
+import com.br.AdHome.utils.Utils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +16,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -41,9 +46,15 @@ public class Produto implements Serializable {
 	@Column(name = "marca",nullable = false, length = 255)
 	private String marca;
 	
+	@NumberFormat(style = NumberFormat.Style.CURRENCY)
+	@DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
 	@Column(name = "valor_Entrada",nullable = false)
 	private Double valorEntrada = 0.0;
 	
+	@NumberFormat(style = NumberFormat.Style.CURRENCY)
+	@DecimalMin(value = "0.0", inclusive = true)
+	@DecimalMax(value = "1000000", inclusive = false)
 	@Column(name = "valor_saida", nullable = true)
 	private Double valorSaida = 0.0;
 	
@@ -58,10 +69,9 @@ public class Produto implements Serializable {
 	private Integer anoRef;
 	
 	@Column(name = "data_altera", nullable = false, length = 30)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataAltera;
 	
-	@Valid
 	@ManyToOne
 	private Fornecedor fornecedor;
 	
@@ -127,7 +137,8 @@ public class Produto implements Serializable {
 	}
 
 	public void setValorEntrada(Double valorEntrada) {
-		this.valorEntrada = valorEntrada;
+		String valor = Utils.doubleToString(valorEntrada);
+		this.valorEntrada = Utils.stringToDouble(valor);
 	}
 
 	public Double getValorSaida() {
@@ -135,7 +146,8 @@ public class Produto implements Serializable {
 	}
 
 	public void setValorSaida(Double valorSaida) {
-		this.valorSaida = valorSaida;
+		String valor = Utils.doubleToString(valorSaida);
+		this.valorSaida = Utils.stringToDouble(valor);
 	}
 
 	public Integer getEstoqueQtd() {

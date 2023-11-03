@@ -60,17 +60,17 @@
 					<br>
 					<div class="row">
 						<div class="col">
-							<label>Valor de Compra do Fornecedor:</label>
-							<input class="form-control" type="text" th:field="*{valorEntrada}"
-								th:errorclass="is-invalid" placeholder="Valor de entrada do produto">
+							<label>Valor de Entrada:</label>
+							<input class="form-control" id="valor-entrada" type="text" th:field="*{valorEntrada}"
+								th:errorclass="is-invalid" placeholder="R$ 0,00">
+								<div class="invalid-feedback" th:errors="*{valorEntrada}"></div>
 						</div>
 						<div class="col">
-							<label>Valor para vendas:</label>
-							<input class="form-control" type="text" th:field="*{valorSaida}" th:errorclass="is-invalid"
-								placeholder="Valor de entrada do produto">
-						</div>
-						<div class="invalid-feedback" th:errors="*{valorSaida}">
-						</div>
+							<label>Valor para Vendas:</label>
+							<input class="form-control" id="valor-venda" type="text" th:field="*{valorSaida}" th:errorclass="is-invalid"
+								placeholder="R$ 0,00">
+							<div class="invalid-feedback" th:errors="*{valorSaida}"></div>
+						</div>					
 					</div>
 					<br>
 					<div class="row">
@@ -91,8 +91,11 @@
 						<div class="invalid-feedback" th:errors="*{categoria}"></div>
 					</div>
 					<br>
-					<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
-					<a href="javascript:history.back()" class="btn btn-outline-warning btn-sm">Voltar</a>
+					<div class="form-row">
+						<button type="submit" class="btn btn-primary">Salvar</button>
+						<button type="reset" class="btn btn-secondary">Cancelar</button>
+						<a href="javascript:history.back()" class="btn btn-warning ">Voltar</a>
+					</div>
 				</form>
 			</div>
 		</fieldset>

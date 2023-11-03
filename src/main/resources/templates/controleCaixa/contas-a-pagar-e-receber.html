@@ -56,7 +56,7 @@
 				</div>
 				<div class="col">
 					<label class="col-form-label">Valor do débito</label>
-					<input id="valDebitoInput" class="form-control" type="text" th:field="*{valDebito}" />
+					<input id="valDebitoInput" placeholder="R$ 0,00" class="form-control" type="text" th:field="*{valDebito}" />
 				</div>
 				<div class="col">
 
@@ -88,7 +88,7 @@
 			<div>
 				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
 		</form>
-		<table class="table table-hover">
+		<table class="table table-hover text-center">
 			<thead>
 				<tr>
 					<th scope="col">Código:</th>
@@ -105,12 +105,12 @@
 				</tr>
 			</thead>
 			<h2>Lista de Contas</h2>
-			<tbody class="table-group-divider">
+			<tbody class="table-group-divider text-center">
 				<tr th:each="d : ${listaDespesas}">
 					<td scope="row" th:text="${d.id}"></td>
 					<td th:text="${d.descDebito}"></td>
 					<td th:text="${d.valDebito}"></td>
-					<td th:text="${d.parcela}"></td>
+					<td th:text="${d.parcela ? 'SIM': 'NÃO'}"></td>
 					<td th:text="${d.numeroPercelas}"></td>
 					<td th:text="${d.dtVencimento}"></td>
 					<td th:text="${d.categoria.nomeCategoria}"></td>

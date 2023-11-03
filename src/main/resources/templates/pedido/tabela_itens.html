@@ -20,18 +20,18 @@
 				<td th:text="${i.produto.valorSaida}"></td>
 				<td>
 					<span th:text="${i.quantidade}"></span>&nbsp;&nbsp;
-						<a class="btn btn-success"
-							th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${i.produto.id}, acao=${1})}">
-							<i class="bi bi-plus"></i></i>
-						</a>&nbsp;&nbsp;
-						<a class="btn btn-success"
-							th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${i.produto.id}, acao=${0})}">
-							<i class="bi bi-dash"></i>
-						</a>
+					<a class="btn btn-success"
+						th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${i.produto.id}, acao=${1})}">
+						<i class="bi bi-plus"></i></i>
+					</a>&nbsp;&nbsp;
+					<a class="btn btn-success"
+						th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${i.produto.id}, acao=${0})}">
+						<i class="bi bi-dash"></i>
+					</a>
 				</td>
 				<td th:text="${i.subTotal}"></td>
-				<td> <a class="btn btn-danger"
-						th:href="@{/pedido/removerItem/{id}(id=${i.produto.id})}">
+				<td> 
+					<a class="btn btn-danger" th:href="@{/pedido/removerItem/{id}(id=${i.produto.id})}">
 						<i class="bi bi-trash3"></i>
 					</a>
 				</td>
@@ -45,4 +45,9 @@
 		</tr>
 		</tbody>
 	</table>
+	<div class="col">
+		<button type="button" class="btn btn-warning" data-bs-toggle="modal"
+			data-bs-target="#pesquisarProdutoModal">Pesquisar
+			produto</button>
+	</div>
 </div>

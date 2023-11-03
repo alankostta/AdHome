@@ -72,8 +72,8 @@ public class ClienteController {
 		} else {
 			ModelAndView mv = new ModelAndView("redirect:/cliente/listar");
 			Calendar cal = Calendar.getInstance();
-			cliente.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
-			cliente.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
+			cliente.setDataCadastro(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+			cliente.setDataAltera(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 			cliente.setAnoRef(cal.get(Calendar.YEAR));
 			clienteService.saveCliente(cliente);
 			attr.addFlashAttribute("success", "CLIENTE SALVO COM SUCESSO!");

@@ -25,7 +25,7 @@ public class Contato implements Serializable {
 	private Long id;
 	
 	@NotBlank(message = "Informe o telefone")
-	@Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿ ']+$", message = "O número de telefone não deve conter simbolos")
+	@Pattern(regexp = "^[0-9()-+ ]+$", message = "O número de telefone não é válido")
 	@Column(name = "tele_contato", nullable = false, length = 30)
 	private String telefone;
 	
@@ -62,9 +62,10 @@ public class Contato implements Serializable {
 	}
 
 	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+		String telefoneLimpo = telefone.replaceAll("[^0-9]", "");
+		this.telefone = telefoneLimpo;
 	}
-
+	
 	public String getEmail() {
 		return email;
 	}

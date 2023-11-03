@@ -2,6 +2,35 @@
 Sempre 	que for usar Ajax importar o jquery no html
 append('<tr><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+')" class="btn btn-outline-dark">Selecionar</button></td></tr>');
 */
+$(document).ready(function() {
+    $('#cep').inputmask('99999-999');
+    $('#telefone').inputmask('(99) 9999-9999');
+    
+    // Salvar o valor formatado em um atributo data antes de remover a máscara
+    $('#valor-entrada, #valor-venda, #valDebitoInput').on('input', function() {
+        var $this = $(this);
+        $this.data('value', $this.inputmask('unmaskedvalue'));
+    }).inputmask('currency', {
+        prefix: 'R$ ',
+        groupSeparator: '.',
+        alias: 'numeric',
+        autoGroup: true,
+        digits: 2,
+        rightAlign: false,
+        allowMinus: false
+    });
+
+    // Remova a máscara e defina o valor formatado antes de enviar o formulário
+    $(document).submit(function() {
+        $('#valor-entrada, #valor-venda, #valDebitoInput').each(function() {
+            var $this = $(this);
+            $this.inputmask('remove');
+            $this.val($this.data('value'));
+        });
+    });
+});
+
+
 function pesquisarFornecedor() {
 	let nome = $('#nameBuscar').val();
 	if (nome != null && nome.trim() != '') {
@@ -10,7 +39,7 @@ function pesquisarFornecedor() {
 			url: "/produto/buscarPorNomeFornecedor",
 			data: "name=" + nome,
 			success: function(response) {
-				
+
 				$('#tabelaresultados > tbody > tr').remove();
 				for (let i = 0; i < response.length; i++) {
 					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].nomeEmpresa + '</td> <td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
@@ -29,7 +58,8 @@ function pesquisarFornecedor() {
 			success: function(response) {
 				$('#tabelaresultados > tbody > tr').remove();
 				for (let i = 0; i < response.length; i++) {
-					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].nomeEmpresa + '</td> <td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');				}
+					$('#tabelaresultados > tbody').append('<tr><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].nomeEmpresa + '</td> <td><button type="button" onClick="carregarFornecedor(' + response[i].id + ')" class="btn btn-primary">Selecionar</button></td></tr>');
+				}
 			}
 		}).fail(function(xhr, status, errorThrown) {
 			console.log(status, errorThrown)
@@ -101,7 +131,7 @@ function pesquisarCliente() {
 }
 
 function pesquisarProduto() {
-	
+
 	var descricao = $('#descricaoProduto').val();
 	if (descricao != null && descricao.trim() != '') {
 		$.ajax({
@@ -122,7 +152,7 @@ function pesquisarProduto() {
 		}).fail(function(xhr, status, errorThrown) {
 			alert("Erro ao buscar o produto1!!!: " + xhr.responseText, status, errorThrown);
 		});
-	}else{
+	} else {
 		$.ajax({
 			method: "GET",
 			url: "/pedido/listarProdutos",
@@ -144,7 +174,7 @@ function pesquisarProduto() {
 	}
 }
 function pesquiProduto() {
-	
+
 	var descricao = $('#descricaoProduto').val();
 	if (descricao != null && descricao.trim() != '') {
 		$.ajax({
@@ -196,49 +226,49 @@ function carregarFornecedor(id) {
 	});
 }
 function carregarCliente(id) {
-    $.ajax({
-        method: "GET",
-        url: "/pedido/buscarPorIdCliente",
-        data: "id=" + id,
-        success: function(response) {
-            console.log(response);
+	$.ajax({
+		method: "GET",
+		url: "/pedido/buscarPorIdCliente",
+		data: "id=" + id,
+		success: function(response) {
+			console.log(response);
 
-            if (response && response.id) {
-                $("#idClie").val(response.id);
-                $("#nomeClie").val(response.nome);
-                $("#sexo").val(response.sexo);
-                $("#dataNasci").val(response.dataNasci);
-                $("#anoRef").val(response.anoRef);
+			if (response && response.id) {
+				$("#idClie").val(response.id);
+				$("#nomeClie").val(response.nome);
+				$("#sexo").val(response.sexo);
+				$("#dataNasci").val(response.dataNasci);
+				$("#anoRef").val(response.anoRef);
 
-                if (response.endereco && response.endereco.length > 0) {
-                    $("#pedidoUf").val(response.endereco[0].uf);
-                    $("#pedidoCidade").val(response.endereco[0].localidade);
-                    $("#pedidoBairro").val(response.endereco[0].bairro);
-                    $("#pedidoLogradouro").val(response.endereco[0].logradouro);
-                    $("#pedidoNumero").val(response.endereco[0].numero);
-                    $("#pedidoCep").val(response.endereco[0].cep);
-                    $("#pedidoComplemento").val(response.endereco[0].complemento);
-                    $("#codigoEndereco").val(response.endereco[0].id);
-                    $("#pedidoEndEnum").val(response.endereco[0].enderecoEnum);
-                }
+				if (response.endereco && response.endereco.length > 0) {
+					$("#pedidoUf").val(response.endereco[0].uf);
+					$("#pedidoCidade").val(response.endereco[0].localidade);
+					$("#pedidoBairro").val(response.endereco[0].bairro);
+					$("#pedidoLogradouro").val(response.endereco[0].logradouro);
+					$("#pedidoNumero").val(response.endereco[0].numero);
+					$("#pedidoCep").val(response.endereco[0].cep);
+					$("#pedidoComplemento").val(response.endereco[0].complemento);
+					$("#codigoEndereco").val(response.endereco[0].id);
+					$("#pedidoEndEnum").val(response.endereco[0].enderecoEnum);
+				}
 
-                if (response.contato && response.contato.id) {
-                    $("#idContato").val(response.contato.id);
-                    $("#emailContato").val(response.contato.email);
-                    $("#telefoneContato").val(response.contato.telefone);
-                    $("#enumContato").val(response.contato.contatoEnum);
-                }
-            } else {
-                console.error("O objeto 'response' não está definido ou não possui uma propriedade 'id'.");
-            }
+				if (response.contato && response.contato.id) {
+					$("#idContato").val(response.contato.id);
+					$("#emailContato").val(response.contato.email);
+					$("#telefoneContato").val(response.contato.telefone);
+					$("#enumContato").val(response.contato.contatoEnum);
+				}
+			} else {
+				console.error("O objeto 'response' não está definido ou não possui uma propriedade 'id'.");
+			}
 
-            // Fechar o modal
-            $("#pesquisarClienteModal").modal('hide');
-        },
-        error: function(xhr, status, errorThrown) {
-            alert("Erro ao buscar cliente: " + xhr.responseText, status, errorThrown);
-        }
-    });
+			// Fechar o modal
+			$("#pesquisarClienteModal").modal('hide');
+		},
+		error: function(xhr, status, errorThrown) {
+			alert("Erro ao buscar cliente: " + xhr.responseText, status, errorThrown);
+		}
+	});
 }
 function addListaItensProduto(id) {
 	alert("entrou", id)
@@ -253,34 +283,34 @@ function addListaItensProduto(id) {
 }
 function buscarCep() {
 
-    var cep = $('#cep').val();
-    if (cep != null && cep.trim() != '') {
-        $.ajax({
-            method: "GET",
-            url: "/cep",
-            data: { cep: cep }, // Usar um objeto para passar parâmetros
-            success: function(response) {
-                // Verificar se o objeto de resposta possui as propriedades esperadas
-                if (response.hasOwnProperty('uf') && response.hasOwnProperty('cep') &&
-                    response.hasOwnProperty('localidade') && response.hasOwnProperty('bairro') &&
-                    response.hasOwnProperty('logradouro')) {
-                    $("#uf").val(response.uf);
-                    $("#cep").val(response.cep);
-                    $("#cidade").val(response.localidade);
-                    $("#bairro").val(response.bairro);
-                    $("#logradouro").val(response.logradouro);
-                } else {
-                    alert("Resposta inválida do servidor");
-                }
-            },
-            error: function(xhr, status, errorThrow) {
-                alert("Erro ao buscar cep informado: " + xhr.responseText, status, errorThrow );
-            }
-        });
-    }
-    else {
-        alert("Por favor insira um cep!!!");
-    }
+	var cep = $('#cep').val();
+	if (cep != null && cep.trim() != '') {
+		$.ajax({
+			method: "GET",
+			url: "/cep",
+			data: { cep: cep }, // Usar um objeto para passar parâmetros
+			success: function(response) {
+				// Verificar se o objeto de resposta possui as propriedades esperadas
+				if (response.hasOwnProperty('uf') && response.hasOwnProperty('cep') &&
+					response.hasOwnProperty('localidade') && response.hasOwnProperty('bairro') &&
+					response.hasOwnProperty('logradouro')) {
+					$("#uf").val(response.uf);
+					$("#cep").val(response.cep);
+					$("#cidade").val(response.localidade);
+					$("#bairro").val(response.bairro);
+					$("#logradouro").val(response.logradouro);
+				} else {
+					alert("Resposta inválida do servidor");
+				}
+			},
+			error: function(xhr, status, errorThrow) {
+				alert("Erro ao buscar cep informado: " + xhr.responseText, status, errorThrow);
+			}
+		});
+	}
+	else {
+		alert("Por favor insira um cep!!!");
+	}
 }
 function limparPedido() {
 	$('#listaPedido tbody tr').remove();
@@ -391,14 +421,3 @@ function calcularTotal() {
 
 	$("#total").val(total.toFixed(2));
 }
-$(document).ready(function() {
-	$('#valDebitoInput').inputmask('currency', {
-		prefix: 'R$ ', // Prefixo para indicar que é uma moeda
-		radixPoint: ',', // Ponto decimal
-		groupSeparator: '.', // Separador de milhares
-		allowNegative: true, // Permite valores negativos
-		digits: 2, // Número de casas decimais
-		rightAlign: false, // Alinha à esquerda
-		autoUnmask: true // Remove a máscara quando o campo perde o foco
-	});
-});

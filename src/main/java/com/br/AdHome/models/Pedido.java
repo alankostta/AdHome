@@ -1,17 +1,14 @@
 package com.br.AdHome.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,7 +39,7 @@ public class Pedido implements Serializable {
 	private Long id;
 	
 	@Column(name = "data_altera", nullable = false)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dataAlteraPedido;
 
 	@Column(name = "ano_ref", nullable = false)
@@ -67,7 +64,7 @@ public class Pedido implements Serializable {
 	@Column(name = "data_cadastro", nullable = false)
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date dataCadastro;
+	private LocalDate dataCadastro;
 
 	@Enumerated(EnumType.STRING)
 	private PedidoStatusEnum enumStatus;
@@ -81,7 +78,7 @@ public class Pedido implements Serializable {
 	@Valid
 	@JsonIgnore
 	@JsonManagedReference
-	@OneToMany(cascade = CascadeType.ALL, targetEntity = Item.class, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, targetEntity = Item.class, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "iten_id")
 	private List<Item> itens = new ArrayList<>();
 	
@@ -96,7 +93,7 @@ public class Pedido implements Serializable {
 	}
 
 	public Pedido(Long id, LocalDateTime dataAlteraPedido, Integer anoRef, Double valorPedido, Double descontoPedido,
-			String observacaoPedido, Date dataCadastro, PedidoStatusEnum enumStatus,
+			String observacaoPedido, LocalDate dataCadastro, PedidoStatusEnum enumStatus,
 			PedidoTipoPagamentoEnum enumPagamento, BandeiraCartaoEnum enumCartao, List<Item> itens, AdUser user,
 			Cliente cliente) {
 		super();
@@ -164,11 +161,11 @@ public class Pedido implements Serializable {
 		this.observacaoPedido = observacaoPedido;
 	}
 
-	public Date getDataCadastro() {
+	public LocalDate getDataCadastro() {
 		return dataCadastro;
 	}
 
-	public void setDataCadastro(Date dataCadastro) {
+	public void setDataCadastro(LocalDate dataCadastro) {
 		this.dataCadastro = dataCadastro;
 	}
 

@@ -48,11 +48,11 @@ public class AdUser implements UserDetails {
 	@Column(name = "senha_user", nullable = false, length = 60)
 	private String password;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "role_id")
 	private List<RoleModel> roles;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "pedido_id")
 	private List<Pedido> pedido;
 

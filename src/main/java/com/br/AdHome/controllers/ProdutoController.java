@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.br.AdHome.models.Categoria;
 import com.br.AdHome.models.Fornecedor;
 import com.br.AdHome.models.Produto;
@@ -43,29 +45,30 @@ public class ProdutoController {
 		return mv;
 	}
 	@PostMapping("")
-	public ModelAndView saveProdutos(
-			@Valid Produto produto, BindingResult resultProduto) {
+	public ModelAndView saveProdutos(@Valid Produto produto, BindingResult errors, RedirectAttributes attr) {
 
 		ModelAndView mv = new ModelAndView("produto/produto");
 
-		if (resultProduto.hasErrors()) {
-			this.retornaErroProduto("ERRO AO SALVAR: esse cadastro!, verifique se não há compos vazios");
+		if (errors.hasErrors()) {
+			mv.addObject("errors",errors);
+			mv.addObject("fail", "ERRO AO TENTAR CADASTRAR O PRODUTO VERIFIQUE OS CAMPOS COM ALETA!");
 			return mv;
 		} else {
 			
-			produto.setDataCadastro(LocalDateTime.now(ZoneId.of("UTC")));
-			produto.setDataAltera(LocalDateTime.now(ZoneId.of("UTC")));
+			produto.setDataCadastro(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+			produto.setDataAltera(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 			Calendar cal = Calendar.getInstance();
 			produto.setAnoRef(cal.get(Calendar.YEAR));
 		
 			if (produto.getValorSaida() == null) {
-				produto.setValorSaida(0.0);
+				//produto.setValorSaida(0.0);
 				produtoService.salvarProduto(produto);
 			}
 			else {
 				produtoService.salvarProduto(produto);
 				
 			}
+			attr.addFlashAttribute("success", "PRODUTO CADASTRADO COM SUCESSO!");
 			return new ModelAndView("redirect:/produto/listarPro");
 		}
 	}

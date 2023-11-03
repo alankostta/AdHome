@@ -6,7 +6,7 @@
 				<div class="col">
 					<form class="formulario" th:object="${pedido}" th:action="@{'/pedido/aplicar'}" method="POST">
 						<div th:replace="~{fragmentos/alert}"></div>
-						<div th:replace="~{pedido/cadasPedido}"></div>					
+						<div th:replace="~{pedido/cadasPedido}"></div>
 						<div>
 							<div class="row">
 								<div class="col">
@@ -59,24 +59,10 @@
 								</div>
 							</fieldset>
 						</div>
-						<div class="row" id="loaders">
-							<div class="col">
-								<button type="submit" class="btn btn-outline-success">Salvar
-									Pedido</button>
-							</div>
-							<div class="col">
-								<button type="button" class="btn btn-warning" data-bs-toggle="modal"
-									data-bs-target="#pesquisarProdutoModal">Pesquisar
-									produto</button>
-							</div>
-							<div class="col">
-								<button type="button" class="btn btn-outline-primary">Pesquisar
-									Pedido</button>
-							</div>
-							<div class="col">
-								<a th:href="@{/pedido/cancelar}" class="btn btn-outline-danger">Cancelar
-									Pedido</a>
-							</div>
+						<div class="form-row">
+							<button type="submit" class="btn btn-primary">Salvar</button>
+							<a th:href="@{/pedido/cancelar}" class="btn btn-secondary">Cancelar</a>
+							<a href="javascript:history.back()" class="btn btn-warning ">Voltar</a>
 						</div>
 					</form>
 				</div>
