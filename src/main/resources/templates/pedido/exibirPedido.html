@@ -108,7 +108,7 @@
 		<div class="row">
 			<div class="col-12">
 				<br>
-				<table class="table table-hover">
+				<table class="table table-hover text-center">
 					<thead>
 						<tr>
 							<th class="table-active">Código.</th>
@@ -120,8 +120,8 @@
 							<th class="table-active">Sub-Total.</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr th:each="item : ${pedido.itens}">
+					<tbody class="text-center">
+						<tr th:each="item : ${itens}">
 							<td th:text="${item.produto.id}"></td>
 							<td th:text="${item.produto.nome}"></td>
 							<td th:text="${item.produto.descricao}"></td>
@@ -131,14 +131,12 @@
 							<td th:text="${item.subTotal}"></td>
 						</tr>
 						<tr>
-							<td colspan="4" ><strong>TOTAL:</strong></td>
+							<td colspan="4" style=" text-align: left"><strong>TOTAL:</strong></td>
 							<td colspan="2"></td>
 							<td th:text="${pedido.valorPedido}" 
 								style="background-color: #DCDCDC; text-align: right; font-weight: bold;">
 							</td>
-
 						</tr>
-
 					</tbody>
 				</table>
 			</div>

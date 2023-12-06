@@ -18,4 +18,14 @@ public class HomeController {
 		var mv = new ModelAndView("/modal");
 		return mv;
 	}
+	@GetMapping("/dashboard")
+	public ModelAndView contato() {
+		ModelAndView mv = new ModelAndView("/dashboard");
+		return mv;
+	}
+	@GetMapping("/teste")
+	public ModelAndView teste() {
+		ModelAndView mv = new ModelAndView("/teste");
+		return mv;
+	}
 }

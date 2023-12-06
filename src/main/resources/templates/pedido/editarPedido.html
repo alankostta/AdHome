@@ -2,6 +2,7 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <script src="/js/script.js" defer></script>
+
 <head th:replace="~{fragmentos/head :: head('Exibir Pedido')}"></head>
 
 <body>
@@ -118,36 +119,42 @@
 							<th class="table-active">Quantidade.</th>
 							<th class="table-active">Preço.</th>
 							<th class="table-active">Sub-Total.</th>
-							<td class="table-active"></td>
-							<td class="table-active"></td>
+							<th class="table-active">Ação</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="item : ${pedido.itens}">
+						<tr th:each="item : ${itens}">
 							<td th:text="${item.produto.id}"></td>
 							<td th:text="${item.produto.nome}"></td>
 							<td th:text="${item.produto.descricao}"></td>
 							<td th:text="${item.produto.categoria.nomeCategoria}"></td>
-							<td th:text="${item.quantidade}"></td>
-							<td th:text="${item.produto.valorSaida}"></td>		
 							<td>
 								<span th:text="${item.quantidade}"></span>&nbsp;&nbsp;
-								<a class="btn btn-success" th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${1})}">
+								<a class="btn btn-success"
+									th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${1})}">
 									<i class="bi bi-plus"></i></i>
 								</a>&nbsp;&nbsp;
-								<a class="btn btn-success" th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${0})}">
+								<a class="btn btn-success"
+									th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${0})}">
 									<i class="bi bi-dash"></i>
 								</a>
 							</td>
+							<td th:text="${item.produto.valorSaida}"></td>
 							<td th:text="${item.subTotal}"></td>
 							<td>
-								<a class="btn btn-outline-danger btn-sm"
-									th:href="@{/pedido/{p.id}/excluir(p.id=${item.produto.id})}">Remover</a>
+								<a class="btn btn-danger" th:href="@{/pedido/removerItem/{id}(id=${item.produto.id})}">
+									<i class="bi bi-trash3"></i>
+								</a>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<div class="form-row">
+			<button type="submit" class="btn btn-primary">Salvar</button>
+
+			<a href="javascript:history.back()" class="btn btn-warning ">Voltar</a>
 		</div>
 	</fieldset>
 	<div th:replace="~{pedido/modal-pesquisar-cliente :: modal-cliente}"></div>

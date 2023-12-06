@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:replace="~{fragmentos/head :: head}"></head>
+<html lang="pt" 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="~{fragmentos/head :: head('Home Adm')}"></head>
+
 <body>
-	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:reaplace="~{fragmentos/header :: header(titulo)}">
+		<div>header</div>
+	</header>
+	<div class="layout-main">
+		<aside>
+			<nav th:replace="~{fragmentos/navBar :: nav}"></nav>
+		</aside>
+		<section layout:fragment="corpo"></section>
+	</div>
 	<footer th:replace="~{fragmentos/footer :: rodape}"></footer>
 	<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"
 		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
 		</script>
 </body>
+
 </html>
