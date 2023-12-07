@@ -1,0 +1,72 @@
+<main th:fragment="main">
+	<div class="row-12">
+		<fieldset class="fieldset text-left mb-5">
+			<legend>Menu</legend>
+			<div class="row mt-3">
+				<div class="col">
+					<form class="formulario" th:object="${pedido}" th:action="@{'/pedido/aplicar'}" method="POST">
+						<div th:replace="~{fragmentos/alert}"></div>
+						<div th:replace="~{pedido/cadasPedido}"></div>
+						<div>
+							<div class="row">
+								<div class="col">
+									<label class="form-label">Valor/Desconto:</label>
+									<div class="input-group">
+										<span class="input-group-text" id="basic-addon1">R$</span>
+										<input id="porcentagem" th:field="*{descontoPedido}" type="number"
+											class="form-control form-control-sm" aria-describedby="basic-addon1">
+										<button type="button" class="btn btn-warning"
+											onClick="calcularDescontoPedido()">Calcular</button>
+									</div>
+								</div>
+								<div class="col">
+									<label class="form-label">Ano do Pedido</label>
+									<input type="number" class="form-control" id="anoRef" th:field="*{cliente.anoRef}">
+								</div>
+								<div class="col">
+									<label class="form-label">Vendedor:</label>
+									<select class="form-select" id="selectUsuarios" th:field="*{user}"
+										aria-label="Default select example">
+										<option value="">Selecione um Vendedor</option>
+										<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nome}">
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<br />
+						<div>
+							<fieldset class="fieldset text-left mb-5">
+								<ul class="nav nav-tabs">
+									<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab"
+											data-bs-target="#itens">Itens</a></li>
+									<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+											data-bs-target="#entrega">Dados da
+											entrega</a></li>
+									<li class="nav-item"><a class="nav-link" data-bs-toggle="tab"
+											data-bs-target="#observacao">Contato</a></li>
+								</ul>
+								<div class="tab-content">
+									<div id="itens" class="tab-pane fade show active">
+										<div th:replace="~{pedido/tabela_itens :: tabelaItens}"></div>
+									</div>
+									<div id="entrega" class="tab-pane fade">
+										<div th:replace="~{pedido/form_entrega :: dadosEntrega}"></div>
+									</div>
+									<div id="observacao" class="tab-pane fade">
+										<div th:replace="~{pedido/form_observacao :: observacao}"></div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="form-row">
+							<button type="submit" class="btn btn-primary">Salvar</button>
+							<a th:href="@{/pedido/cancelar}" class="btn btn-secondary">Cancelar</a>
+							<a href="javascript:history.back()" class="btn btn-warning ">Voltar</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</main>

@@ -1,0 +1,18 @@
+<div th:fragment="contato-1">
+	<div class="row" th:each="contato, stat : *{contato}">
+		<div class="col">
+			<select class="form-select" th:field="*{contato[__${stat.index}__].contatoEnum}">
+				<option th:each="contatoEnum : ${listaContato}" th:value="${contatoEnum}" th:text="${contatoEnum}">
+				</option>
+			</select>
+		</div>
+		<div class="col">
+			<input class="form-control" type="text" th:field="*{contato[__${stat.index}__].telefone}"
+				placeholder="Digite seu Telefone" />
+		</div>
+		<div class="col">
+			<input class="form-control" type="text" th:field="*{contato[__${stat.index}__].email}"
+				placeholder="Digite seu e-mail" />
+		</div>
+	</div>
+</div>

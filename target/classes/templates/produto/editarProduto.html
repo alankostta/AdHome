@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="~{fragmentos/head :: head('Dados Registrados')}"></head>
+
+<body>
+	<script src="/js/script.js"></script>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Produto ID: ' + ${produto.id})}"></header>
+	<div class="col-12">
+		<fieldset class="fieldset text-left mb-6">
+			<legend>Menu</legend>
+			<div class="row">
+				<form th:action="@{'/produto/produto/' + ${id}}" th:object="${produto}" method="POST">
+					<div class="row">
+						<div class="col">
+							<label>Código do Fornecedor:</label>
+							<div class="mb-3 d-flex align-items-center flex-grow-1 mr-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Id:</span>
+								</div>
+								<input type="text" class="form-control" id="idFor" readonly="readonly"
+									th:field="*{fornecedor.id}">
+							</div>
+						</div>
+						<div class="col">
+							<label>Empresa do Fornecedor:</label>
+							<div class="mb-3 d-flex align-items-center flex-grow-1">
+								<div class="input-group-prepend">
+									<button class="btn btn-outline-primary" type="button" data-bs-toggle="modal"
+										data-bs-target="#pesquisarModal">Pesquisar</button>
+								</div>
+								<input type="text" class="form-control" id="nomeFor" readonly="readonly"
+									th:field="*{fornecedor.nome}"
+									placeholder="Pesquise a empresa para encontrar o fornecedor">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<label>Produto:</label>
+							<input class="form-control" type="text" th:field="*{nome}" th:errorclass="is-invalid"
+								placeholder="Informe o nome do produto">
+							<div class="invalid-feedback" th:errors="*{nome}"></div>
+						</div>
+						<div class="col">
+							<label>Descrição do Produto:</label>
+							<input class="form-control" type="text" th:field="*{descricao}" th:errorclass="is-invalid"
+								placeholder="Informe a descrição do produto">
+							<div class="invalid-feedback" th:errors="*{descricao}"></div>
+						</div>
+						<div class="col">
+							<label>Marca:</label>
+							<input class="form-control" type="text" th:field="*{marca}" th:errorclass="is-invalid"
+								placeholder="Informe a marca">
+							<div class="invalid-feedback" th:errors="*{marca}"></div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col">
+							<label>Valor de Compra do Fornecedor:</label>
+							<input class="form-control" type="text" th:field="*{valorEntrada}"
+								th:errorclass="is-invalid" placeholder="Valor de entrada do produto">
+						</div>
+						<div class="col">
+							<label>Valor para vendas:</label>
+							<input class="form-control" type="text" th:field="*{valorSaida}" th:errorclass="is-invalid"
+								placeholder="Valor de entrada do produto">
+						</div>
+						<div class="invalid-feedback" th:errors="*{valorSaida}">
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col">
+							<label>Quantidade em estoque:</label>
+							<input class="form-control" type="number" th:field="*{estoqueQtd}"
+								th:errorclass="is-invalid" placeholder="Informe a quantidade em estoque">
+						</div>
+						<div class="invalid-feedback" th:errors="*{estoqueQtd}"></div>
+						<div class="col">
+							<label>Categoria do Produto:</label>
+							<select class="form-select" aria-label="Default select example" th:field="*{categoria}">
+								<option value="">Selecione</option>
+								<option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nomeCategoria}">
+									Selecione</option>
+							</select>
+						</div>
+						<div class="invalid-feedback" th:errors="*{categoria}"></div>
+					</div>
+					<br>
+					<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+					<a href="javascript:history.back()" class="btn btn-outline-warning btn-sm">Voltar</a>
+				</form>
+			</div>
+		</fieldset>
+		<div class="modal fade" id="pesquisarModal" tabindex="-1" aria-labelledby="modalLongTitle" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalLongTitle">Pesquisar
+							Fornecedor</h5>
+						<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="mb-3">
+								<label for="nameBuscar" class="col-form-label">Informe o
+									nome:</label> <input type="text" class="form-control" id="nameBuscar"
+									placeholder="Pesquise pelo nome da Empresa">
+							</div>
+							<button type="button" class="btn btn-outline-success btn-sm"
+								onclick="pesquisarFornecedor()">Buscar</button>
+						</form>
+						<table class="table" id="tabelaresultados">
+							<thead class="mod-thead">
+								<tr>
+									<th>Id</th>
+									<th>Nome</th>
+									<th>Empresa</th>
+									<th>Selecionar</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<script src="/js/script.js" defer></script>
+<head th:replace="~{fragmentos/head :: head('Exibir Pedido')}"></head>
+
+<body>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Detalhes do Pedido')}"></header>
+	<link rel="stylesheet" href="/css/style.css">
+	<fieldset class="fieldset text-left mb-5">
+		<div th:replace="~{fragmentos/alert}"></div>
+		<form class="" th:object="${pedido}" method="POST">
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Status do Pedido</label>
+					<select class="form-select form-select" aria-label="Default select example"
+						th:field="*{enumStatus}">
+						<option th:each="pedido : ${listaStatus}" th:value="${pedido}" th:text="${pedido}">
+						</option>
+					</select>
+				</div>
+				<div class="col">
+					<label class="form-label">Tipo de pagamento</label>
+					<select class="form-select form-select" aria-label="Default select example"
+						th:field="*{enumPagamento}">
+						<option th:each="pedido : ${listaPagamento}" th:value="${pedido}" th:text="${pedido}"></option>
+					</select>
+				</div>
+				<div class="col">
+					<label class="form-label">Data de geração
+						do pedido</label>
+					<input type="date" class="form-control"
+						th:classappend="${#fields.hasErrors('dataCadastro')}? 'is-invalid'"
+						th:field="*{dataCadastro}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{dataCadastro}"></span>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Bandeira doCartão</label>
+					<select class="form-select form-select col-sm-3" aria-label="Default select example"
+						th:field="*{enumCartao}">
+						<option th:each="pedido : ${listaCartao}" th:value="${pedido}" th:text="${pedido}">
+						</option>
+					</select>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Código do cliente:</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="basic-addon1">Id:</span>
+						</div>
+						<input type="number" class="form-control" id="idClie" th:field="*{cliente.id}"
+							readonly="readonly">
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Cliente:</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<button class="btn btn-outline-primary btn" type="button" data-bs-toggle="modal"
+								data-bs-target="#pesquisarClienteModal">Pesquisar</button>
+						</div>
+						<input type="text" class="form-control" id="nomeClie" th:field="*{cliente.nome}"
+							placeholder="Digite o nome do cliente">
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Data de Nascimento</label>
+					<input type="date" class="form-control" id="dataNasci" th:field="*{cliente.dataNasci}">
+				</div>
+				<div class="col">
+					<label class="form-label">Sexo</label>
+					<input type="text" class="form-control" id="sexo" th:field="*{cliente.sexo}">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Valor/Desconto:</label>
+					<div class="input-group">
+						<span class="input-group-text" id="basic-addon1">R$</span>
+						<input id="porcentagem" th:field="*{descontoPedido}" type="number"
+							class="form-control form-control-sm" aria-describedby="basic-addon1">
+						<button type="button" class="btn btn-warning"
+							onClick="calcularDescontoPedido()">Calcular</button>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Ano do Pedido</label>
+					<input type="number" class="form-control" id="anoRef" th:field="*{cliente.anoRef}">
+				</div>
+				<div class="col">
+					<label class="form-label">Vendedor:</label>
+					<select class="form-select" id="selectUsuarios" th:field="*{user}"
+						aria-label="Default select example">
+						<option value="">Selecione um Vendedor</option>
+						<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.nome}">
+						</option>
+					</select>
+				</div>
+			</div>
+		</form>
+		<br>
+		<div class="row">
+			<div class="col-12">
+				<br>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="table-active">Código.</th>
+							<th class="table-active">Produto.</th>
+							<th class="table-active">Descrição.</th>
+							<th class="table-active">Categoria.</th>
+							<th class="table-active">Quantidade.</th>
+							<th class="table-active">Preço.</th>
+							<th class="table-active">Sub-Total.</th>
+							<td class="table-active"></td>
+							<td class="table-active"></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item : ${pedido.itens}">
+							<td th:text="${item.produto.id}"></td>
+							<td th:text="${item.produto.nome}"></td>
+							<td th:text="${item.produto.descricao}"></td>
+							<td th:text="${item.produto.categoria.nomeCategoria}"></td>
+							<td th:text="${item.quantidade}"></td>
+							<td th:text="${item.produto.valorSaida}"></td>		
+							<td>
+								<span th:text="${item.quantidade}"></span>&nbsp;&nbsp;
+								<a class="btn btn-success" th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${1})}">
+									<i class="bi bi-plus"></i></i>
+								</a>&nbsp;&nbsp;
+								<a class="btn btn-success" th:href="@{/pedido/alterarQuantidadeItens/{id}/{acao}(id=${item.produto.id}, acao=${0})}">
+									<i class="bi bi-dash"></i>
+								</a>
+							</td>
+							<td th:text="${item.subTotal}"></td>
+							<td>
+								<a class="btn btn-outline-danger btn-sm"
+									th:href="@{/pedido/{p.id}/excluir(p.id=${item.produto.id})}">Remover</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</fieldset>
+	<div th:replace="~{pedido/modal-pesquisar-cliente :: modal-cliente}"></div>
+</body>
+<script th:type="@{text/javascript}">
+	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<link rel="stylesheet" href="/css/style.css">
+<head th:replace="~{fragmentos/head :: head('Editar Fornecedor')}"></head>
+<body>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Lista de Usuários')}"></header>
+	
+		<fieldset class="fieldset text-left mb-5">
+				<div class="col-12">
+					<div>
+						<a class="btn btn-outline-success btn-sm" href="../usuario/cadastrar-user"><i
+								class="bi bi-plus-circle-fill"></i> Novo Usuário</a>
+					</div>
+					<br>
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th class="table-active">Id.</th>
+								<th class="table-active">Nome.</th>
+								<th class="table-active">Usuário.</th>
+								<th class="table-active">Email.</th>
+								<th class="table-active">Tipo Conta</th>
+								<th class="table-active"></th>
+								<th class="table-active"></th>
+								<th class="table-active"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="u : ${usuarios}">
+								<td th:text="${u.id}"></td>
+								<td th:text="${u.nome}"></td>
+								<td th:text="${u.nomeUser}"></td>
+								<td th:text="${u.emailUser}"></td>
+								<td>
+									<span th:each="role : ${u.roles}" th:text="${role.roleName}"></span>
+								</td>
+								<td><a class="btn btn-outline-info btn-sm"
+										th:href="@{/usuario/{u.id}(p.id=${u.id})}">Detalhes</a></td>
+								<td><a class="btn btn-outline-primary btn-sm"
+										th:href="@{/usuario/{u.id}/editar(u.id=${u.id})}">Editar</a></td>
+								<td><a class="btn btn-outline-danger btn-sm"
+										th:href="@{/usuario/{u.id}/excluir(u.id=${u.id})}">Excluir</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</fieldset>
+</body>
+<script th:type="@{text/javascript}">
+	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+
+</html>

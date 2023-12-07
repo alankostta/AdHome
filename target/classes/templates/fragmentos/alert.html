@@ -1,0 +1,16 @@
+<div th:if="${success} != null">
+	<div class="alert alert-success" role="alert">
+		<i class="bi bi-person-check-fill"></i>
+		<span>
+			<strong th:text="${success}"></strong>
+		</span>
+	</div>
+</div>
+<div th:if="${fail} != null">
+	<div class="alert alert-danger" role="alert">
+		<i class="bi bi-person-check-fill"></i>
+		<span>
+			<strong th:text="${fail}"></strong>
+		</span>
+	</div>
+</div>

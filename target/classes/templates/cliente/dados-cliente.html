@@ -1,0 +1,127 @@
+<div class="container"
+	th:fragment="formDados(contatoDto,enderecoDto, action)">
+	<fieldset class="fieldset text-left mb-5">
+		<legend>Contatos e Endereço</legend>
+		<form action="">
+			<div class="row mb-3">
+				<label class="col-sm-3 form-select-label">Escolha o Tipo de
+					Contato</label>
+				<div class="mb-3 ">
+					<select class="form-select" th:field="*{clienteDto.contatoEnum}">
+						<option th:each="contato : ${listaContato}" th:value="${contato}"
+							th:text="${contato}"></option>
+					</select>
+				</div>
+				<div class="col-sm-3">
+					<input class="form-control" th:errorclass="is-invalid"
+						th:field="*{contatoDto.telefone}" type="text"
+						placeholder="Digite seu Telefone" />
+				</div>
+				<div class="invalid-feedback" th:errors="*{contatoDto.telefone}"></div>
+				<div class="col-sm-5">
+					<input class="form-control" th:errorclass="is-invalid" type="text"
+						th:field="*{contatoDto.email}" placeholder="Digite seu e-mail" />
+				</div>
+				<div class="invalid-feedback" th:errors="*{contatoDto.email}"></div>
+			</div>
+			<div class="mb-3">
+				<label for="endereco" class="form-label">Escolha o tipo de
+					Endereço</label> <select class="form-select"
+					th:field="*{clienteDto.enderecoEnum}">
+					<option th:each="endereco : ${listaEndereco}"
+						th:value="${endereco}" th:text="${endereco}"></option>
+				</select> </br>
+				<div class="row mb-3">
+					<div class="col-md-2">
+						<input id="uf" class="form-control" type="text"
+							placeholder="Digite seu UF" th:errorclass="is-invalid"
+							th:field="*{enderecoDto.uf}" />
+						<div class="invalid-feedback" th:errors="*{enderecoDto.uf}"></div>
+					</div>
+					<div class="col-md-4">
+						<input id="cidade" class="form-control" type="text"
+							placeholder="Digite sua Cidade" th:errorclass="is-invalid"
+							th:field="*{enderecoDto.localidade}" />
+						<div class="invalid-feedback"
+							th:errors="*{enderecoDto.localidade}"></div>
+					</div>
+					<div class="col-md-3">
+						<input id="bairro" class="form-control" type="text"
+							placeholder="Digite seu Bairro" th:errorclass="is-invalid"
+							th:field="*{enderecoDto.bairro}" />
+						<div class="invalid-feedback" th:errors="*{enderecoDto.bairro}"></div>
+					</div>
+					<div class="col-md-3">
+						<input placeholder="Complemento" class="form-control" type="text"
+							th:field="*{enderecoDto.complemento}" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-md-3">
+						<div class="input-group">
+							<input id="cep" type="text" class="form-control"
+								placeholder="Digite seu CEP" th:errorclass="is-invalid"
+								th:field="*{enderecoDto.cep}" />
+							<button class="btn btn-outline-secondary" type="button"
+								onClick="buscarCep()">Pesquisar</button>
+							<div class="invalid-feedback" th:errors="*{enderecoDto.cep}"></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<input id="logradouro" class="form-control" type="text"
+							placeholder="Digite rua, av..." th:errorclass="is-invalid"
+							th:field="*{enderecoDto.logradouro}" />
+						<div class="invalid-feedback"
+							th:errors="*{enderecoDto.logradouro}"></div>
+					</div>
+					<div class="col-md-3">
+						<input class="form-control" type="text"
+							placeholder="Informe número da residencia"
+							th:field="*{enderecoDto.numero}" />
+					</div>
+				</div>
+				<button type="submit" class="btn btn-outline-primary btn-sm">Salvar</button>
+				<a href="javascript:history.back()-1"
+					class="btn btn-outline-warning btn-sm">Voltar</a>
+				<button type="button" class="btn btn-outline-danger btn-sm" 
+				data-bs-toggle="modal" data-bs-target="#pesClienteModal">Pesquisar
+					Cliente</button>
+		</form>
+	</fieldset>
+	<div class="modal fade" id="pesClienteModal" tabindex="-1"
+	aria-labelledby="clienteModalpes" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="clienteModalpes">Pesquisar
+					Cliente</h5>
+				<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<label for="nameBuscarCliente" class="col-form-label">Informe
+						o nome do cliente:</label> <input type="text" class="form-control"
+						id="nomeCliente">
+				</div>
+				<button type="button" class="btn btn-outline-success btn-sm"
+					onclick="pesquisarCliente()">Buscar</button>
+				<table class="table" id="tabResultadosCliente">
+					<thead>
+						<tr>
+							<th scope="col">Id:</th>
+							<th scope="col">Nome</th>
+							<th scope="col">Selecionar</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary"
+					data-bs-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

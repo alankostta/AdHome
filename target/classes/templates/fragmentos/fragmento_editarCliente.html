@@ -1,0 +1,163 @@
+<div class="col-12" th:fragment="clienteEditar(cliente, action)">
+	<fieldset class="fieldset text-left mb-6">
+		<div th:replace="~{fragmentos/alert}"></div>
+		<legend>Dados Cliente</legend>
+		<form th:action="${action}" th:object="${cliente}" method="POST">
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Código</label>
+					<input class="form-control" type="text" th:field="*{id}" readonly />
+				</div>
+				<div class="col">
+					<label class="form-label">Nome</label>
+					<input class="form-control" type="text" th:classappend="${#fields.hasErrors('nome')}? 'is-invalid'"
+						th:field="*{nome}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{nome}"></span>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Data de Nascimento</label>
+					<input type="date" class="form-control"
+						th:classappend="${#fields.hasErrors('dataNasci')}? 'is-invalid'" th:field="*{dataNasci}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{dataNasci}"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row text-center">
+				<div class="col">
+					<br><br>
+					<input type="radio" class="form-check-input"
+						th:classappend="${#fields.hasErrors('sexo')}? 'is-invalid'" value="Feminino"
+						th:field="*{sexo}" />
+					<label for="Feminino" class="form-check-label">Feminino</label>
+					<div class="invalid-feedback">
+						<span th:errors="*{sexo}"></span>
+					</div>
+				</div>
+				<div class="col">
+					<br><br>
+					<input type="radio" class="form-check-input"
+						th:classappend="${#fields.hasErrors('sexo')}? 'is-invalid'" value="Masculino"
+						th:field="*{sexo}" />
+					<label for="Masculino" class="form-check-label">Masculino</label>
+					<div class="invalid-feedback">
+						<span th:errors="*{sexo}"></span>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Código</label>
+					<input class="form-control" type="text" th:field="*{contato.id}" readonly />
+				</div>
+				<div class="col">
+					<label class="form-label">Tipo Contato</label>
+					<select class="form-select" th:field="*{contato.contatoEnum}">
+						<option th:each="contatoEnum : ${listaContato}" th:value="${contatoEnum}"
+							th:text="${contatoEnum}">
+						</option>
+					</select>
+				</div>
+				<div class="col">
+					<label class="form-label">Telefone</label>
+					<input class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('contato.telefone')}? 'is-invalid'"
+						th:field="*{contato.telefone}" />
+					<div class="invalid-feedback">
+						<span th:errors="*{contato.telefone}"></span>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">E-mail</label>
+					<input class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('contato.email')}? 'is-invalid'"
+						th:field="*{contato.email}" />
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Código Endereco</label>
+					<input class="form-control" type="text" th:field="*{endereco[0].id}" readonly />
+				</div>
+				<div class="col">
+					<label class="form-label">Tipo Endereço</label>
+					<select class="form-select" th:field="*{endereco[0].enderecoEnum}">
+						<option th:each="enderecoEnum : ${listaEndereco}" th:value="${enderecoEnum}"
+							th:text="${enderecoEnum}"></option>
+					</select>
+				</div>
+				<div class="col">
+					<label class="form-label">Uf</label>
+					<input id="uf" class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('endereco[0].uf')}? 'is-invalid'"
+						th:field="*{endereco[0].uf}" placeholder="Digite seu UF" />
+					<div class="invalid-feedback">
+						<span th:errors="*{endereco[0].uf}"></span>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Cidade</label>
+					<input id="cidade" class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('endereco[0].localidade')}? 'is-invalid'"
+						th:field="*{endereco[0].localidade}" placeholder="Digite sua Cidade" />
+					<div class="invalid-feedback">
+						<span th:errors="*{endereco[0].localidade}"></span>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Bairro</label>
+					<input id="bairro" class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('endereco[0].bairro')}? 'is-invalid'"
+						th:field="*{endereco[0].bairro}" placeholder="Digite seu Bairro" />
+					<div class="invalid-feedback">
+						<span th:errors="*{endereco[0].bairro}"></span>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Rua</label>
+					<input id="logradouro" class="form-control" type="text"
+						th:classappend="${#fields.hasErrors('endereco[0].logradouro')}? 'is-invalid'"
+						th:field="*{endereco[0].logradouro}" placeholder="Digite rua, av..." />
+					<div class="invalid-feedback">
+						<span th:errors="*{endereco[0].bairro}"></span>
+					</div>
+				</div>
+
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<label class="form-label">Cep</label>
+					<div class="input-group">
+						<input id="cep" type="text" th:field="*{endereco[0].cep}"
+							th:classappend="${#fields.hasErrors('endereco[0].cep')}? 'is-invalid'" class="form-control"
+							placeholder="Digite seu CEP" />
+						<button class="btn btn-outline-secondary" type="button" onClick="buscarCep()">Pesquisar</button>
+						<div class="invalid-feedback">
+							<span th:errors="*{endereco[0].cep}"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<label class="form-label">Complemento</label>
+					<input placeholder="Complemento" th:field="*{endereco[0].complemento}" class="form-control"
+						type="text" />
+				</div>
+				<div class="col">
+					<label class="form-label">Número</label>
+					<input class="form-control" type="text" th:field="*{endereco[0].numero}"
+						placeholder="Informe número da residencia" />
+				</div>
+			</div>
+			<br>
+			<button type="submit" class="btn btn-outline-primary">Salvar</button>
+		</form>
+	</fieldset>
+</div>

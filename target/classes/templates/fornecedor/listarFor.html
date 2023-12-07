@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<link rel="stylesheet" href="/css/style.css">
+<head th:replace="~{fragmentos/head :: head('Editar Fornecedor')}"></head>
+<body>
+	<header th:replace="~{fragmentos/navBar :: nav}"></header>
+	<header th:replace="~{fragmentos/header :: header('Lista de Fornecedores')}"></header>
+	<fieldset class="fieldset text-left mb-5">
+		<div class="row">
+			<div class="col-12">
+				<div>
+					<a class="btn btn-outline-success btn-sm" href="../fornecedor"><i
+							class="bi bi-plus-circle-fill"></i> Novo Fornecedor</a>
+				</div>
+				<br>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="table-active">Id.</th>
+							<th class="table-active">Nome.</th>
+							<th class="table-active">Empre.</th>
+							<th class="table-active">Cont.</th>
+							<th class="table-active">End.</th>
+							<th class="table-active">Ação</th>
+							<th class="table-active"></th>
+							<th class="table-active"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="f : ${fornecedor}">
+							<td th:text="${f.id}"></td>
+							<td th:text="${f.nome}"></td>
+							<td th:text="${f.nomeEmpresa}"></td>
+							<td th:each="contato : ${f.contato}">
+								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
+									th:attr="data-bs-content=${#strings.concat(
+									      contato.email, ' - ',
+									      contato.telefone, ' ',)}">
+									<span class="bi bi-eye"></span>
+								</button>
+								<span th:each="contato : ${f.contato}" th:text="${contato.contatoEnum}"></span><br>
+							</td>
+							<td th:each="end : ${f.endereco}">
+								<button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="popover"
+									th:attr="data-bs-content=${#strings.concat(
+									      end.uf, ' - ',
+									      end.localidade, ' ',
+									      end.bairro, ' - [Cep',
+									      end.cep, '], ',
+									      end.logradouro, '-',
+									      end.complemento, ' - ',
+									      end.numero)}">
+									<span class="bi bi-eye"></span>
+								</button>
+								<span th:text="${end.enderecoEnum}"></span>
+							</td>
+							<td><a class="btn btn-outline-info btn-sm"
+									th:href="@{/exibirFornecedor/{f.id}(f.id=${f.id})}">Detalhes</a></td>
+							<td><a class="btn btn-outline-primary btn-sm"
+									th:href="@{/fornecedorEditar/{f.id}/editar (f.id=${f.id})}">Editar</a></td>
+							<td><a class="btn btn-outline-danger btn-sm"
+									th:href="@{/fornecedor/{f.id}/excluir(f.id=${f.id})}">Excluir</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</fieldset>
+</body>
+<script th:type="@{text/javascript}">
+	const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+	const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
+</html>

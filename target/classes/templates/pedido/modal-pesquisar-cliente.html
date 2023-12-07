@@ -1,0 +1,34 @@
+	<div th:fragment="modal-cliente" class="modal fade" id="pesquisarClienteModal" tabindex="-1" aria-labelledby="clienteModalpesquisa"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="clienteModalpesquisa">Pesquisar
+						Cliente</h5>
+					<button type="button" data-bs-dismiss="modal" class="btn-close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="mb-3">
+						<label class="col-form-label">Informe
+							o nome do cliente:</label> <input type="text" class="form-control" id="nomeCliente">
+					</div>
+					<button type="button" class="btn btn-outline-success btn-sm"
+						onclick="pesquisarCliente()">Buscar</button>
+					<table class="table" id="tabResultadosCliente">
+						<thead>
+							<tr>
+								<th scope="col">Id:</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Selecionar</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
